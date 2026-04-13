@@ -232,9 +232,12 @@ const DEFAULT = {
       al:['Gluten','Melk','Sulfitt'], tips:'' },
   ],
   sider: [
-    {name:'Plain fries stor',pris:'65'},{name:'Plain fries liten',pris:'45'},
-    {name:'Loaded fries',pris:'89'},{name:'Brus 0,33L',pris:'30'},
-    {name:'Vann 0,5L',pris:'20'},{name:'The Smash-kombo',pris:'210'},
+    {name:'Plain fries stor',pris:'65',ings:[{n:'Frossen frites (9mm)',w:'250g',c:'5',note:'Avanta eller McCain Premium'},{n:'Solsikkeolje (frityr)',w:'~5g',c:'0.5',note:'190\u00b0C, 3\u20134 minutter'},{n:'Flaksalt',w:'1g',c:'0.1',note:'Dryss rett fra frityren'}]},
+    {name:'Plain fries liten',pris:'45',ings:[{n:'Frossen frites (9mm)',w:'150g',c:'3',note:'Avanta eller McCain Premium'},{n:'Solsikkeolje (frityr)',w:'~5g',c:'0.5',note:'190\u00b0C, 3\u20134 minutter'},{n:'Flaksalt',w:'1g',c:'0.1',note:'Dryss rett fra frityren'}]},
+    {name:'Loaded fries',pris:'89',ings:[{n:'Frossen frites (9mm)',w:'250g',c:'5',note:''},{n:'Cheddar-saus (varm)',w:'50g',c:'3',note:'Velveeta eller hjemmelaget'},{n:'Bacon crumbles',w:'25g',c:'3',note:'Spr\u00f8stekt og hakket'},{n:'Cornichons, finhakket',w:'15g',c:'0.5',note:''},{n:'The Smash Sauce, drypp',w:'10g',c:'0.75',note:''}]},
+    {name:'Brus 0,33L',pris:'30',ings:[]},
+    {name:'Vann 0,5L',pris:'20',ings:[]},
+    {name:'The Smash-kombo',pris:'210',ings:[]},
   ],
   sauser: [
     { name:'The Smash Sauce', desc:'Signatursaus \u2014 brukes p\u00e5 alle burgere',
@@ -272,6 +275,7 @@ let tab = 'b0';
 let sausIdx = 0;
 let picker = null;
 let saveTimer = null;
+let siderExpanded = {};
 
 // —— STORAGE ————————————————————————————————————————————
 
@@ -511,17 +515,66 @@ function renderSider() {
   html += `<div class="sec">Tilbeh\u00f8r og drikke</div>`;
 
   S.sider.forEach((s, i) => {
-    html += `<div class="side-row">
+    if (!s.ings) s.ings = [];
+    const hasIngs = s.ings.length > 0;
+    const expanded = siderExpanded && siderExpanded[i];
+
+    html += `<div class="side-row" style="flex-wrap:wrap">
       <input value="${esc(s.name)}" style="flex:2" oninput="S.sider[${i}].name=this.value;scheduleSave()">
-      <input type="number" value="${esc(s.pris)}" style="flex:0.5;text-align:right" oninput="S.sider[${i}].pris=this.value;scheduleSave()">
+      <input type="number" value="${esc(s.pris)}" style="flex:0.5;text-align:right" oninput="S.sider[${i}].pris=this.value;scheduleSave();render()">
       <span style="font-size:12px;color:var(--muted);flex-shrink:0">kr</span>
+      <button class="icon-btn" onclick="toggleSiderExpand(${i})" title="${hasIngs ? 'Vis/skjul ingredienser' : 'Legg til ingredienser'}" style="${expanded?'background:var(--info-bg);color:var(--info);border-color:var(--info)':''}">\u25BC</button>
       <button class="icon-btn del" onclick="S.sider.splice(${i},1);scheduleSave();render()" title="Fjern">\u00d7</button>
     </div>`;
+
+    if (expanded) {
+      const c = cost(s.ings);
+      const pris = parseFloat(s.pris) || 0;
+      const margin = pris > 0 ? ((pris - c) / pris * 100) : 0;
+      const marginColor = margin >= 75 ? 'var(--success)' : margin >= 60 ? 'var(--warn)' : 'var(--danger)';
+
+      html += `<div style="padding:12px 0 12px 0;border-bottom:1px solid var(--border)">`;
+      html += `<div class="ing-header">
+        <span class="col-head">Ingrediens</span>
+        <span class="col-head">Mengde</span>
+        <span class="col-head">Kost (kr)</span>
+        <span class="col-head">Merknad</span>
+        <span></span>
+      </div>`;
+
+      s.ings.forEach((ing, j) => {
+        html += `<div class="ing-row">
+          <input value="${esc(ing.n)}" oninput="S.sider[${i}].ings[${j}].n=this.value;scheduleSave()">
+          <input value="${esc(ing.w)}" oninput="S.sider[${i}].ings[${j}].w=this.value;scheduleSave()">
+          <input type="number" step="0.1" value="${esc(ing.c)}" oninput="S.sider[${i}].ings[${j}].c=this.value;scheduleSave();render()">
+          <input value="${esc(ing.note)}" oninput="S.sider[${i}].ings[${j}].note=this.value;scheduleSave()">
+          <div class="btn-pair">
+            <button class="icon-btn save" onclick="saveToLib(S.sider[${i}].ings[${j}])" title="Lagre til bibliotek">\u2191</button>
+            <button class="icon-btn del" onclick="S.sider[${i}].ings.splice(${j},1);scheduleSave();render()">\u00d7</button>
+          </div>
+        </div>`;
+      });
+
+      html += `<button class="add-row" onclick="S.sider[${i}].ings.push({n:'',w:'',c:'0',note:''});scheduleSave();render()">+ Legg til ingrediens</button>`;
+
+      html += `<div class="margin-bar">
+        <div><div class="mb-label">R\u00e5varekost</div><div class="mb-val">${fmt(c)} kr</div></div>
+        <div><div class="mb-label">Pris</div><div class="mb-val">${pris} kr</div></div>
+        <div><div class="mb-label">Bruttomargin</div><div class="mb-val" style="color:${marginColor}">${fmt(margin)}%</div></div>
+      </div>`;
+
+      html += `</div>`;
+    }
   });
 
-  html += `<button class="add-row" onclick="S.sider.push({name:'',pris:''});scheduleSave();render()">+ Legg til produkt</button>`;
+  html += `<button class="add-row" onclick="S.sider.push({name:'',pris:'',ings:[]});scheduleSave();render()">+ Legg til produkt</button>`;
   html += `</div>`;
   return html;
+}
+
+function toggleSiderExpand(i) {
+  siderExpanded[i] = !siderExpanded[i];
+  render();
 }
 
 // —— SAUSER —————————————————————————————————————————————
@@ -743,28 +796,48 @@ async function exportDocx() {
       spacing: { before: 400, after: 200 },
     }));
 
-    const sideHeaderRow = new TableRow({
-      children: ['Navn', 'Pris'].map(h =>
-        new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, size: 18, font: 'Arial' })] })],
-          borders: noBorders,
-        })
-      ),
-    });
+    for (const s of S.sider) {
+      const hasIngs = s.ings && s.ings.length > 0;
+      const c = hasIngs ? cost(s.ings) : 0;
+      const pris = parseFloat(s.pris) || 0;
+      const margin = pris > 0 && hasIngs ? Math.round((pris - c) / pris * 100) : 0;
 
-    const sideRows = S.sider.map(s => new TableRow({
-      children: [s.name, s.pris + ' kr'].map(t =>
-        new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text: t, size: 18, font: 'Arial' })] })],
-          borders: noBorders,
-        })
-      ),
-    }));
+      const prisLine = hasIngs
+        ? `Pris: ${s.pris} kr  \u00b7  R\u00e5varekost: ~${fmt(c)} kr  \u00b7  Margin: ~${margin}%`
+        : `Pris: ${s.pris} kr`;
 
-    sections.push(new Table({
-      rows: [sideHeaderRow, ...sideRows],
-      width: { size: 100, type: WidthType.PERCENTAGE },
-    }));
+      sections.push(new Paragraph({
+        children: [new TextRun({ text: s.name, bold: true, size: 22, font: 'Arial' })],
+        spacing: { before: 140, after: 40 },
+      }));
+      sections.push(new Paragraph({
+        children: [new TextRun({ text: prisLine, size: 18, color: '666666', font: 'Arial' })],
+        spacing: { after: 60 },
+      }));
+
+      if (hasIngs) {
+        const ingHeaderRow = new TableRow({
+          children: ['Ingrediens', 'Mengde', 'Kostnad', 'Merknad'].map(h =>
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, size: 16, font: 'Arial' })] })],
+              borders: noBorders,
+            })
+          ),
+        });
+        const ingRows = s.ings.map(ing => new TableRow({
+          children: [ing.n, ing.w, ing.c + ' kr', ing.note || ''].map(t =>
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: t, size: 16, font: 'Arial' })] })],
+              borders: noBorders,
+            })
+          ),
+        }));
+        sections.push(new Table({
+          rows: [ingHeaderRow, ...ingRows],
+          width: { size: 100, type: WidthType.PERCENTAGE },
+        }));
+      }
+    }
 
     // Sauser
     sections.push(new Paragraph({
