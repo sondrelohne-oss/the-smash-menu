@@ -196,7 +196,10 @@
     <div class="logo-divider"></div>
     <span class="header-sub">Menyplanlegger</span>
   </div>
-  <span class="save-badge" id="save-badge">Laster...</span>
+  <div style="display:flex;align-items:center;gap:10px">
+    <a href="display.html" target="_blank" style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(232,197,71,.15);color:var(--gold);text-decoration:none;white-space:nowrap">Menyvisning \u2197</a>
+    <span class="save-badge" id="save-badge">Laster...</span>
+  </div>
 </header>
 
 <div class="container">
@@ -215,19 +218,19 @@ const LK = 'thesmash-lib-v1';
 
 const DEFAULT = {
   burgers: [
-    { id:'classic', name:'The Classic', pris_dobbel:'149', pris_enkel:'109', isNew:false,
+    { id:'classic', name:'The Classic', pris_dobbel:'149', pris_enkel:'109', pattyMode:'both', isNew:false,
       ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:'Chuck/brisket, fersk'},{n:'Brioche bun',w:'85g',c:'6',note:'Lett grilles'},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:'Prosessert'},{n:'Gul l\u00f8k, grillet',w:'40g',c:'1',note:'Karamellisert'},{n:'Cornichons / pickles',w:'20g',c:'1',note:''},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Dobbel er standard. Kunden velger aktivt liten.' },
-    { id:'spicy', name:'The Spicy', pris_dobbel:'159', pris_enkel:'119', isNew:false,
+    { id:'spicy', name:'The Spicy', pris_dobbel:'159', pris_enkel:'119', pattyMode:'both', isNew:false,
       ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:''},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:''},{n:'Gul l\u00f8k, grillet',w:'40g',c:'1',note:''},{n:'Syltet jalape\u00f1o',w:'25g',c:'1.5',note:''},{n:'Franks RedHot sauce',w:'8g',c:'0.5',note:'Drypp p\u00e5 patty'},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Franks RedHot p\u00e5 patty rett etter smashing.' },
-    { id:'bbq', name:'BBQ Bacon', pris_dobbel:'169', pris_enkel:'129', isNew:false,
+    { id:'bbq', name:'BBQ Bacon', pris_dobbel:'169', pris_enkel:'129', pattyMode:'both', isNew:false,
       ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:''},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:''},{n:'R\u00f8kt bacon',w:'3 \u00d7 15g',c:'6',note:'Spr\u00f8stek'},{n:'Fritert l\u00f8kring',w:'2 stk',c:'2',note:''},{n:'Hickory BBQ-saus',w:'15g',c:'1',note:'Bulls Eye'},{n:'Majones',w:'10g',c:'0.5',note:'Hellmanns'}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'' },
-    { id:'chicken', name:'Chicken Smash', pris_dobbel:'139', pris_enkel:'109', isNew:false,
+    { id:'chicken', name:'Chicken Smash', pris_dobbel:'139', pris_enkel:'109', pattyMode:'both', isNew:false,
       ings:[{n:'Kyllingfilet, tynne skiver',w:'150g',c:'18',note:'Bankes flat'},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'1 \u00d7 18g',c:'3',note:''},{n:'Coleslaw (hjemmelaget)',w:'40g',c:'2',note:''},{n:'Cornichons / pickles',w:'20g',c:'1',note:''},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Kylling til 75\u00b0C. Aldri bland med biff p\u00e5 platen.' },
-    { id:'kids', name:'Kids', pris_dobbel:'79', pris_enkel:'', isNew:false,
+    { id:'kids', name:'Kids', pris_dobbel:'79', pris_enkel:'', pattyMode:'dobbel', isNew:false,
       ings:[{n:'Kj\u00f8ttdeig 80/20 (enkel)',w:'80g',c:'9',note:''},{n:'Brioche bun (liten)',w:'70g',c:'5',note:''},{n:'American cheddar',w:'1 \u00d7 18g',c:'3',note:''},{n:'Ketchup',w:'15g',c:'0.3',note:'Heinz'}],
       al:['Gluten','Melk','Sulfitt'], tips:'' },
   ],
@@ -391,7 +394,8 @@ function render() {
 function renderBurger(i) {
   const b = S.burgers[i];
   const c = cost(b.ings);
-  const pris = parseFloat(b.pris_dobbel) || 0;
+  const pm0 = b.pattyMode || 'both';
+  const pris = parseFloat(pm0 === 'enkel' ? b.pris_enkel : b.pris_dobbel) || 0;
   const margin = pris > 0 ? ((pris - c) / pris * 100) : 0;
   const marginColor = margin >= 75 ? 'var(--success)' : margin >= 60 ? 'var(--warn)' : 'var(--danger)';
 
@@ -404,16 +408,31 @@ function renderBurger(i) {
     <input value="${esc(b.name)}" oninput="S.burgers[${i}].name=this.value;scheduleSave();renderTabs()">
   </div>`;
 
-  html += `<div class="price-row">
-    <div class="price-block">
-      <span class="price-label">Dobbel (standard)</span>
-      <input type="number" value="${esc(b.pris_dobbel)}" oninput="S.burgers[${i}].pris_dobbel=this.value;scheduleSave();render()">
-    </div>
-    <div class="price-block">
-      <span class="price-label">Liten</span>
-      <input type="number" value="${esc(b.pris_enkel)}" placeholder="\u2014" oninput="S.burgers[${i}].pris_enkel=this.value;scheduleSave();render()">
+  // Patty mode
+  const pm = b.pattyMode || 'both';
+  html += `<div class="field-row">
+    <span class="field-label">Patty-valg</span>
+    <div style="display:flex;gap:4px">
+      <button class="tab${pm==='both'?' on':''}" style="font-size:12px;padding:4px 12px" onclick="S.burgers[${i}].pattyMode='both';scheduleSave();render()">Begge</button>
+      <button class="tab${pm==='dobbel'?' on':''}" style="font-size:12px;padding:4px 12px" onclick="S.burgers[${i}].pattyMode='dobbel';scheduleSave();render()">Kun dobbel</button>
+      <button class="tab${pm==='enkel'?' on':''}" style="font-size:12px;padding:4px 12px" onclick="S.burgers[${i}].pattyMode='enkel';scheduleSave();render()">Kun enkel</button>
     </div>
   </div>`;
+
+  html += `<div class="price-row"${pm==='enkel'||pm==='dobbel'?' style="grid-template-columns:1fr"':''}>`;
+  if (pm !== 'enkel') {
+    html += `<div class="price-block">
+      <span class="price-label">${pm==='both'?'Dobbel (standard)':'Pris'}</span>
+      <input type="number" value="${esc(b.pris_dobbel)}" oninput="S.burgers[${i}].pris_dobbel=this.value;scheduleSave();render()">
+    </div>`;
+  }
+  if (pm !== 'dobbel') {
+    html += `<div class="price-block">
+      <span class="price-label">${pm==='both'?'Liten':'Pris'}</span>
+      <input type="number" value="${esc(b.pris_enkel)}" placeholder="\u2014" oninput="S.burgers[${i}].pris_enkel=this.value;scheduleSave();render()">
+    </div>`;
+  }
+  html += `</div>`;
 
   // Tips
   html += `<div class="field-row">
@@ -456,7 +475,7 @@ function renderBurger(i) {
   // Margin bar
   html += `<div class="margin-bar">
     <div><div class="mb-label">R\u00e5varekost</div><div class="mb-val">${fmt(c)} kr</div></div>
-    <div><div class="mb-label">Pris (dobbel)</div><div class="mb-val">${pris} kr</div></div>
+    <div><div class="mb-label">Pris${pm0==='enkel'?' (enkel)':pm0==='dobbel'?' (dobbel)':' (dobbel)'}</div><div class="mb-val">${pris} kr</div></div>
     <div><div class="mb-label">Bruttomargin</div><div class="mb-val" style="color:${marginColor}">${fmt(margin)}%</div></div>
   </div>`;
 
@@ -490,7 +509,7 @@ function toggleAllergen(bi, allergen) {
 function addBurger() {
   const id = 'custom_' + Date.now();
   S.burgers.push({
-    id, name:'Ny burger', pris_dobbel:'', pris_enkel:'', isNew:true,
+    id, name:'Ny burger', pris_dobbel:'', pris_enkel:'', pattyMode:'both', isNew:true,
     ings:[], al:[], tips:''
   });
   tab = 'b' + (S.burgers.length - 1);

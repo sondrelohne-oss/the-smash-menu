@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE SMASH — Meny</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #111111;
+      --cream: #F5F0E8;
+      --gold: #E8C547;
+      --dim: #888880;
+      --card: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--black);
+      color: var(--cream);
+    }
+
+    .display {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: 3vh 4vw;
+      gap: 3vh;
+    }
+
+    /* HEADER */
+    .d-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .d-logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 0.9;
+    }
+    .d-the {
+      font-size: clamp(14px, 1.5vw, 22px);
+      font-weight: 800;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .d-smash {
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+    }
+    .d-gold-line {
+      width: 50px;
+      height: 3px;
+      background: var(--gold);
+      margin-left: 16px;
+      align-self: center;
+    }
+    .d-tagline {
+      font-size: clamp(11px, 1.2vw, 16px);
+      color: var(--dim);
+      align-self: center;
+      margin-left: auto;
+      letter-spacing: 0.05em;
+    }
+
+    /* MENU GRID */
+    .d-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2vh 3vw;
+      align-content: start;
+    }
+
+    /* SECTION */
+    .d-section-title {
+      font-size: clamp(10px, 1vw, 13px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      padding-bottom: 1vh;
+      border-bottom: 1px solid rgba(232,197,71,0.2);
+      margin-bottom: 1.5vh;
+    }
+
+    /* MENU ITEM */
+    .d-item {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 1.2vh;
+    }
+    .d-item-name {
+      font-size: clamp(16px, 1.8vw, 26px);
+      font-weight: 700;
+      color: var(--cream);
+      white-space: nowrap;
+    }
+    .d-item-dots {
+      flex: 1;
+      border-bottom: 1px dotted rgba(255,255,255,0.15);
+      margin-bottom: 4px;
+      min-width: 20px;
+    }
+    .d-item-price {
+      font-size: clamp(16px, 1.8vw, 26px);
+      font-weight: 800;
+      color: var(--cream);
+      white-space: nowrap;
+    }
+    .d-item-sub {
+      font-size: clamp(10px, 1vw, 14px);
+      color: var(--dim);
+      margin-bottom: 1.5vh;
+      padding-left: 2px;
+    }
+
+    /* COMBO HIGHLIGHT */
+    .d-combo {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 2vh 2vw;
+      margin-top: 1vh;
+    }
+    .d-combo .d-item-name { color: var(--gold); }
+
+    /* LIVE INDICATOR */
+    .d-live {
+      position: fixed;
+      bottom: 12px;
+      right: 16px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .d-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2a7a4a;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="display">
+  <div class="d-header">
+    <div class="d-logo">
+      <span class="d-the">The</span>
+      <span class="d-smash">SMASH</span>
+    </div>
+    <div class="d-gold-line"></div>
+    <span class="d-tagline">Mandal Brygge</span>
+  </div>
+  <div id="menu-content"></div>
+</div>
+
+<div class="d-live"><div class="d-live-dot"></div>Live</div>
+
+<script>
+const SK = 'thesmash-menu-v1';
+let lastJson = '';
+
+function loadAndRender() {
+  let S;
+  try {
+    const raw = localStorage.getItem(SK);
+    if (!raw || raw === lastJson) return;
+    lastJson = raw;
+    S = JSON.parse(raw);
+  } catch(e) { return; }
+
+  const el = document.getElementById('menu-content');
+  let html = '<div class="d-grid">';
+
+  // Left column: Burgere
+  html += '<div>';
+  html += '<div class="d-section-title">Burgere</div>';
+
+  for (const b of S.burgers) {
+    const pm = b.pattyMode || 'both';
+    let priceStr = '';
+
+    if (pm === 'both' && b.pris_dobbel && b.pris_enkel) {
+      priceStr = b.pris_dobbel + ' / ' + b.pris_enkel;
+    } else if (pm === 'enkel' && b.pris_enkel) {
+      priceStr = b.pris_enkel;
+    } else {
+      priceStr = b.pris_dobbel || b.pris_enkel || '';
+    }
+
+    html += `<div class="d-item">
+      <span class="d-item-name">${esc(b.name)}</span>
+      <span class="d-item-dots"></span>
+      <span class="d-item-price">${esc(priceStr)}</span>
+    </div>`;
+
+    // Size label
+    if (pm === 'both' && b.pris_dobbel && b.pris_enkel) {
+      html += `<div class="d-item-sub">dobbel / enkel</div>`;
+    } else if (pm === 'dobbel') {
+      html += `<div class="d-item-sub">dobbel patty</div>`;
+    } else if (pm === 'enkel') {
+      html += `<div class="d-item-sub">enkel patty</div>`;
+    }
+  }
+  html += '</div>';
+
+  // Right column: Tilbeh\u00f8r + Kombo
+  html += '<div>';
+  html += '<div class="d-section-title">Tilbeh\u00f8r & drikke</div>';
+
+  const sides = S.sider || [];
+  const combo = sides.filter(s => s.name.toLowerCase().includes('kombo'));
+  const regular = sides.filter(s => !s.name.toLowerCase().includes('kombo'));
+
+  for (const s of regular) {
+    html += `<div class="d-item">
+      <span class="d-item-name">${esc(s.name)}</span>
+      <span class="d-item-dots"></span>
+      <span class="d-item-price">${esc(s.pris)}</span>
+    </div>`;
+  }
+
+  // Combo
+  if (combo.length > 0) {
+    html += '<div class="d-combo">';
+    html += '<div class="d-section-title" style="color:var(--gold);border-color:rgba(232,197,71,0.3)">Kombotilbud</div>';
+    for (const c of combo) {
+      html += `<div class="d-item">
+        <span class="d-item-name">${esc(c.name)}</span>
+        <span class="d-item-dots"></span>
+        <span class="d-item-price">${esc(c.pris)}</span>
+      </div>`;
+    }
+    html += '</div>';
+  }
+
+  html += '</div>';
+  html += '</div>';
+
+  el.innerHTML = html;
+}
+
+function esc(s) {
+  if (!s) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// Poll localStorage every second for live updates
+loadAndRender();
+setInterval(loadAndRender, 1000);
+
+// Also listen for storage events (works across tabs)
+window.addEventListener('storage', (e) => {
+  if (e.key === SK) { lastJson = ''; loadAndRender(); }
+});
+</script>
+</body>
+</html>
