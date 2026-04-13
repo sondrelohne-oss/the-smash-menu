@@ -306,10 +306,37 @@ document.addEventListener('visibilitychange', () => { if (document.hidden && dir
 setInterval(() => { if (dirty) save(); }, 5000);
 
 function load() {
-  try { const m = localStorage.getItem(SK); if (m) S = JSON.parse(m); } catch(e) {}
-  try { const l = localStorage.getItem(LK); if (l) LIB = JSON.parse(l); } catch(e) {}
+  try {
+    const m = localStorage.getItem(SK);
+    if (m) {
+      const parsed = JSON.parse(m);
+      if (parsed && parsed.burgers) S = parsed;
+    }
+  } catch(e) { console.error('Feil ved lasting av meny:', e); }
+  try {
+    const l = localStorage.getItem(LK);
+    if (l) {
+      const parsed = JSON.parse(l);
+      if (Array.isArray(parsed)) LIB = parsed;
+    }
+  } catch(e) { console.error('Feil ved lasting av bibliotek:', e); }
+  // Sørg for at alle LIB-elementer har riktig struktur
+  LIB = LIB.map(l => ({n: l.n||'', w: l.w||'', c: l.c||'0', note: l.note||''}));
   setSaveBadge('Innlastet \u2713', true);
   render();
+}
+
+function resetAll() {
+  if (!confirm('Nullstill ALT til standardverdier? Alle endringer g\u00e5r tapt.')) return;
+  localStorage.removeItem(SK);
+  localStorage.removeItem(LK);
+  S = JSON.parse(JSON.stringify(DEFAULT));
+  LIB = DEFAULT_LIB.map(x => ({...x}));
+  tab = 'b0';
+  sausIdx = 0;
+  save();
+  render();
+  toast('Alt nullstilt');
 }
 
 function setSaveBadge(msg, ok=false) {
@@ -329,7 +356,7 @@ function toast(msg) {
 
 function cost(ings) { return ings.reduce((a, i) => a + parseFloat(i.c || '0'), 0); }
 function fmt(n) { return Math.round(n * 10) / 10; }
-function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function esc(s) { if (s == null) return ''; const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
 
 function saveToLib(ing) {
   if (!ing.n || !ing.n.trim()) { toast('Ingrediens mangler navn'); return; }
@@ -387,18 +414,26 @@ function renderTabs() {
 }
 
 function render() {
-  renderTabs();
-  const pane = document.getElementById('main-pane');
-  if (tab.startsWith('b')) {
-    const i = parseInt(tab.slice(1));
-    if (i < S.burgers.length) pane.innerHTML = renderBurger(i);
-    else { tab = 'b0'; render(); return; }
-  } else if (tab === 'sider') {
-    pane.innerHTML = renderSider();
-  } else if (tab === 'sauser') {
-    pane.innerHTML = renderSauser();
-  } else if (tab === 'lib') {
-    pane.innerHTML = renderLibrary();
+  try {
+    renderTabs();
+    const pane = document.getElementById('main-pane');
+    if (tab.startsWith('b')) {
+      const i = parseInt(tab.slice(1));
+      if (i < S.burgers.length) pane.innerHTML = renderBurger(i);
+      else { tab = 'b0'; render(); return; }
+    } else if (tab === 'sider') {
+      pane.innerHTML = renderSider();
+    } else if (tab === 'sauser') {
+      pane.innerHTML = renderSauser();
+    } else if (tab === 'lib') {
+      pane.innerHTML = renderLibrary();
+    }
+  } catch(e) {
+    console.error('Render-feil:', e);
+    document.getElementById('main-pane').innerHTML = `<div class="card" style="color:var(--danger)">
+      <p>Noe gikk galt: ${e.message}</p>
+      <button class="add-row" onclick="resetAll()" style="margin-top:12px;color:var(--danger);border-color:var(--danger)">Nullstill alt til standardverdier</button>
+    </div>`;
   }
 }
 
