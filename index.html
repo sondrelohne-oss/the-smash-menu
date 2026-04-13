@@ -282,14 +282,25 @@ let siderExpanded = {};
 function save() {
   try { localStorage.setItem(SK, JSON.stringify(S)); localStorage.setItem(LK, JSON.stringify(LIB)); }
   catch(e) {}
+  dirty = false;
   setSaveBadge('Lagret \u2713', true);
 }
 
+let dirty = false;
+
 function scheduleSave() {
+  dirty = true;
   setSaveBadge('Lagrer...');
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(save, 800);
+  saveTimer = setTimeout(save, 400);
 }
+
+// Flush ulagrede endringer ved lukking/navigering/tabbytte
+window.addEventListener('beforeunload', () => { if (dirty) save(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden && dirty) save(); });
+
+// Periodisk backup hvert 5. sekund
+setInterval(() => { if (dirty) save(); }, 5000);
 
 function load() {
   try { const m = localStorage.getItem(SK); if (m) S = JSON.parse(m); } catch(e) {}
