@@ -378,28 +378,26 @@ function addFromLib(bi, item) {
   scheduleSave(); render();
 }
 
-function showPicker(bi, q) {
+function openLibPicker(bi, q) {
   const dd = document.getElementById('dd-' + bi);
   if (!dd) return;
   const res = q ? LIB.filter(l => l.n.toLowerCase().includes(q.toLowerCase())) : LIB.slice(0, 12);
-  if (!res.length) { dd.style.display = 'none'; return; }
+  if (!res.length) { dd.style.display = 'none'; picker = null; return; }
   dd.innerHTML = res.map((l, idx) =>
-    `<div class="picker-item" onmousedown="addFromLib(${bi}, LIB[${LIB.indexOf(l)}])">
+    `<div class="picker-item" onmousedown="event.preventDefault();addFromLib(${bi}, LIB[${LIB.indexOf(l)}])">
       ${esc(l.n)}<span class="pi-meta">${esc(l.w)} \u00b7 ${esc(l.c)} kr</span></div>`
   ).join('');
-  dd.style.display = 'block'; picker = bi;
+  dd.style.display = 'block';
+  picker = bi;
 }
 
-document.addEventListener('click', e => {
+function closePicker() {
   if (picker !== null) {
-    const wrap = document.getElementById('pw-' + picker);
-    if (wrap && !wrap.contains(e.target)) {
-      const dd = document.getElementById('dd-' + picker);
-      if (dd) dd.style.display = 'none';
-      picker = null;
-    }
+    const dd = document.getElementById('dd-' + picker);
+    if (dd) dd.style.display = 'none';
+    picker = null;
   }
-});
+}
 
 // —— RENDER —————————————————————————————————————————————
 
@@ -517,7 +515,11 @@ function renderBurger(i) {
 
   // Picker fra bibliotek
   html += `<div class="picker-wrap" id="pw-${i}">
-    <input id="pi-${i}" placeholder="S\u00f8k i bibliotek..." onfocus="showPicker(${i},this.value)" oninput="showPicker(${i},this.value)">
+    <input id="pi-${i}" placeholder="S\u00f8k i bibliotek..." autocomplete="off"
+      onclick="openLibPicker(${i},this.value)"
+      onfocus="openLibPicker(${i},this.value)"
+      oninput="openLibPicker(${i},this.value)"
+      onblur="setTimeout(closePicker,200)">
     <div class="picker-dd" id="dd-${i}" style="display:none"></div>
   </div>`;
 
