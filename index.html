@@ -182,6 +182,8 @@
     @media (max-width: 600px) {
       .ing-header, .ing-row { grid-template-columns: 2fr 0.8fr 0.8fr 28px; }
       .ing-header .col-head:nth-child(4), .ing-row input:nth-child(4) { display: none; }
+      .lib-row { grid-template-columns: 2fr 0.8fr 0.8fr 28px; }
+      .lib-row :nth-child(4) { display: none; }
       .price-row { grid-template-columns: 1fr; }
     }
   </style>
@@ -330,10 +332,12 @@ function fmt(n) { return Math.round(n * 10) / 10; }
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
 function saveToLib(ing) {
+  if (!ing.n || !ing.n.trim()) { toast('Ingrediens mangler navn'); return; }
   const ex = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
   if (ex) { Object.assign(ex, ing); toast('Oppdatert i bibliotek'); }
   else { LIB.push({...ing}); toast('Lagret: ' + ing.n); }
   scheduleSave();
+  if (tab === 'lib') render();
 }
 
 function addFromLib(bi, item) {
@@ -702,7 +706,7 @@ function renderLibrary() {
   html += `<div class="lib-note">Ingredienser du lagrer her kan gjenbrukes p\u00e5 tvers av alle burgere via s\u00f8kefeltet. Klikk \u2191-pilen p\u00e5 en ingrediens for \u00e5 lagre den hit.</div>`;
 
   html += `<div style="margin-top:14px">`;
-  html += `<div class="ing-header" style="grid-template-columns:2fr 1fr 1fr 1.5fr 28px">
+  html += `<div class="lib-row" style="border-bottom:none;padding-bottom:0">
     <span class="col-head">Ingrediens</span>
     <span class="col-head">Mengde</span>
     <span class="col-head">Kost (kr)</span>
@@ -710,18 +714,27 @@ function renderLibrary() {
     <span></span>
   </div>`;
 
+  if (LIB.length === 0) {
+    html += `<div style="padding:20px 0;text-align:center;color:var(--muted);font-size:13px">Ingen ingredienser i biblioteket enn\u00e5. Legg til manuelt eller bruk \u2191-pilen p\u00e5 en burgeringrediens.</div>`;
+  }
+
   LIB.forEach((l, i) => {
     html += `<div class="lib-row">
       <input value="${esc(l.n)}" oninput="LIB[${i}].n=this.value;scheduleSave()">
       <input value="${esc(l.w)}" oninput="LIB[${i}].w=this.value;scheduleSave()">
       <input type="number" step="0.1" value="${esc(l.c)}" oninput="LIB[${i}].c=this.value;scheduleSave()">
-      <input value="${esc(l.note)}" oninput="LIB[${i}].note=this.value;scheduleSave()">
+      <input value="${esc(l.note||'')}" oninput="LIB[${i}].note=this.value;scheduleSave()">
       <button class="icon-btn del" onclick="LIB.splice(${i},1);scheduleSave();render()" title="Fjern">\u00d7</button>
     </div>`;
   });
   html += `</div>`;
 
   html += `<button class="add-row" onclick="LIB.push({n:'',w:'',c:'0',note:''});scheduleSave();render()">+ Legg til ingrediens</button>`;
+
+  // Nullstill bibliotek-knapp
+  html += `<div style="margin-top:12px;text-align:right">
+    <button class="tab-del" onclick="if(confirm('Nullstill biblioteket til standardverdier?')){LIB=DEFAULT_LIB.map(x=>({...x}));scheduleSave();render();toast('Bibliotek nullstilt')}">Nullstill til standard</button>
+  </div>`;
 
   html += `</div>`;
   return html;
