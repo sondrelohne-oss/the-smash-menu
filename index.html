@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THE SMASH â Menyplanlegger</title>
+  <title>THE SMASH — Menyplanlegger</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -209,26 +209,26 @@
 
 <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 <script>
-const ALLERGENS = ['Gluten','Egg','Melk','Sennep','Selleri','Soya','Sulfitt','Sesam','NÃ¸tter'];
+const ALLERGENS = ['Gluten','Egg','Melk','Sennep','Selleri','Soya','Sulfitt','Sesam','N\u00f8tter'];
 const SK = 'thesmash-menu-v1';
 const LK = 'thesmash-lib-v1';
 
 const DEFAULT = {
   burgers: [
     { id:'classic', name:'The Classic', pris_dobbel:'149', pris_enkel:'109', isNew:false,
-      ings:[{n:'KjÃ¸ttdeig 80/20 (dobbel)',w:'2 Ã 80g',c:'18',note:'Chuck/brisket, fersk'},{n:'Brioche bun',w:'85g',c:'6',note:'Lett grilles'},{n:'American cheddar',w:'2 Ã 18g',c:'6',note:'Prosessert'},{n:'Gul lÃ¸k, grillet',w:'40g',c:'1',note:'Karamellisert'},{n:'Cornichons / pickles',w:'20g',c:'1',note:''},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
+      ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:'Chuck/brisket, fersk'},{n:'Brioche bun',w:'85g',c:'6',note:'Lett grilles'},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:'Prosessert'},{n:'Gul l\u00f8k, grillet',w:'40g',c:'1',note:'Karamellisert'},{n:'Cornichons / pickles',w:'20g',c:'1',note:''},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Dobbel er standard. Kunden velger aktivt liten.' },
     { id:'spicy', name:'The Spicy', pris_dobbel:'159', pris_enkel:'119', isNew:false,
-      ings:[{n:'KjÃ¸ttdeig 80/20 (dobbel)',w:'2 Ã 80g',c:'18',note:''},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'2 Ã 18g',c:'6',note:''},{n:'Gul lÃ¸k, grillet',w:'40g',c:'1',note:''},{n:'Syltet jalapeÃ±o',w:'25g',c:'1.5',note:''},{n:'Franks RedHot sauce',w:'8g',c:'0.5',note:'Drypp pÃ¥ patty'},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
-      al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Franks RedHot pÃ¥ patty rett etter smashing.' },
+      ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:''},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:''},{n:'Gul l\u00f8k, grillet',w:'40g',c:'1',note:''},{n:'Syltet jalape\u00f1o',w:'25g',c:'1.5',note:''},{n:'Franks RedHot sauce',w:'8g',c:'0.5',note:'Drypp p\u00e5 patty'},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
+      al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Franks RedHot p\u00e5 patty rett etter smashing.' },
     { id:'bbq', name:'BBQ Bacon', pris_dobbel:'169', pris_enkel:'129', isNew:false,
-      ings:[{n:'KjÃ¸ttdeig 80/20 (dobbel)',w:'2 Ã 80g',c:'18',note:''},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'2 Ã 18g',c:'6',note:''},{n:'RÃ¸kt bacon',w:'3 Ã 15g',c:'6',note:'SprÃ¸stek'},{n:'Fritert lÃ¸kring',w:'2 stk',c:'2',note:''},{n:'Hickory BBQ-saus',w:'15g',c:'1',note:'Bulls Eye'},{n:'Majones',w:'10g',c:'0.5',note:'Hellmanns'}],
+      ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:''},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:''},{n:'R\u00f8kt bacon',w:'3 \u00d7 15g',c:'6',note:'Spr\u00f8stek'},{n:'Fritert l\u00f8kring',w:'2 stk',c:'2',note:''},{n:'Hickory BBQ-saus',w:'15g',c:'1',note:'Bulls Eye'},{n:'Majones',w:'10g',c:'0.5',note:'Hellmanns'}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'' },
     { id:'chicken', name:'Chicken Smash', pris_dobbel:'139', pris_enkel:'109', isNew:false,
-      ings:[{n:'Kyllingfilet, tynne skiver',w:'150g',c:'18',note:'Bankes flat'},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'1 Ã 18g',c:'3',note:''},{n:'Coleslaw (hjemmelaget)',w:'40g',c:'2',note:''},{n:'Cornichons / pickles',w:'20g',c:'1',note:''},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
-      al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Kylling til 75Â°C. Aldri bland med biff pÃ¥ platen.' },
+      ings:[{n:'Kyllingfilet, tynne skiver',w:'150g',c:'18',note:'Bankes flat'},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'1 \u00d7 18g',c:'3',note:''},{n:'Coleslaw (hjemmelaget)',w:'40g',c:'2',note:''},{n:'Cornichons / pickles',w:'20g',c:'1',note:''},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
+      al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Kylling til 75\u00b0C. Aldri bland med biff p\u00e5 platen.' },
     { id:'kids', name:'Kids', pris_dobbel:'79', pris_enkel:'', isNew:false,
-      ings:[{n:'KjÃ¸ttdeig 80/20 (enkel)',w:'80g',c:'9',note:''},{n:'Brioche bun (liten)',w:'70g',c:'5',note:''},{n:'American cheddar',w:'1 Ã 18g',c:'3',note:''},{n:'Ketchup',w:'15g',c:'0.3',note:'Heinz'}],
+      ings:[{n:'Kj\u00f8ttdeig 80/20 (enkel)',w:'80g',c:'9',note:''},{n:'Brioche bun (liten)',w:'70g',c:'5',note:''},{n:'American cheddar',w:'1 \u00d7 18g',c:'3',note:''},{n:'Ketchup',w:'15g',c:'0.3',note:'Heinz'}],
       al:['Gluten','Melk','Sulfitt'], tips:'' },
   ],
   sider: [
@@ -237,29 +237,29 @@ const DEFAULT = {
     {name:'Vann 0,5L',pris:'20'},{name:'The Smash-kombo',pris:'210'},
   ],
   sauser: [
-    { name:'The Smash Sauce', desc:'Signaturssaus â brukes pÃ¥ alle burgere',
-      ings:[{n:'Hellmanns majones',a:'200g',note:'Base'},{n:'Dijon-sennep',a:'20g',note:''},{n:'Ketchup (Heinz)',a:'20g',note:''},{n:'Sylteagurk-lake',a:'15ml',note:'Fra cornichons-glasset'},{n:'Worcestershire sauce',a:'8ml',note:'Umami-dybde'},{n:'HvitlÃ¸kpulver',a:'3g',note:''},{n:'LÃ¸kpulver',a:'3g',note:''},{n:'RÃ¸kt paprika',a:'4g',note:''},{n:'Sukker',a:'5g',note:'Balanserer syre'},{n:'Hvit pepper',a:'1g',note:''}],
-      steps:['Bland alle ingredienser med slikkepott â ikke visp.','Smak til med salt og ekstra sylteagurk-lake.','KjÃ¸l ned minst 2 timer fÃ¸r bruk.','Kast etter 24 timer i vognen.'] },
-    { name:'The Smash Hot Sauce', desc:'Varm variant â The Spicy og som ekstra tilbehÃ¸r',
-      ings:[{n:'Hellmanns majones',a:'200g',note:'Base'},{n:'Franks RedHot',a:'40ml',note:''},{n:'Syltet jalapeÃ±o-lake',a:'20ml',note:''},{n:'HvitlÃ¸kpulver',a:'4g',note:''},{n:'RÃ¸kt paprika',a:'4g',note:''},{n:'Lime juice (fersk)',a:'10ml',note:'Balanserer varmen'},{n:'Honning',a:'8g',note:'Balanserer styrke'},{n:'Hvit pepper',a:'1g',note:''}],
-      steps:['Bland majones og Franks RedHot til jevn farge.','Tilsett jalapeÃ±o-lake og lime.','RÃ¸r inn tÃ¸rre krydder og honning.','Smak til.','KjÃ¸l ned 2 timer. Kast etter 24t.'] },
+    { name:'The Smash Sauce', desc:'Signatursaus \u2014 brukes p\u00e5 alle burgere',
+      ings:[{n:'Hellmanns majones',a:'200g',note:'Base'},{n:'Dijon-sennep',a:'20g',note:''},{n:'Ketchup (Heinz)',a:'20g',note:''},{n:'Sylteagurk-lake',a:'15ml',note:'Fra cornichons-glasset'},{n:'Worcestershire sauce',a:'8ml',note:'Umami-dybde'},{n:'Hvitl\u00f8kpulver',a:'3g',note:''},{n:'L\u00f8kpulver',a:'3g',note:''},{n:'R\u00f8kt paprika',a:'4g',note:''},{n:'Sukker',a:'5g',note:'Balanserer syre'},{n:'Hvit pepper',a:'1g',note:''}],
+      steps:['Bland alle ingredienser med slikkepott \u2014 ikke visp.','Smak til med salt og ekstra sylteagurk-lake.','Kj\u00f8l ned minst 2 timer f\u00f8r bruk.','Kast etter 24 timer i vognen.'] },
+    { name:'The Smash Hot Sauce', desc:'Varm variant \u2014 The Spicy og som ekstra tilbeh\u00f8r',
+      ings:[{n:'Hellmanns majones',a:'200g',note:'Base'},{n:'Franks RedHot',a:'40ml',note:''},{n:'Syltet jalape\u00f1o-lake',a:'20ml',note:''},{n:'Hvitl\u00f8kpulver',a:'4g',note:''},{n:'R\u00f8kt paprika',a:'4g',note:''},{n:'Lime juice (fersk)',a:'10ml',note:'Balanserer varmen'},{n:'Honning',a:'8g',note:'Balanserer styrke'},{n:'Hvit pepper',a:'1g',note:''}],
+      steps:['Bland majones og Franks RedHot til jevn farge.','Tilsett jalape\u00f1o-lake og lime.','R\u00f8r inn t\u00f8rre krydder og honning.','Smak til.','Kj\u00f8l ned 2 timer. Kast etter 24t.'] },
   ]
 };
 
 const DEFAULT_LIB = [
-  {n:'KjÃ¸ttdeig 80/20 (dobbel)',w:'2 Ã 80g',c:'18',note:'Chuck/brisket, fersk'},
-  {n:'KjÃ¸ttdeig 80/20 (enkel)',w:'80g',c:'9',note:'Chuck/brisket, fersk'},
+  {n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:'Chuck/brisket, fersk'},
+  {n:'Kj\u00f8ttdeig 80/20 (enkel)',w:'80g',c:'9',note:'Chuck/brisket, fersk'},
   {n:'Kyllingfilet, tynne skiver',w:'150g',c:'18',note:'Bankes flat'},
   {n:'Brioche bun',w:'85g',c:'6',note:'Lett grilles'},
   {n:'Brioche bun (liten)',w:'70g',c:'5',note:''},
-  {n:'American cheddar',w:'2 Ã 18g',c:'6',note:'Prosessert'},
-  {n:'Gul lÃ¸k, grillet',w:'40g',c:'1',note:'Karamellisert'},
+  {n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:'Prosessert'},
+  {n:'Gul l\u00f8k, grillet',w:'40g',c:'1',note:'Karamellisert'},
   {n:'Cornichons / pickles',w:'20g',c:'1',note:''},
   {n:'The Smash Sauce',w:'20g',c:'1.5',note:''},
-  {n:'Syltet jalapeÃ±o',w:'25g',c:'1.5',note:'Fra glass'},
+  {n:'Syltet jalape\u00f1o',w:'25g',c:'1.5',note:'Fra glass'},
   {n:'Franks RedHot sauce',w:'8g',c:'0.5',note:''},
-  {n:'RÃ¸kt bacon',w:'3 Ã 15g',c:'6',note:'SprÃ¸stek'},
-  {n:'Fritert lÃ¸kring',w:'2 stk',c:'2',note:''},
+  {n:'R\u00f8kt bacon',w:'3 \u00d7 15g',c:'6',note:'Spr\u00f8stek'},
+  {n:'Fritert l\u00f8kring',w:'2 stk',c:'2',note:''},
   {n:'Hickory BBQ-saus',w:'15g',c:'1',note:'Bulls Eye'},
   {n:'Majones',w:'10g',c:'0.5',note:'Hellmanns'},
   {n:'Coleslaw (hjemmelaget)',w:'40g',c:'2',note:''},
@@ -267,18 +267,18 @@ const DEFAULT_LIB = [
 ];
 
 let S = JSON.parse(JSON.stringify(DEFAULT));
-let LIB = [...DEFAULT_LIB];
+let LIB = [...DEFAULT_LIB.map(x => ({...x}))];
 let tab = 'b0';
 let sausIdx = 0;
 let picker = null;
 let saveTimer = null;
 
-// ââ STORAGE ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// —— STORAGE ————————————————————————————————————————————
 
 function save() {
   try { localStorage.setItem(SK, JSON.stringify(S)); localStorage.setItem(LK, JSON.stringify(LIB)); }
   catch(e) {}
-  setSaveBadge('Lagret â', true);
+  setSaveBadge('Lagret \u2713', true);
 }
 
 function scheduleSave() {
@@ -290,7 +290,7 @@ function scheduleSave() {
 function load() {
   try { const m = localStorage.getItem(SK); if (m) S = JSON.parse(m); } catch(e) {}
   try { const l = localStorage.getItem(LK); if (l) LIB = JSON.parse(l); } catch(e) {}
-  setSaveBadge('Innlastet â', true);
+  setSaveBadge('Innlastet \u2713', true);
   render();
 }
 
@@ -299,7 +299,7 @@ function setSaveBadge(msg, ok=false) {
   if (el) { el.textContent = msg; el.className = 'save-badge' + (ok ? ' saved' : ''); }
 }
 
-// ââ TOAST ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// —— TOAST ——————————————————————————————————————————————
 
 function toast(msg) {
   const el = document.getElementById('toast');
@@ -307,10 +307,11 @@ function toast(msg) {
   setTimeout(() => el.classList.remove('show'), 2200);
 }
 
-// ââ HELPERS ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// —— HELPERS ————————————————————————————————————————————
 
 function cost(ings) { return ings.reduce((a, i) => a + parseFloat(i.c || '0'), 0); }
 function fmt(n) { return Math.round(n * 10) / 10; }
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
 function saveToLib(ing) {
   const ex = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
@@ -334,9 +335,9 @@ function showPicker(bi, q) {
   if (!dd) return;
   const res = q ? LIB.filter(l => l.n.toLowerCase().includes(q.toLowerCase())) : LIB.slice(0, 12);
   if (!res.length) { dd.style.display = 'none'; return; }
-  dd.innerHTML = res.map(l =>
-    `<div class="picker-item" onmousedown="addFromLib(${bi}, LIB.find(x=>x.n===\`${l.n.replace(/`/g,"'")}\`))">
-      ${l.n}<span class="pi-meta">${l.w} Â· ${l.c} kr</span></div>`
+  dd.innerHTML = res.map((l, idx) =>
+    `<div class="picker-item" onmousedown="addFromLib(${bi}, LIB[${LIB.indexOf(l)}])">
+      ${esc(l.n)}<span class="pi-meta">${esc(l.w)} \u00b7 ${esc(l.c)} kr</span></div>`
   ).join('');
   dd.style.display = 'block'; picker = bi;
 }
@@ -352,291 +353,531 @@ document.addEventListener('click', e => {
   }
 });
 
-// ââ RENDER âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// —— RENDER —————————————————————————————————————————————
 
 function renderTabs() {
   const tabs = [
-    ...S.burgers.map((b, i) => `<button class="tab${tab==='b'+i?' on':''}" onclick="tab='b${i}';render()">${b.name}${b.isNewRY
-	ÛXZ[]XÉÊK[\SHXËÚ[	ÉÊNÂB[Ý[Û\Ù\[JJHÂÛÛÝÈHÛÜÝ
-[ÜÊNÂÛÛÝH\ÙQØ]
-\×ÙØ[
-HÂÛÛÝYÈHÈX]Ý[
-
-HÊHÈ
-L
-HÂÛÛÝXÈHYÈH
-È	Ý\K\ÝXØÙ\ÜÊIÈYÈH
-È	Ý\K]Ø\IÈ	Ý\KY[Ù\IÎÂ]\]Û\ÜÏHØ\]Û\ÜÏHÙXÈ]ÙÈ\ÏÙ]]Û\ÜÏHY[\ÝÈÜ[Û\ÜÏHY[[X[\Ù\]ÜÜ[[][YOHÙ\ØÊ[YJ_HÛ[]HË\Ù\ÖÉØ_WK[YO]\Ë[YNÔË\Ù\ÖÉØ_WK\Ó]ÏY[ÙNÜ[\XÊ
-NÜØÚY[TØ]J
-H	ÔË\Ù\Ë[ÝHÈ]ÛÛ\ÜÏHXY[ÛÛXÚÏHYÛÛ\J	ÔÛ]	Ù\ØÊ[YJ_OÉÊJ^ÔË\Ù\ËÜXÙJ	Ø_KJNÝXIØ	ÎÜ[\
-NÜØÚY[TØ]J
-_HÛ]Ø]Û	ÉßBÙ]]Û\ÜÏHXÙK\ÝÈ]Û\ÜÏHXÙKXØÚÈÜ[Û\ÜÏHXÙK[X[Ø[8 %Ý[\
-ÜOÜÜ[[][YOHÙ\ØÊ\×ÙØ[
-_HÛ[]HË\Ù\ÖÉØ_WK\×ÙØ[]\Ë[YNÝ\]SX\Ú[	Ø_JNÜØÚY[TØ]J
-HÙ]]Û\ÜÏHXÙKXØÚÈÜ[Û\ÜÏHXÙK[X[][8 %Ü[Ý]
-ÜOÜÜ[[][YOHÙ\ØÊ\×Ù[Ù[
-_HXÙZÛ\H¸ %Û[]HË\Ù\ÖÉØ_WK\×Ù[Ù[]\Ë[YNÜØÚY[TØ]J
-HÙ]Ù]]Û\ÜÏHÙXÈ[ÜYY[Ù\Ù]]Û\ÜÏH[ËZXY\Ü[Û\ÜÏHÛÛZXY[ÜYY[ÏÜÜ[Ü[Û\ÜÏHÛÛZXYZÝÜÜ[Ü[Û\ÜÏHÛÛZXYÛÜÝÜÜÜ[Ü[Û\ÜÏHÛÛZXYY\ÛYÜÜ[Ü[Û\ÜÏHÛÛZXYÝ[OHÛ\Ú^N\¸¦!H0åÏÜÜ[Ù]	Ø[ÜËX\
-
-[ËZJHO]Û\ÜÏH[Ë\ÝÈ[][YOHÙ\ØÊ[Ë_HÛ[]HË\Ù\ÖÉØ_WK[ÜÖÉÚZ_WK]\Ë[YNÜØÚY[TØ]J
-H[][YOHÙ\ØÊ[ËÊ_HÛ[]HË\Ù\ÖÉØ_WK[ÜÖÉÚZ_WKÏ]\Ë[YNÜØÚY[TØ]J
-H[][YOHÙ\ØÊ[ËÊ_HÛ[]HË\Ù\ÖÉØ_WK[ÜÖÉÚZ_WKÏ]\Ë[YNÝ\]SX\Ú[	Ø_JNÜØÚY[TØ]J
-H[][YOHÙ\ØÊ[ËÝJ_HÛ[]HË\Ù\ÖÉØ_WK[ÜÖÉÚZ_WKÝO]\Ë[YNÜØÚY[TØ]J
-H]Û\ÜÏH\Z\]ÛÛ\ÜÏHXÛÛXØ]H]OHYÜH[X[ÝZÈÛÛXÚÏHØ]UÓXË\Ù\ÖÉØ_WK[ÜÖÉÚZ_WJH¸¦!OØ]Û]ÛÛ\ÜÏHXÛÛX[ÛÛXÚÏHË\Ù\ÖÉØ_WK[ÜËÜXÙJ	ÚZ_KJNÜ[\
-NÜØÚY[TØ]J
-H°åÏØ]ÛÙ]Ù]
-KÚ[	ÉÊ_B]Û\ÜÏHXÚÙ\]Ü\YHËIØ_H[]YHKIØ_HXÙZÛ\HðîÈHX[ÝZÈ[\ÚÜ]H[ÜYY[ËÛ[]HÚÝÔXÚÙ\	Ø_K\Ë[YJHÛØÝ\ÏHÚÝÔXÚÙ\	Ø_K\Ë[YJHÛÙ^YÝÛHY][Ù^OOOIÑ[\Ê^ØÛÛÝ]\Ë[YK[J
-NÚY^ÔË\Ù\ÖÉØ_WK[ÜË\Ú
-ÛÎÉËÎÌ	ËÝNÉßJNÝ\Ë[YOIÉÎÙØÝ[Y[Ù][[Y[RY
-	ÙIØ_IÊKÝ[K\Ü^OIÛÛIÎÜ[\
-NÜØÚY[TØ]J
-Nß_ZY][Ù^OOOIÑ\ØØ\IÊYØÝ[Y[Ù][[Y[RY
-	ÙIØ_IÊKÝ[K\Ü^OIÛÛIÈ]Û\ÜÏHXÚÙ\YYHIØ_HÝ[OH\Ü^NÛHÙ]Ù]]Û\ÜÏHX\Ú[X\]]Û\ÜÏHX[X[°é]\ZÛÜÝÙ]]Û\ÜÏHX][YHÛÜÝIØ_HÙ]
-Ê_HÜÙ]Ù]]]Û\ÜÏHX[X[Ø[\ÏÙ]]Û\ÜÏHX][Ø\×ÙØ[HÜÙ]Ù]]Ý[OH^X[YÛYÚ]Û\ÜÏHX[X[]ÛX\Ú[Ù]]Û\ÜÏHX][YHYËIØ_HÝ[OHÛÛÜÛXßHÛYßIOÙ]Ù]Ù]]Û\ÜÏHÙXÈÜ0é[ÜÛÝ]Ù]^\XHÝÜÏHÛ[]HË\Ù\ÖÉØ_WK\Ï]\Ë[YNÜØÚY[TØ]J
-HÙ\ØÊ\ß	ÉÊ_OÝ^\XO]Û\ÜÏHÙXÈ[\Ù[\Ù]]Ý[OHX\Ú[]ÜÐSTÑSËX\
-HOÜ[Û\ÜÏH[]YÉØ[[ÛY\ÊJOÉÈÛÎÉßHÛÛXÚÏHÙÙÛP[
-	Ø_K	ÉØ_IÊHØ_OÜÜ[
-KÚ[	ÉÊ_OÙ]Ù]ÂB[Ý[ÛÚY\[J
-HÂ]\]Û\ÜÏHØ\]Û\ÜÏHÙXÈÚY\ZÚÙHÙÈÛÛX[Y[OÙ]	ÔËÚY\X\
-
-ËÚJHO]Û\ÜÏHÚYK\ÝÈ[]Ý[OH^H[YOHÙ\ØÊË[YJ_HÛ[]HËÚY\ÉÜÚ_WK[YO]\Ë[YNÜØÚY[TØ]J
-HÜ[Û\ÜÏHY[[X[Ý[OHZ[]ÚYÍ\Ý^X[YÛYÚ\ÏÜÜ[[]Ý[OHÚYÍ\[YOHÙ\ØÊË\Ê_HÛ[]HËÚY\ÉÜÚ_WK\Ï]\Ë[YNÜØÚY[TØ]J
-H]ÛÛ\ÜÏHXÛÛX[ÛÛXÚÏHËÚY\ÜXÙJ	ÜÚ_KJNÜ[\
-NÜØÚY[TØ]J
-H°åÏØ]ÛÙ]
-KÚ[	ÉÊ_B]ÛÛ\ÜÏHY\ÝÈÛÛXÚÏHËÚY\\Ú
-Û[YNÉË\ÎÉßJNÜ[\
-NÜØÚY[TØ]J
-HÈYÙÈ[Ø]ÛÙ]ÂB[Ý[ÛØ]\Ô[J
-HÂY
-Ø]\ÒYHËØ]\Ù\[Ý
-HØ]\ÒYHÂÛÛÝÈHËØ]\Ù\ÜØ]\ÒYNÂ]\]Û\ÜÏHØ\]Û\ÜÏHØ]\Ë]X\ÝÈ	ÔËØ]\Ù\X\
-
-ÜËÚJHO]ÛÛ\ÜÏHØ]\Ë]XÜØ]\ÒYOO\ÚOÉÈÛÎÉßHÛÛXÚÏHØ]\ÒYIÜÚ_NÜ[\
-HÙ\ØÊÜË[YJ_OØ]Û
-KÚ[	ÉÊ_B]ÛÛ\ÜÏHXXYÛÛXÚÏHËØ]\Ù\\Ú
-Û[YNÓHØ]\ÉË\ØÎÉË[ÜÎÞÛÒ[X[ÈXZÛ\ÉËNÌÉËÝNÐ\ÙIßWKÝ\ÎÉÐ[[ÜYY[Ù[K×_JNÜØ]\ÒYTËØ]\Ù\[ÝLNÜ[\
-NÜØÚY[TØ]J
-HÈHØ]\ÏØ]ÛÙ]]Û\ÜÏHY[\ÝÈÜ[Û\ÜÏHY[[X[]ÜÜ[[]Ý[OHÛ]ÙZYÚ[YOHÙ\ØÊË[YJ_HÛ[]HËØ]\Ù\ÉÜØ]\ÒYWK[YO]\Ë[YNÜ[\
-NÜØÚY[TØ]J
-H	ÔËØ]\Ù\[ÝHÈ]ÛÛ\ÜÏHXY[ÛÛXÚÏHYÛÛ\J	ÔÛ]ÉÊJ^ÔËØ]\Ù\ÜXÙJ	ÜØ]\ÒYKJNÜØ]\ÒYLÜ[\
-NÜØÚY[TØ]J
-_HÛ]Ø]Û	ÉßBÙ]]Û\ÜÏHY[\ÝÈÝ[OHX\Ú[XÝÛNMÜ[Û\ÜÏHY[[X[\ÚÜ][ÙOÜÜ[[][YOHÙ\ØÊË\ØÊ_HÛ[]HËØ]\Ù\ÉÜØ]\ÒYWK\ØÏ]\Ë[YNÜØÚY[TØ]J
-HXÙZÛ\HZÙ\È[Ù]]Û\ÜÏHÙXÈ[ÜYY[Ù\
-ØKÌÈ]Ú
-OÙ]]Ý[OH\Ü^NÜYÙÜY][\]KXÛÛ[[ÎYÙØ\ÛX\Ú[XÝÛN	ÖÉÒ[ÜYY[ÉË	ÓY[ÙIË	ÓY\ÛY	Ë	É×KX\
-OÜ[Û\ÜÏHÛÛZXYÚOÜÜ[
-KÚ[	ÉÊ_BÙ]	ÜË[ÜËX\
-
-[ËZJHO]Ý[OH\Ü^NÜYÙÜY][\]KXÛÛ[[ÎYÙØ\Ø[YÛZ][\ÎÙ[\ÛX\Ú[XÝÛN[][YOHÙ\ØÊ[Ë_HÛ[]HËØ]\Ù\ÉÜØ]\ÒYWK[ÜÖÉÚZ_WK]\Ë[YNÜØÚY[TØ]J
-H[][YOHÙ\ØÊ[ËJ_HÛ[]HËØ]\Ù\ÉÜØ]\ÒYWK[ÜÖÉÚZ_WKO]\Ë[YNÜØÚY[TØ]J
-H[][YOHÙ\ØÊ[ËÝ_	ÉÊ_HÛ[]HËØ]\Ù\ÉÜØ]\ÒYWK[ÜÖÉÚZ_WKÝO]\Ë[YNÜØÚY[TØ]J
-HXÙZÛ\HY\ÛY]ÛÛ\ÜÏHXÛÛX[ÛÛXÚÏHËØ]\Ù\ÉÜØ]\ÒYWK[ÜËÜXÙJ	ÚZ_KJNÜ[\
-NÜØÚY[TØ]J
-H°åÏØ]ÛÙ]
-KÚ[	ÉÊ_B]ÛÛ\ÜÏHY\ÝÈÛÛXÚÏHËØ]\Ù\ÉÜØ]\ÒYWK[ÜË\Ú
-ÛÉËNÉËÝNÉßJNÜ[\
-NÜØÚY[TØ]J
-HÈ[ÜYY[ÏØ]Û]Û\ÜÏHÙXÈ[YØ[ÜÛpé]OÙ]	ÜËÝ\ËX\
-
-Ý\ÚJHO]Û\ÜÏHÝ\\ÝÈ]Û\ÜÏHÝ\[[HÜÚJÌ_OÙ][][YOHÙ\ØÊÝ\
-_HÛ[]HËØ]\Ù\ÉÜØ]\ÒYWKÝ\ÖÉÜÚ_WO]\Ë[YNÜØÚY[TØ]J
-H]ÛÛ\ÜÏHXÛÛX[ÛÛXÚÏHËØ]\Ù\ÉÜØ]\ÒYWKÝ\ËÜXÙJ	ÜÚ_KJNÜ[\
-NÜØÚY[TØ]J
-H°åÏØ]ÛÙ]
-KÚ[	ÉÊ_B]ÛÛ\ÜÏHY\ÝÈÛÛXÚÏHËØ]\Ù\ÉÜØ]\ÒYWKÝ\Ë\Ú
-	ÉÊNÜ[\
-NÜØÚY[TØ]J
-HÈÝYÏØ]ÛÙ]ÂB[Ý[ÛX[J
-HÂ]\]Û\ÜÏHØ\]Û\ÜÏHÙXÈ[ÜYY[ØX[ÝZÈ8 %	ÓP[ÝH[ÜYY[Ù\Ù]]Ý[OH\Ü^NÜYÙÜY][\]KXÛÛ[[ÎYYKYÙØ\ÛX\Ú[XÝÛN	ÖÉÒ[ÜYY[ÉË	ÕZÝ	Ë	ÒÛÜÝÜË	ÓY\ÛY	Ë	É×KX\
-OÜ[Û\ÜÏHÛÛZXYÚOÜÜ[
-KÚ[	ÉÊ_BÙ]	ÓPX\
-
-JHO]Û\ÜÏHX\ÝÈ[][YOHÙ\ØÊ_HÛ[]HPÉÛ_WK]\Ë[YNÜØÚY[TØ]J
-H[][YOHÙ\ØÊÊ_HÛ[]HPÉÛ_WKÏ]\Ë[YNÜØÚY[TØ]J
-H[][YOHÙ\ØÊÊ_HÛ[]HPÉÛ_WKÏ]\Ë[YNÜØÚY[TØ]J
-H[][YOHÙ\ØÊÝ_	ÉÊ_HÛ[]HPÉÛ_WKÝO]\Ë[YNÜØÚY[TØ]J
-H]ÛÛ\ÜÏHXÛÛX[ÛÛXÚÏHPÜXÙJ	Û_KJNÜ[\
-NÜØÚY[TØ]J
-H°åÏØ]ÛÙ]
-KÚ[	ÉÊ_B]ÛÛ\ÜÏHY\ÝÈÝ[OHX\Ú[]ÜÛÛXÚÏHP\Ú
-ÛÉËÎÉËÎÌ	ËÝNÉßJNÜ[\
-NÜØÚY[TØ]J
-HÈH[ÜYY[ÏØ]Û]Û\ÜÏHX[ÝH¸¦!HHYÜHH\Ù\[X[ÝZÈ	Üð­ÉÜÈðîÙY[]H\Ù\HðîÙ\]]ÛX]\ÚÈ\Ù]Ù]ÂB[Ý[Û\]SX\Ú[JHÂÛÛÝHË\Ù\ÖØWNÂÛÛÝÈHÛÜÝ
-[ÜÊNÂÛÛÝH\ÙQØ]
-\×ÙØ[
-HÂÛÛÝYÈHÈX]Ý[
-
-HÊHÈ
-L
-HÂÛÛÝXÈHYÈH
-È	Ý\K\ÝXØÙ\ÜÊIÈYÈH
-È	Ý\K]Ø\IÈ	Ý\KY[Ù\IÎÂÛÛÝY[HØÝ[Y[Ù][[Y[RY
-	ÛYËIÈ
-ÈJNÂÛÛÝÙ[HØÝ[Y[Ù][[Y[RY
-	ØÛÜÝIÈ
-ÈJNÂY
-Y[
-HÈY[^ÛÛ[HYÈ
-È	ÉIÎÈY[Ý[KÛÛÜHXÎÈBY
-Ù[
-HÙ[^ÛÛ[H]
-ÊH
-È	ÈÜÎÂB[Ý[ÛÙÙÛP[
-K[
-HÂÛÛÝ\HË\Ù\ÖØWK[ÂÛÛÝYH\[^Ù[
-NÂY
-YH
-H\ÜXÙJYJNÈ[ÙH\\Ú
-[
-NÂ[\
-NÈØÚY[TØ]J
-NÂB[Ý[ÛY\Ù\
-HÂÛÛÝYHË\Ù\Ë[ÝÂË\Ù\Ë\Ú
-ÈYÛ]ÉÊÚY[YNÓH\Ù\Ë\×ÙØ[ÌMIË\×Ù[Ù[ÌLNIË\Ó]ÎYK[ÜÎÞÛÒÚ°îZYÈÌ
-Ø[
-IËÎÌ0åÈÉËÎÌN	ËÝNÉßKÛÐ[ØÚH[ËÎÎ
-YÉËÎÍËÝNÉßKÛÐ[Y\XØ[ÚY\ËÎÌ0åÈNÉËÎÍËÝNÉßKÛÕHÛX\ÚØ]XÙIËÎÌÉËÎÌKIËÝNÉßWK[ÉÑÛ][Ë	ÑYÙÉË	ÓY[ÉË	ÔÙ[\	Ë	ÔÝ[]	×K\ÎÉÈJNÂXH	ØÈ
-ÈYÈ[\
-NÈØÚY[TØ]J
-NÂB[Ý[Û\ØÊÊHÈ]\Ý[Êß	ÉÊK\XÙJÉÙË	É[\ÉÊK\XÙJÈÙË	É][ÝÉÊK\XÙJÏÙË	ÉÉÊK\XÙJÏÙË	ÉÝÉÊNÈB[Ý[Û[\
-HÂ[\XÊ
-NÂ][H	ÉÎÂY
-XÝ\ÕÚ]
-	ØÊJHÈÛÛÝHH\ÙR[
-XÛXÙJJJNÈY
-Ë\Ù\ÖØWJH[H\Ù\[JË\Ù\ÖØWKJNÈB[ÙHY
-XOOH	ÜÚY\ÊH[HÚY\[J
-NÂ[ÙHY
-XOOH	ÜØ]\ÉÊH[HØ]\Ô[J
-NÂ[ÙHY
-XOOH	ÛXÊH[HX[J
-NÂØÝ[Y[Ù][[Y[RY
-	ÛXZ[\[IÊK[\SH[ÂBËÈ8¥ 8¥ ÓÔVÔ8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ 8¥ \Þ[È[Ý[Û^ÜØÞ
-
-HÂÛÛÝHØÝ[Y[Ù][[Y[RY
-	Ù^ÜXÊNÂ\ØXYHYNÈ^ÛÛ[H	ÑÙ[\\\ÚÝ[Y[ÎÂHÂÛÛÝÈØÝ[Y[XÚÙ\\YÜ\^[XKXTÝËXPÙ[[YÛY[\KÜ\Ý[KÚY\KÚY[Õ\K\XØ[[YÛYÙPXZË][ÜX]XY\ÛÝ\HHÚ[ÝËØÞÂÛÛÝÈH	ÌLLLLLIËÓÓH	ÐÎPLÉËÒH	ÑËÖHH	ÍNMNMNIËÈH	ÑËH	ÐÌÎLÎÂÛÛÝHÈÝ[NÜ\Ý[KÒSÓKÚ^NKÛÛÜ	ÐÐÐÐÐÐÉÈNÂÛÛÝÈHÈÜÝÛNYYÚNÂÛÛÝHO]È\YÜ\
-ÈÜXÚ[ÎØYÜNY\KÚ[[Û]È^[Ý^ÛÐ\X[	ËÚ^NÛYKÛÛÜßJWHJNÂÛÛÝÙHHO]È\YÜ\
-ÈÜXÚ[ÎØYÜNY\KÚ[[Û]È^[Ý^ÛÐ\X[	ËÚ^NÛÛÜÖ_JWHJNÂÛÛÝØ\H
-
-HO]È\YÜ\
-ÈÜXÚ[ÎØYÜNY\KÚ[[Û]È^[	ÉÊWHJNÂÛÛÝÝÈH
-ÛÛËÜÊHO]ÈXTÝÊÈXRXY\YKÚ[[ÛÛËX\
-
-ËJHO]ÈXPÙ[
-ÂÜ\ÎËÚYÜÚ^NÜÖÚWK\NÚY\K_KX\Ú[ÎÝÜÝÛNYLYÚLKÚY[ÎÙ[Ë\NÚY[Õ\KÓPTKÚ[[Û]È\YÜ\
-ØÚ[[Û]È^[Ý^ËÛÐ\X[	ËÚ^NNÛYKÛÛÜÒJW_JWBJJ_JNÂÛÛÝÝÈH
-ÛÛËÜËÚYOY[ÙJHO]ÈXTÝÊÈÚ[[ÛÛËX\
-
-ËJHO]ÈXPÙ[
-ÂÜ\ÎËÚYÜÚ^NÜÖÚWK\NÚY\K_KX\Ú[ÎÝÜÌÝÛNÌYLYÚLKÚY[ÎÙ[ÚYOÓÎÒ\NÚY[Õ\KÓPTKÚ[[Û]È\YÜ\
-ØÚ[[Û]È^[Ý^Ý[ÊÊKÛÐ\X[	ËÚ^NÛÛÜßJW_JWBJJ_JNÂÛÛÝÚ[[H×NÂËÈ]BÚ[[\Ú
-]È\YÜ\
-Ø[YÛY[[YÛY[\KÑSTÜXÚ[ÎØYÜNY\KÚ[[Û]È^[Ý^ÕIËÛÐ\X[	ËÚ^NÛYKÛÛÜÓÓJW_JK]È\YÜ\
-Ø[YÛY[[YÛY[\KÑSTÜXÚ[ÎØYÜNY\KÚ[[Û]È^[Ý^ÔÓPTÒ	ËÛÐ\X[	ËÚ^NÌÛYKÛÛÜßJW_JK]È\YÜ\
-Ø[YÛY[[YÛY[\KÑSTÜXÚ[ÎØYÜNY\KÚ[[Û]È^[Ý^ÓY[\Ü\ÚYZØ\ÚÛËÛÐ\X[	ËÚ^NÛÛÜÖ_JW_JK]È\YÜ\
-Ø[YÛY[[YÛY[\KÑSTÜXÚ[ÎØYÜNY\KÚ[[Û]È^[Ý^X[[YÙÙH0­È	Û]È]J
-KÙ][YX\
-_XÛÐ\X[	ËÚ^NÛÛÜÖK][XÜÎY_JW_JK]È\YÜ\
-ØÚ[[Û]ÈYÙPXZÊ
-W_JB
-NÂËÈY[[Ý\ÚZÝÚ[[\Ú
-]È\YÜ\
-ÜÜXÚ[ÎØYÜNY\LKÜ\ØÝÛNÜÝ[NÜ\Ý[KÒSÓKÚ^NÛÛÜÓÓÜXÙN_KÚ[[Û]È^[Ý^ÓY[[Ý\ÚZÝ	ËÛÐ\X[	ËÚ^NÌÛYKÛÛÜßJW_JJNÂÚ[[\Ú
-	Ð\Ù\IÊJNÂÛÛÝÈHÌÌÎLLMNÂÚ[[\Ú
-]ÈXJÈÚYÜÚ^NLÍ\NÚY\K_KÛÛ[[ÚYÎËÝÜÎÂÝÊÉÓ]Ë	Ð\ÚÜ][ÙIË	ÑØ[	Ë	Ó][×KÊKË\Ù\ËX\
-
-JOOÝÊØ[YK[ÜËX\
-OKÛXÙJ
-
-KÚ[	Ë	ÊK\×ÙØ[
-ÉÈÜË\×Ù[Ù[Ø\×Ù[Ù[
-ÉÈÜÎø %	×KËILOOLJJB_JJNÂÚ[[\Ú
-Ø\
-
-JNÂÚ[[\Ú
-	ÔÚY\ÙÈZÚÙIÊJNÂÛÛÝÕÈHÍ
-MLNÂÚ[[\Ú
-]ÈXJÈÚYÜÚ^NLÍ\NÚY\K_KÛÛ[[ÚYÎÕËÝÜÎÂÝÊÉÓ]Ë	ÉË	Ô\É×KÕÊKËÚY\X\
-
-ËJOOÝÊÜË[YK	ÉËË\ÊÉÈÜ×KÕËILOOLJJB_JJNÂËÈ\Ù\BÚ[[\Ú
-]È\YÜ\
-ØÚ[[Û]ÈYÙPXZÊ
-W_JJNÂÚ[[\Ú
-]È\YÜ\
-ÜÜXÚ[ÎØYÜNY\LKÜ\ØÝÛNÜÝ[NÜ\Ý[KÒSÓKÚ^NÛÛÜÓÓÜXÙN_KÚ[[Û]È^[Ý^Ò[ÜYY[ÜÜ\ÚYZØ\ÚÛËÛÐ\X[	ËÚ^NÌÛYKÛÛÜßJW_JJNÂÛÛÝUÈHÌÌMLÌÍNÂË\Ù\ËÜXXÚ
-OÂÛÛÝÈH[ÜËYXÙJ
-KJOOJÜ\ÙQØ]
-Kß	Ì	ÊK
-NÂÛÛÝH\ÙQØ]
-\×ÙØ[
-_ÂÛÛÝYÈHÓX]Ý[
-
-]ÊKÝ
-L
-NÂÚ[[\Ú
-[YJJNÂÚ[[\Ú
-]È\YÜ\
-ÜÜXÚ[ÎØYÜNY\KÚ[[Â]È^[Ý^	Ø\×ÙØ[HÈ	Ø\×Ù[Ù[	ø %	ßHÜ0­È°é]\ZÛÜÝÓX]Ý[
-Ê_HÜ0­ÈX\Ú[	ÛYßIXÛÐ\X[	ËÚ^NÛYKÛÛÜßJB_JJNÂÚ[[\Ú
-]ÈXJÈÚYÜÚ^NLÍ\NÚY\K_KÛÛ[[ÚYÎUËÝÜÎÂÝÊÉÒ[ÜYY[ÉË	ÕZÝ	Ë	ÒÛÜÝ	Ë	ÓY\ÛY	×KUÊK[ÜËX\
-
-[ËZJOOÝÊÚ[Ë[ËË[ËÊÉÈÜË[ËÝWKUËZILOOLJJK]ÈXTÝÊØÚ[[ÉÕÝ[°é]\ZÛÜÝ	Ë	ÉË	ßÊÓX]Ý[
-ÊJÉÈÜ
-	ÊÛYÊÉÉJIË	É×KX\
-
-ËJOO]ÈXPÙ[
-ØÜ\ÎËÚYÜÚ^NUÖÚWK\NÚY\K_KX\Ú[ÎÝÜÝÛNYLYÚLKÚY[ÎÙ[ÑQQIË\NÚY[Õ\KÓPTKÚ[[Û]È\YÜ\
-ØÚ[[Û]È^[Ý^ËÛÐ\X[	ËÚ^NÛYKÛÛÜßJW_JW_JJ_JB_JJNÂÚ[[\Ú
-]È\YÜ\
-ÜÜXÚ[ÎØYÜNY\KÚ[[Â]È^[Ý^Ð[\Ù[\	ËÛÐ\X[	ËÚ^NÛYKÛÛÜßJK]È^[Ý^[Ú[	Ë	ÊKÛÐ\X[	ËÚ^NÛÛÜJB_JJNÂY
-\ÊHÚ[[\Ú
-]È\YÜ\
-ÜÜXÚ[ÎØYÜNY\KÚY[ÎÙ[ÑMÉË\NÚY[Õ\KÓPTK[[ÛYYÚKÚ[[Û]È^[Ý^ø¦¤H	ÊØ\ËÛÐ\X[	ËÚ^NÛÛÜÍÐPÌ	Ë][XÜÎY_JW_JJNÂÚ[[\Ú
-Ø\
-
-JNÂJNÂËÈØ]\Ù\Ú[[\Ú
-]È\YÜ\
-ØÚ[[Û]ÈYÙPXZÊ
-W_JJNÂÚ[[\Ú
-]È\YÜ\
-ÜÜXÚ[ÎØYÜNY\LKÜ\ØÝÛNÜÝ[NÜ\Ý[KÒSÓKÚ^NÛÛÜÓÓÜXÙN_KÚ[[Û]È^[Ý^ÔØ]\ÛÜÚÜY\ËÛÐ\X[	ËÚ^NÌÛYKÛÛÜßJW_JJNÂÛÛÝØ]UÈHÍNÍMNÂËØ]\Ù\ÜXXÚ
-ÈOÂÚ[[\Ú
-Ë[YJJNÂY
-Ë\ØÊHÚ[[\Ú
-ÙJË\ØÊJNÂÚ[[\Ú
-Ø\
-
-JNÂÚ[[\Ú
-]ÈXJÈÚYÜÚ^NLÍ\NÚY\K_KÛÛ[[ÚYÎØ]UËÝÜÎÂÝÊÉÒ[ÜYY[ÉË	ÓY[ÙIË	ÓY\ÛY	×KØ]UÊKË[ÜËX\
-
-[ËZJOOÝÊÚ[Ë[ËK[ËÝ_	É×KØ]UËZILOOLJJB_JJNÂÚ[[\Ú
-]È\YÜ\
-ÜÜXÚ[ÎØYÜNLY\KÚ[[Û]È^[Ý^Ñ[YØ[ÜÛpé]IËÛÐ\X[	ËÚ^NÛYKÛÛÜßJW_JJNÂËÝ\ËÜXXÚ
-
-Ý\ÚJOOÚ[[\Ú
-]È\YÜ\
-ÜÜXÚ[ÎØYÜNÌY\ÌK[X\[ÎÜY\[ÙNÛ[\ÉË][KÚ[[Û]È^[Ý^Ý\ÛÐ\X[	ËÚ^NÛÛÜÖ_JW_JJJNÂÚ[[\Ú
-Ø\
-
-JNÂJNÂÛÛÝØÈH]ÈØÝ[Y[
-Â[X\[ÎØÛÛYÎÞÜY\[ÙNÛ[\ÉË][ÎÞÛ][ÜX]][ÜX]PÒSPS^ÉLKË[YÛY[[YÛY[\KQÝ[NÜ\YÜ\Ú[[ÛYÌ[Ú[ÎÍ___W_W_KÝ[\ÎÙY][ÙØÝ[Y[Ü[ÙÛÐ\X[	ËÚ^N___KÙXÝ[ÛÎÞÂÜ\Y\ÎÜYÙNÜÚ^NÝÚYLNL
-ZYÚMÎKX\Ú[ÝÜLLÍYÚLLÍÝÛNLLÍYLLÍ__KXY\ÎÙY][]ÈXY\ØÚ[[Û]È\YÜ\
-ØÜ\ØÝÛNÜÝ[NÜ\Ý[KÒSÓKÚ^NÛÛÜÓÓÜXÙN_KÜXÚ[ÎØY\KÚ[[Û]È^[Ý^ÕHÓPTÒ0­ÈY[\Ü\ÚYZØ\ÚÛËÛÐ\X[	ËÚ^NÛYKÛÛÜßJW_JW_JKKÚ[[WBJNÂÛÛÝØH]ØZ]XÚÙ\ÐØØÊNÂÛÛÝ\HTÜX]SØXÝT
-ØNÂÛÛÝHHØÝ[Y[ÜX]Q[[Y[
-	ØIÊNÂKYH\ÈKÝÛØYH	ÝK\ÛX\Ú[Y[\Ü\ÚYZØ\ÚÛØÞ	ÎÈKÛXÚÊ
-NÂT]ÚÙSØXÝT
-\
-NÂØ\Ý
-	ÕÛÜYÚÝ[Y[\Ý]YIÊNÂHØ]Ú
-JHÂÛÛÛÛK\ÜJNÂØ\Ý
-	ÑZ[YÙ[\\[Î	È
-ÈKY\ÜØYÙJNÂB\ØXYH[ÙNÈ^ÛÛ[H	Ó\ÝYÛÜYÚÝ[Y[	ÎÂBØY
-
-NÂÜØÜ\ØÙOÚ[¿'<span class="new-badge">NY</span>':''}</button>`),
-    `<button class="tab${tab==='sider'?' on':''}" onclick="tab='sider';render()">Sider</button>`,
-    `<button class="tab${tab==='saus'?' saus-on':''}" onclick="tab='saus';render()">Sauser (${S.sauser.length})</button>`,
+    ...S.burgers.map((b, i) => `<button class="tab${tab==='b'+i?' on':''}" onclick="tab='b${i}';render()">${esc(b.name)}${b.isNew?'<span class="new-badge">NY</span>':''}</button>`),
+    `<button class="tab${tab==='sider'?' on':''}" onclick="tab='sider';render()">Tilbeh\u00f8r & drikke</button>`,
+    `<button class="tab${tab==='sauser'?' saus-on':''}" onclick="tab='sauser';render()">Sauser</button>`,
     `<button class="tab${tab==='lib'?' lib-on':''}" onclick="tab='lib';render()">Bibliotek</button>`,
-    `<button class="tab-add" onclick="addBurger()">+ Burger</button>`,
+    `<button class="tab-add" onclick="addBurger()">+ Ny burger</button>`,
   ];
-  document.getElemen
+  document.getElementById('main-tabs').innerHTML = tabs.join('');
+}
+
+function render() {
+  renderTabs();
+  const pane = document.getElementById('main-pane');
+  if (tab.startsWith('b')) {
+    const i = parseInt(tab.slice(1));
+    if (i < S.burgers.length) pane.innerHTML = renderBurger(i);
+    else { tab = 'b0'; render(); return; }
+  } else if (tab === 'sider') {
+    pane.innerHTML = renderSider();
+  } else if (tab === 'sauser') {
+    pane.innerHTML = renderSauser();
+  } else if (tab === 'lib') {
+    pane.innerHTML = renderLibrary();
+  }
+}
+
+// —— BURGER —————————————————————————————————————————————
+
+function renderBurger(i) {
+  const b = S.burgers[i];
+  const c = cost(b.ings);
+  const pris = parseFloat(b.pris_dobbel) || 0;
+  const margin = pris > 0 ? ((pris - c) / pris * 100) : 0;
+  const marginColor = margin >= 75 ? 'var(--success)' : margin >= 60 ? 'var(--warn)' : 'var(--danger)';
+
+  let html = `<div class="card">`;
+
+  // Navn & priser
+  html += `<div class="sec">Produkt</div>`;
+  html += `<div class="field-row">
+    <span class="field-label">Navn</span>
+    <input value="${esc(b.name)}" oninput="S.burgers[${i}].name=this.value;scheduleSave();renderTabs()">
+  </div>`;
+
+  html += `<div class="price-row">
+    <div class="price-block">
+      <span class="price-label">Dobbel (standard)</span>
+      <input type="number" value="${esc(b.pris_dobbel)}" oninput="S.burgers[${i}].pris_dobbel=this.value;scheduleSave();render()">
+    </div>
+    <div class="price-block">
+      <span class="price-label">Liten</span>
+      <input type="number" value="${esc(b.pris_enkel)}" placeholder="\u2014" oninput="S.burgers[${i}].pris_enkel=this.value;scheduleSave();render()">
+    </div>
+  </div>`;
+
+  // Tips
+  html += `<div class="field-row">
+    <span class="field-label">Driftstips</span>
+    <input value="${esc(b.tips||'')}" placeholder="Valgfritt..." oninput="S.burgers[${i}].tips=this.value;scheduleSave()">
+  </div>`;
+
+  // Ingredienser
+  html += `<div class="sec">Ingredienser</div>`;
+  html += `<div class="ing-header">
+    <span class="col-head">Ingrediens</span>
+    <span class="col-head">Mengde</span>
+    <span class="col-head">Kost (kr)</span>
+    <span class="col-head">Merknad</span>
+    <span></span>
+  </div>`;
+
+  b.ings.forEach((ing, j) => {
+    html += `<div class="ing-row">
+      <input value="${esc(ing.n)}" oninput="S.burgers[${i}].ings[${j}].n=this.value;scheduleSave()">
+      <input value="${esc(ing.w)}" oninput="S.burgers[${i}].ings[${j}].w=this.value;scheduleSave()">
+      <input type="number" step="0.1" value="${esc(ing.c)}" oninput="S.burgers[${i}].ings[${j}].c=this.value;scheduleSave();render()">
+      <input value="${esc(ing.note)}" placeholder="" oninput="S.burgers[${i}].ings[${j}].note=this.value;scheduleSave()">
+      <div class="btn-pair">
+        <button class="icon-btn save" onclick="saveToLib(S.burgers[${i}].ings[${j}])" title="Lagre til bibliotek">\u2191</button>
+        <button class="icon-btn del" onclick="S.burgers[${i}].ings.splice(${j},1);scheduleSave();render()" title="Fjern">\u00d7</button>
+      </div>
+    </div>`;
+  });
+
+  // Legg til ingrediens
+  html += `<button class="add-row" onclick="S.burgers[${i}].ings.push({n:'',w:'',c:'0',note:''});scheduleSave();render()">+ Legg til ingrediens manuelt</button>`;
+
+  // Picker fra bibliotek
+  html += `<div class="picker-wrap" id="pw-${i}">
+    <input id="pi-${i}" placeholder="S\u00f8k i bibliotek..." onfocus="showPicker(${i},this.value)" oninput="showPicker(${i},this.value)">
+    <div class="picker-dd" id="dd-${i}" style="display:none"></div>
+  </div>`;
+
+  // Margin bar
+  html += `<div class="margin-bar">
+    <div><div class="mb-label">R\u00e5varekost</div><div class="mb-val">${fmt(c)} kr</div></div>
+    <div><div class="mb-label">Pris (dobbel)</div><div class="mb-val">${pris} kr</div></div>
+    <div><div class="mb-label">Bruttomargin</div><div class="mb-val" style="color:${marginColor}">${fmt(margin)}%</div></div>
+  </div>`;
+
+  // Allergener
+  html += `<div class="sec">Allergener</div>`;
+  html += ALLERGENS.map(a =>
+    `<span class="al-tag${b.al && b.al.includes(a)?' on':''}" onclick="toggleAllergen(${i},'${a}')">${a}</span>`
+  ).join('');
+
+  // Slett burger
+  if (b.isNew) {
+    html += `<div style="margin-top:20px;text-align:right">
+      <button class="tab-del" onclick="deleteBurger(${i})">Slett denne burgeren</button>
+    </div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function toggleAllergen(bi, allergen) {
+  const b = S.burgers[bi];
+  if (!b.al) b.al = [];
+  const idx = b.al.indexOf(allergen);
+  if (idx >= 0) b.al.splice(idx, 1);
+  else b.al.push(allergen);
+  scheduleSave();
+  render();
+}
+
+function addBurger() {
+  const id = 'custom_' + Date.now();
+  S.burgers.push({
+    id, name:'Ny burger', pris_dobbel:'', pris_enkel:'', isNew:true,
+    ings:[], al:[], tips:''
+  });
+  tab = 'b' + (S.burgers.length - 1);
+  scheduleSave();
+  render();
+  toast('Ny burger opprettet');
+}
+
+function deleteBurger(i) {
+  if (!confirm('Slett "' + S.burgers[i].name + '"?')) return;
+  S.burgers.splice(i, 1);
+  tab = 'b0';
+  scheduleSave();
+  render();
+  toast('Burger slettet');
+}
+
+// —— SIDER / TILBEH\u00d8R ———————————————————————————————————
+
+function renderSider() {
+  let html = `<div class="card">`;
+  html += `<div class="sec">Tilbeh\u00f8r og drikke</div>`;
+
+  S.sider.forEach((s, i) => {
+    html += `<div class="side-row">
+      <input value="${esc(s.name)}" style="flex:2" oninput="S.sider[${i}].name=this.value;scheduleSave()">
+      <input type="number" value="${esc(s.pris)}" style="flex:0.5;text-align:right" oninput="S.sider[${i}].pris=this.value;scheduleSave()">
+      <span style="font-size:12px;color:var(--muted);flex-shrink:0">kr</span>
+      <button class="icon-btn del" onclick="S.sider.splice(${i},1);scheduleSave();render()" title="Fjern">\u00d7</button>
+    </div>`;
+  });
+
+  html += `<button class="add-row" onclick="S.sider.push({name:'',pris:''});scheduleSave();render()">+ Legg til produkt</button>`;
+  html += `</div>`;
+  return html;
+}
+
+// —— SAUSER —————————————————————————————————————————————
+
+function renderSauser() {
+  if (sausIdx >= S.sauser.length) sausIdx = 0;
+  const s = S.sauser[sausIdx];
+
+  let html = `<div class="card">`;
+
+  // Saus-tabs
+  html += `<div class="saus-tab-row">`;
+  S.sauser.forEach((sa, i) => {
+    html += `<button class="saus-tab${sausIdx===i?' on':''}" onclick="sausIdx=${i};render()">${esc(sa.name)}</button>`;
+  });
+  html += `<button class="tab-add" onclick="addSaus()">+ Ny saus</button>`;
+  html += `</div>`;
+
+  // Saus detaljer
+  html += `<div class="field-row">
+    <span class="field-label">Navn</span>
+    <input value="${esc(s.name)}" oninput="S.sauser[${sausIdx}].name=this.value;scheduleSave();render()">
+  </div>`;
+  html += `<div class="field-row">
+    <span class="field-label">Beskrivelse</span>
+    <input value="${esc(s.desc)}" oninput="S.sauser[${sausIdx}].desc=this.value;scheduleSave()">
+  </div>`;
+
+  // Ingredienser
+  html += `<div class="sec">Ingredienser (batch ~270g)</div>`;
+  html += `<div class="ing-header">
+    <span class="col-head">Ingrediens</span>
+    <span class="col-head">Mengde</span>
+    <span class="col-head"></span>
+    <span class="col-head">Merknad</span>
+    <span></span>
+  </div>`;
+
+  s.ings.forEach((ing, j) => {
+    html += `<div class="ing-row">
+      <input value="${esc(ing.n)}" oninput="S.sauser[${sausIdx}].ings[${j}].n=this.value;scheduleSave()">
+      <input value="${esc(ing.a)}" oninput="S.sauser[${sausIdx}].ings[${j}].a=this.value;scheduleSave()">
+      <input disabled style="background:transparent;border-color:transparent">
+      <input value="${esc(ing.note)}" placeholder="" oninput="S.sauser[${sausIdx}].ings[${j}].note=this.value;scheduleSave()">
+      <div class="btn-pair">
+        <button class="icon-btn del" onclick="S.sauser[${sausIdx}].ings.splice(${j},1);scheduleSave();render()">\u00d7</button>
+      </div>
+    </div>`;
+  });
+
+  html += `<button class="add-row" onclick="S.sauser[${sausIdx}].ings.push({n:'',a:'',note:''});scheduleSave();render()">+ Legg til ingrediens</button>`;
+
+  // Fremgangsm\u00e5te
+  html += `<div class="sec">Fremgangsm\u00e5te</div>`;
+  s.steps.forEach((step, j) => {
+    html += `<div class="step-row">
+      <div class="step-num">${j+1}</div>
+      <input value="${esc(step)}" oninput="S.sauser[${sausIdx}].steps[${j}]=this.value;scheduleSave()">
+      <button class="icon-btn del" onclick="S.sauser[${sausIdx}].steps.splice(${j},1);scheduleSave();render()">\u00d7</button>
+    </div>`;
+  });
+  html += `<button class="add-row" onclick="S.sauser[${sausIdx}].steps.push('');scheduleSave();render()">+ Legg til steg</button>`;
+
+  // Slett saus
+  if (S.sauser.length > 1) {
+    html += `<div style="margin-top:20px;text-align:right">
+      <button class="tab-del" onclick="deleteSaus(${sausIdx})">Slett denne sausen</button>
+    </div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function addSaus() {
+  S.sauser.push({ name:'Ny saus', desc:'', ings:[], steps:[] });
+  sausIdx = S.sauser.length - 1;
+  scheduleSave();
+  render();
+  toast('Ny saus opprettet');
+}
+
+function deleteSaus(i) {
+  if (!confirm('Slett "' + S.sauser[i].name + '"?')) return;
+  S.sauser.splice(i, 1);
+  sausIdx = 0;
+  scheduleSave();
+  render();
+  toast('Saus slettet');
+}
+
+// —— BIBLIOTEK ——————————————————————————————————————————
+
+function renderLibrary() {
+  let html = `<div class="card">`;
+  html += `<div class="sec">Ingrediensbibliotek</div>`;
+  html += `<div class="lib-note">Ingredienser du lagrer her kan gjenbrukes p\u00e5 tvers av alle burgere via s\u00f8kefeltet. Klikk \u2191-pilen p\u00e5 en ingrediens for \u00e5 lagre den hit.</div>`;
+
+  html += `<div style="margin-top:14px">`;
+  html += `<div class="ing-header" style="grid-template-columns:2fr 1fr 1fr 1.5fr 28px">
+    <span class="col-head">Ingrediens</span>
+    <span class="col-head">Mengde</span>
+    <span class="col-head">Kost (kr)</span>
+    <span class="col-head">Merknad</span>
+    <span></span>
+  </div>`;
+
+  LIB.forEach((l, i) => {
+    html += `<div class="lib-row">
+      <input value="${esc(l.n)}" oninput="LIB[${i}].n=this.value;scheduleSave()">
+      <input value="${esc(l.w)}" oninput="LIB[${i}].w=this.value;scheduleSave()">
+      <input type="number" step="0.1" value="${esc(l.c)}" oninput="LIB[${i}].c=this.value;scheduleSave()">
+      <input value="${esc(l.note)}" oninput="LIB[${i}].note=this.value;scheduleSave()">
+      <button class="icon-btn del" onclick="LIB.splice(${i},1);scheduleSave();render()" title="Fjern">\u00d7</button>
+    </div>`;
+  });
+  html += `</div>`;
+
+  html += `<button class="add-row" onclick="LIB.push({n:'',w:'',c:'0',note:''});scheduleSave();render()">+ Legg til ingrediens</button>`;
+
+  html += `</div>`;
+  return html;
+}
+
+// —— EXPORT DOCX ———————————————————————————————————————
+
+async function exportDocx() {
+  const btn = document.getElementById('export-btn');
+  btn.disabled = true;
+  btn.textContent = 'Genererer...';
+
+  try {
+    const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle, HeadingLevel } = docx;
+
+    const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+    const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder };
+
+    const sections = [];
+
+    // Title
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'THE SMASH', bold: true, size: 48, font: 'Arial' })],
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 100 },
+    }));
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Menyspesifikasjon', size: 24, color: '888888', font: 'Arial' })],
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 400 },
+    }));
+
+    // Burgere
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Burgere', bold: true, size: 32, font: 'Arial' })],
+      spacing: { before: 300, after: 200 },
+    }));
+
+    for (const b of S.burgers) {
+      const c = cost(b.ings);
+      const pris = parseFloat(b.pris_dobbel) || 0;
+      const margin = pris > 0 ? Math.round((pris - c) / pris * 100) : 0;
+
+      sections.push(new Paragraph({
+        children: [new TextRun({ text: b.name, bold: true, size: 26, font: 'Arial' })],
+        spacing: { before: 200, after: 60 },
+      }));
+
+      const prisText = b.pris_enkel
+        ? `Pris: ${b.pris_dobbel} / ${b.pris_enkel} kr  \u00b7  R\u00e5varekost: ~${fmt(c)} kr  \u00b7  Bruttomargin: ${margin}%`
+        : `Pris: ${b.pris_dobbel} kr  \u00b7  R\u00e5varekost: ~${fmt(c)} kr  \u00b7  Bruttomargin: ${margin}%`;
+
+      sections.push(new Paragraph({
+        children: [new TextRun({ text: prisText, size: 20, color: '666666', font: 'Arial' })],
+        spacing: { after: 100 },
+      }));
+
+      // Ingredient table
+      const headerRow = new TableRow({
+        children: ['Ingrediens', 'Mengde', 'Kostnad', 'Merknad'].map(h =>
+          new TableCell({
+            children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, size: 18, font: 'Arial' })] })],
+            borders: noBorders,
+          })
+        ),
+      });
+
+      const ingRows = b.ings.map(ing => new TableRow({
+        children: [ing.n, ing.w, ing.c + ' kr', ing.note || ''].map(t =>
+          new TableCell({
+            children: [new Paragraph({ children: [new TextRun({ text: t, size: 18, font: 'Arial' })] })],
+            borders: noBorders,
+          })
+        ),
+      }));
+
+      sections.push(new Table({
+        rows: [headerRow, ...ingRows],
+        width: { size: 100, type: WidthType.PERCENTAGE },
+      }));
+
+      if (b.al && b.al.length > 0) {
+        sections.push(new Paragraph({
+          children: [new TextRun({ text: 'Allergener: ' + b.al.join(', '), size: 18, italics: true, color: '999999', font: 'Arial' })],
+          spacing: { before: 60, after: 60 },
+        }));
+      }
+
+      if (b.tips) {
+        sections.push(new Paragraph({
+          children: [new TextRun({ text: '\u26d1 ' + b.tips, size: 18, color: '7a5a00', font: 'Arial' })],
+          spacing: { after: 100 },
+        }));
+      }
+    }
+
+    // Tilbeh\u00f8r
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Tilbeh\u00f8r og drikke', bold: true, size: 32, font: 'Arial' })],
+      spacing: { before: 400, after: 200 },
+    }));
+
+    const sideHeaderRow = new TableRow({
+      children: ['Navn', 'Pris'].map(h =>
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, size: 18, font: 'Arial' })] })],
+          borders: noBorders,
+        })
+      ),
+    });
+
+    const sideRows = S.sider.map(s => new TableRow({
+      children: [s.name, s.pris + ' kr'].map(t =>
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: t, size: 18, font: 'Arial' })] })],
+          borders: noBorders,
+        })
+      ),
+    }));
+
+    sections.push(new Table({
+      rows: [sideHeaderRow, ...sideRows],
+      width: { size: 100, type: WidthType.PERCENTAGE },
+    }));
+
+    // Sauser
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Sausoppskrifter', bold: true, size: 32, font: 'Arial' })],
+      spacing: { before: 400, after: 200 },
+    }));
+
+    for (const sa of S.sauser) {
+      sections.push(new Paragraph({
+        children: [new TextRun({ text: sa.name, bold: true, size: 26, font: 'Arial' })],
+        spacing: { before: 200, after: 40 },
+      }));
+      sections.push(new Paragraph({
+        children: [new TextRun({ text: sa.desc, size: 20, color: '888888', font: 'Arial' })],
+        spacing: { after: 100 },
+      }));
+
+      const sausHeaderRow = new TableRow({
+        children: ['Ingrediens', 'Mengde', 'Merknad'].map(h =>
+          new TableCell({
+            children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, size: 18, font: 'Arial' })] })],
+            borders: noBorders,
+          })
+        ),
+      });
+
+      const sausIngRows = sa.ings.map(ing => new TableRow({
+        children: [ing.n, ing.a, ing.note || ''].map(t =>
+          new TableCell({
+            children: [new Paragraph({ children: [new TextRun({ text: t, size: 18, font: 'Arial' })] })],
+            borders: noBorders,
+          })
+        ),
+      }));
+
+      sections.push(new Table({
+        rows: [sausHeaderRow, ...sausIngRows],
+        width: { size: 100, type: WidthType.PERCENTAGE },
+      }));
+
+      if (sa.steps.length > 0) {
+        sections.push(new Paragraph({
+          children: [new TextRun({ text: 'Fremgangsm\u00e5te', bold: true, size: 20, font: 'Arial' })],
+          spacing: { before: 120, after: 60 },
+        }));
+        sa.steps.forEach((step, j) => {
+          sections.push(new Paragraph({
+            children: [new TextRun({ text: `${j+1}. ${step}`, size: 18, font: 'Arial' })],
+            spacing: { after: 30 },
+          }));
+        });
+      }
+    }
+
+    // Allergen overview
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Allergenoversikt', bold: true, size: 32, font: 'Arial' })],
+      spacing: { before: 400, after: 200 },
+    }));
+
+    const alHeaderRow = new TableRow({
+      children: ['Produkt', ...ALLERGENS].map(h =>
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, size: 16, font: 'Arial' })] })],
+          borders: noBorders,
+        })
+      ),
+    });
+
+    const alRows = S.burgers.map(b => new TableRow({
+      children: [
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: b.name, size: 16, font: 'Arial' })] })],
+          borders: noBorders,
+        }),
+        ...ALLERGENS.map(a =>
+          new TableCell({
+            children: [new Paragraph({ children: [new TextRun({ text: b.al && b.al.includes(a) ? '!' : '\u2013', size: 16, font: 'Arial', color: b.al && b.al.includes(a) ? 'CC0000' : '999999' })] })],
+            borders: noBorders,
+          })
+        ),
+      ],
+    }));
+
+    sections.push(new Table({
+      rows: [alHeaderRow, ...alRows],
+      width: { size: 100, type: WidthType.PERCENTAGE },
+    }));
+
+    const doc = new Document({
+      sections: [{ children: sections }],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'THE_SMASH_Menyspesifikasjon.docx';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Dokument lastet ned');
+  } catch (err) {
+    console.error(err);
+    toast('Feil ved eksport: ' + err.message);
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Last ned Word-dokument';
+}
+
+// —— INIT ———————————————————————————————————————————————
+
+load();
+</script>
+</body>
+</html>
