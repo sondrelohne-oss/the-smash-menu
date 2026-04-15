@@ -478,7 +478,6 @@ function renderMenu(S) {
   html += '</div>'; // lukk d-grid
 
   // Ukens tilbud (utenfor grid)
-  console.log('ukensTilbud:', JSON.stringify(S.ukensTilbud));
   const ut = S.ukensTilbud;
   if (ut && ut.enabled) {
     const parts = [ut.burger, ut.side, ut.drikke].filter(Boolean);
