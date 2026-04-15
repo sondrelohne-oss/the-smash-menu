@@ -349,7 +349,7 @@
 
 <div class="d-allergen">Allergener: Alle burgere inneholder gluten og melk. Si ifra om allergier ved bestilling.</div>
 <div class="d-live">
-  <span onclick="toggleDagNatt()" style="cursor:pointer;margin-right:8px" title="Bytt dag/natt" id="dn-toggle"></span>
+  <button onclick="toggleDagNatt()" id="dn-toggle" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 12px;cursor:pointer;font-size:14px;color:var(--cream);margin-right:8px"></button>
   <div class="d-live-dot"></div>Live
 </div>
 
@@ -545,8 +545,12 @@ function applyDagNatt() {
     }
   } catch(e) {}
 
+  // Check for manual override
+  const manual = localStorage.getItem('smash-dagmodus');
+
   let isDag;
-  if (mode === 'dag') isDag = true;
+  if (manual) isDag = manual === 'dag';
+  else if (mode === 'dag') isDag = true;
   else if (mode === 'natt') isDag = false;
   else {
     const h = new Date().getHours();
@@ -555,14 +559,15 @@ function applyDagNatt() {
 
   document.body.classList.toggle('dag', isDag);
   const btn = document.getElementById('dn-toggle');
-  if (btn) btn.textContent = isDag ? '\u263e' : '\u2600';
+  if (btn) btn.textContent = isDag ? '\u263e Natt' : '\u2600 Dag';
 }
 
 function toggleDagNatt() {
   document.body.classList.toggle('dag');
   const isDag = document.body.classList.contains('dag');
   const btn = document.getElementById('dn-toggle');
-  if (btn) btn.textContent = isDag ? '\u263e' : '\u2600';
+  if (btn) btn.textContent = isDag ? '\u263e Natt' : '\u2600 Dag';
+  localStorage.setItem('smash-dagmodus', isDag ? 'dag' : 'natt');
 }
 
 applyDagNatt();
