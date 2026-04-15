@@ -332,7 +332,13 @@
 
       /* Touch targets */
       .icon-btn { width: 32px; height: 32px; font-size: 15px; }
-      input, select, textarea { font-size: 16px !important; padding: 9px 10px; }
+      input, select, textarea { font-size: 16px !important; padding: 10px 12px; color: var(--text) !important; background: #fff !important; border: 2px solid var(--border) !important; border-radius: 8px !important; -webkit-appearance: none; }
+      input:focus, textarea:focus { border-color: var(--gold) !important; outline: none; box-shadow: 0 0 0 3px rgba(232,197,71,0.2); }
+      .field-label { font-size: 12px !important; min-width: 70px !important; }
+      .step-row { flex-wrap: wrap; }
+      .step-row input { min-height: 60px; word-wrap: break-word; }
+      .ing-row input, .lib-row input, .lager-row input { min-height: 40px; }
+      .note-input-row textarea { min-height: 80px; }
       .add-row { padding: 10px; }
       .status-btn { padding: 6px 14px; }
       .toggle { width: 44px; height: 24px; }
