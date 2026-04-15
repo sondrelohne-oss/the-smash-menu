@@ -627,6 +627,8 @@ function migrateData() {
   if (!S.holdbarhet) S.holdbarhet = [];
   // Daglig logg
   if (!S.dagligLogg) S.dagligLogg = [];
+  // Display-innstillinger
+  if (!S.displaySettings) S.displaySettings = { dagNattMode: 'auto', dagFra: 8, dagTil: 20 };
   // Kalender
   if (!S.kalender) S.kalender = [];
   if (!S.oppskrifter) S.oppskrifter = DEFAULT.oppskrifter ? JSON.parse(JSON.stringify(DEFAULT.oppskrifter)) : [];
@@ -2018,6 +2020,9 @@ function renderDrift() {
   // Holdbarhet
   html += renderHoldbarhet();
 
+  // Display-innstillinger
+  html += renderDisplaySettings();
+
   // Daglig logg
   html += renderDagligLogg();
 
@@ -2113,6 +2118,36 @@ function addHoldbarhet(name) {
   scheduleSave();
   render();
   toast(name + ' registrert \u2014 ' + hours + 't holdbarhet');
+}
+
+function renderDisplaySettings() {
+  const ds = S.displaySettings || { dagNattMode: 'auto', dagFra: 8, dagTil: 20 };
+  let html = `<div class="card">`;
+  html += `<div class="sec">Menyvisning \u2014 Dag/Natt</div>`;
+
+  html += `<div class="field-row">
+    <span class="field-label">Modus</span>
+    <div style="display:flex;gap:4px">
+      <button class="tab${ds.dagNattMode==='auto'?' on':''}" style="font-size:12px;padding:4px 12px" onclick="S.displaySettings.dagNattMode='auto';scheduleSave();render()">Auto</button>
+      <button class="tab${ds.dagNattMode==='dag'?' on':''}" style="font-size:12px;padding:4px 12px" onclick="S.displaySettings.dagNattMode='dag';scheduleSave();render()">Alltid dag</button>
+      <button class="tab${ds.dagNattMode==='natt'?' on':''}" style="font-size:12px;padding:4px 12px" onclick="S.displaySettings.dagNattMode='natt';scheduleSave();render()">Alltid natt</button>
+    </div>
+  </div>`;
+
+  if (ds.dagNattMode === 'auto') {
+    html += `<div class="field-row">
+      <span class="field-label">Dag fra</span>
+      <input type="number" min="0" max="23" value="${ds.dagFra||8}" style="width:60px;text-align:center" oninput="S.displaySettings.dagFra=parseInt(this.value)||8;scheduleSave()" onblur="render()">
+      <span style="font-size:12px;color:var(--muted);margin:0 8px">til</span>
+      <input type="number" min="0" max="23" value="${ds.dagTil||20}" style="width:60px;text-align:center" oninput="S.displaySettings.dagTil=parseInt(this.value)||20;scheduleSave()" onblur="render()">
+    </div>`;
+    const h = new Date().getHours();
+    const isDag = h >= (ds.dagFra||8) && h < (ds.dagTil||20);
+    html += `<div style="font-size:12px;color:var(--muted);margin-top:4px">N\u00e5: kl ${h}:00 \u2014 ${isDag?'dag-modus (lys)':'natt-modus (m\u00f8rk)'}</div>`;
+  }
+
+  html += `</div>`;
+  return html;
 }
 
 function renderDagligLogg() {

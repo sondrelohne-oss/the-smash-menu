@@ -18,6 +18,25 @@
       --card-border: rgba(255,255,255,0.08);
     }
 
+    /* DAG-MODUS */
+    body.dag {
+      --black: #FFFFFF;
+      --cream: #1a1a1a;
+      --gold: #B8860B;
+      --dim: #666660;
+      --card: rgba(0,0,0,0.03);
+      --card-border: rgba(0,0,0,0.08);
+    }
+    body.dag .d-header img { filter: none; }
+    body.dag .d-section-title { background: linear-gradient(90deg, var(--gold) 0%, #D4A520 25%, var(--gold) 50%, #8B6914 75%, var(--gold) 100%); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; }
+    body.dag .d-section-title::after { box-shadow: 0 0 6px 1px rgba(184,134,11,0.25); }
+    body.dag .d-title span { background: linear-gradient(90deg, var(--gold) 0%, #D4A520 30%, var(--gold) 60%, #8B6914 80%, var(--gold) 100%); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; }
+    body.dag .d-best { background: linear-gradient(90deg, var(--gold) 0%, #D4A520 40%, var(--gold) 100%); background-size: 200% auto; color: white; }
+    body.dag .d-combo { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.08); }
+    body.dag .d-allergen { color: rgba(0,0,0,0.35); background: linear-gradient(transparent, var(--black) 40%); }
+    body.dag .d-tilbud { background: linear-gradient(135deg, rgba(184,134,11,0.06) 0%, rgba(210,150,20,0.04) 100%); border-color: rgba(184,134,11,0.2); }
+    body.dag .d-live-dot { background: #1a7a4a; }
+
     html, body { height: 100%; overflow: hidden; }
 
     body {
@@ -146,7 +165,8 @@
     }
     .d-item-dots {
       flex: 1;
-      border-bottom: 1px dotted rgba(255,255,255,0.15);
+      border-bottom: 1px dotted var(--dim);
+      opacity: 0.3;
       margin-bottom: 4px;
       min-width: 20px;
     }
@@ -327,7 +347,10 @@
 </div>
 
 <div class="d-allergen">Allergener: Alle burgere inneholder gluten og melk. Si ifra om allergier ved bestilling.</div>
-<div class="d-live"><div class="d-live-dot"></div>Live</div>
+<div class="d-live">
+  <span onclick="toggleDagNatt()" style="cursor:pointer;margin-right:8px" title="Bytt dag/natt" id="dn-toggle"></span>
+  <div class="d-live-dot"></div>Live
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -504,6 +527,51 @@ setInterval(loadFromLocalStorage, 1000);
 window.addEventListener('storage', (e) => {
   if (e.key === SK) { lastJson = ''; loadFromLocalStorage(); }
 });
+
+// ---- DAG/NATT ----
+function applyDagNatt() {
+  // Check menu data for display settings
+  let mode = 'auto';
+  let dagFra = 8, dagTil = 20;
+  try {
+    const raw = localStorage.getItem(SK);
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (data.displaySettings) {
+        mode = data.displaySettings.dagNattMode || 'auto';
+        dagFra = data.displaySettings.dagFra || 8;
+        dagTil = data.displaySettings.dagTil || 20;
+      }
+    }
+  } catch(e) {}
+
+  let isDag;
+  if (mode === 'dag') isDag = true;
+  else if (mode === 'natt') isDag = false;
+  else {
+    const h = new Date().getHours();
+    isDag = h >= dagFra && h < dagTil;
+  }
+
+  document.body.classList.toggle('dag', isDag);
+  const btn = document.getElementById('dn-toggle');
+  if (btn) btn.textContent = isDag ? '\u263e' : '\u2600';
+}
+
+function toggleDagNatt() {
+  document.body.classList.toggle('dag');
+  const isDag = document.body.classList.contains('dag');
+  const btn = document.getElementById('dn-toggle');
+  if (btn) btn.textContent = isDag ? '\u263e' : '\u2600';
+}
+
+applyDagNatt();
+setInterval(applyDagNatt, 60000); // sjekk hvert minutt
+
+// Listen for display settings changes from Firebase
+if (firebaseReady && db) {
+  db.ref('menu/displaySettings').on('value', () => applyDagNatt());
+}
 </script>
 </body>
 </html>
