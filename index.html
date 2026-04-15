@@ -540,7 +540,8 @@ function load() {
     orderQty: l.orderQty !== undefined ? l.orderQty : 0,
     subIngs: l.subIngs || [],
     batchSize: l.batchSize !== undefined ? l.batchSize : 0,
-    batchUnit: l.batchUnit || ''
+    batchUnit: l.batchUnit || '',
+    oppbevaring: l.oppbevaring || ''
   }));
 
   // Persist migrated data back to localStorage so display.html gets updated fields
@@ -2311,58 +2312,93 @@ function calcBurgersFromStock(l) {
   return { count: minBurgers, burgers: usedBy };
 }
 
+const OPPBEVARING = ['kjoeleskap','frys','romtemp'];
+const OPPBEVARING_LABEL = {kjoeleskap:'Kj\u00f8leskap', frys:'Frys', romtemp:'Romtemperatur', '':'Ikke satt'};
+const OPPBEVARING_ICON = {kjoeleskap:'\u2744\ufe0f', frys:'\ud83e\uddca', romtemp:'\ud83c\udf21\ufe0f', '':''};
+
 function renderLager() {
-  // Sort: empty first, then low, then ok
-  const order = {empty:0, low:1, ok:2};
-  const sorted = LIB.map((l,i) => ({...l, _i:i})).sort((a,b) => order[getStockStatus(a)] - order[getStockStatus(b)]);
+  const all = LIB.map((l,i) => ({...l, _i:i}));
+
+  // Group by oppbevaring
+  const groups = {};
+  const groupOrder = ['kjoeleskap','frys','romtemp',''];
+  for (const g of groupOrder) groups[g] = [];
+  for (const item of all) {
+    const key = item.oppbevaring || '';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+  }
+  // Sort within each group: empty → low → ok
+  const statusOrder = {empty:0, low:1, ok:2};
+  for (const key in groups) {
+    groups[key].sort((a,b) => statusOrder[getStockStatus(a)] - statusOrder[getStockStatus(b)]);
+  }
 
   let html = `<div class="card">`;
   html += `<div class="sec">Varebeholdning</div>`;
   html += `<div class="lib-note">Oppdater beholdning med +/\u2212 knappene etter service. Sett minimumsniv\u00e5 for \u00e5 f\u00e5 varsel n\u00e5r du m\u00e5 bestille.</div>`;
 
-  // Header
-  html += `<div class="lager-row" style="border-bottom:2px solid var(--border);padding-bottom:4px;margin-top:12px">
-    <span class="col-head">Ingrediens</span>
-    <span class="col-head">Beholdning</span>
-    <span class="col-head">Enhet</span>
-    <span class="col-head">Min.niv\u00e5</span>
-    <span class="col-head">Leverand\u00f8r</span>
-    <span class="col-head">Best.mengde</span>
-    <span class="col-head">Burgere</span>
-    <span class="col-head">Status</span>
-  </div>`;
+  for (const gKey of groupOrder) {
+    const items = groups[gKey];
+    if (items.length === 0) continue;
 
-  for (const item of sorted) {
-    const i = item._i;
-    const l = LIB[i];
-    const st = getStockStatus(l);
-    const stLabel = st === 'empty' ? 'Tomt' : st === 'low' ? 'Lavt' : 'OK';
-    const stClass = 'stock-status stock-' + st;
+    const label = OPPBEVARING_LABEL[gKey] || 'Annet';
+    const icon = OPPBEVARING_ICON[gKey] || '';
 
-    html += `<div class="lager-row">
-      <span style="font-size:13px;font-weight:600">${esc(l.n)}</span>
-      <div class="stock-adj">
-        <button onclick="adjStock(${i},-1)">\u2212</button>
-        <input type="number" value="${l.stock}" style="width:50px;text-align:center" oninput="LIB[${i}].stock=parseFloat(this.value)||0;scheduleSave()" onblur="render()">
-        <button onclick="adjStock(${i},1)">+</button>
-      </div>
-      <select style="width:auto" onchange="LIB[${i}].unit=this.value;scheduleSave()">
-        ${UNITS.map(u => `<option value="${u}"${l.unit===u?' selected':''}>${u}</option>`).join('')}
-      </select>
-      <input type="number" value="${l.minStock}" style="width:60px;text-align:center" oninput="LIB[${i}].minStock=parseFloat(this.value)||0;scheduleSave()" onblur="render()">
-      <input value="${esc(l.supplier||'')}" placeholder="Leverand\u00f8r..." oninput="LIB[${i}].supplier=this.value;scheduleSave()">
-      <input type="number" value="${l.orderQty}" style="width:60px;text-align:center" oninput="LIB[${i}].orderQty=parseFloat(this.value)||0;scheduleSave()" onblur="render()">`;
+    html += `<div style="margin-top:16px;font-size:13px;font-weight:700;color:var(--text);padding:6px 0;border-bottom:2px solid var(--gold)">${icon} ${label} <span style="font-weight:400;color:var(--muted);font-size:11px">(${items.length})</span></div>`;
 
-    const burgerCalc = calcBurgersFromStock(l);
-    if (burgerCalc) {
-      const color = burgerCalc.count <= 5 ? 'var(--danger)' : burgerCalc.count <= 15 ? 'var(--warn)' : 'var(--success)';
-      html += `<span style="font-size:14px;font-weight:700;color:${color};text-align:center" title="${esc(burgerCalc.burgers.join(', '))}">${burgerCalc.count}</span>`;
-    } else {
-      html += `<span style="font-size:11px;color:var(--muted);text-align:center">\u2014</span>`;
-    }
-
-    html += `<span class="${stClass}">${stLabel}</span>
+    // Header
+    html += `<div class="lager-row" style="padding-bottom:2px;margin-top:4px">
+      <span class="col-head">Ingrediens</span>
+      <span class="col-head">Beholdning</span>
+      <span class="col-head">Enhet</span>
+      <span class="col-head">Min.niv\u00e5</span>
+      <span class="col-head">Leverand\u00f8r</span>
+      <span class="col-head">Best.mengde</span>
+      <span class="col-head">Burgere</span>
+      <span class="col-head">Status</span>
     </div>`;
+
+    for (const item of items) {
+      const i = item._i;
+      const l = LIB[i];
+      const st = getStockStatus(l);
+      const stLabel = st === 'empty' ? 'Tomt' : st === 'low' ? 'Lavt' : 'OK';
+      const stClass = 'stock-status stock-' + st;
+
+      html += `<div class="lager-row">
+        <div>
+          <div style="font-size:13px;font-weight:600">${esc(l.n)}</div>
+          <select style="font-size:10px;padding:1px 4px;border:none;background:transparent;color:var(--muted);width:auto;margin-top:2px" onchange="LIB[${i}].oppbevaring=this.value;scheduleSave();render()">
+            <option value=""${!l.oppbevaring?' selected':''}>Velg oppbevaring...</option>
+            <option value="kjoeleskap"${l.oppbevaring==='kjoeleskap'?' selected':''}>Kj\u00f8leskap</option>
+            <option value="frys"${l.oppbevaring==='frys'?' selected':''}>Frys</option>
+            <option value="romtemp"${l.oppbevaring==='romtemp'?' selected':''}>Romtemperatur</option>
+          </select>
+        </div>
+        <div class="stock-adj">
+          <button onclick="adjStock(${i},-1)">\u2212</button>
+          <input type="number" value="${l.stock}" style="width:50px;text-align:center" oninput="LIB[${i}].stock=parseFloat(this.value)||0;scheduleSave()" onblur="render()">
+          <button onclick="adjStock(${i},1)">+</button>
+        </div>
+        <select style="width:auto" onchange="LIB[${i}].unit=this.value;scheduleSave()">
+          ${UNITS.map(u => `<option value="${u}"${l.unit===u?' selected':''}>${u}</option>`).join('')}
+        </select>
+        <input type="number" value="${l.minStock}" style="width:60px;text-align:center" oninput="LIB[${i}].minStock=parseFloat(this.value)||0;scheduleSave()" onblur="render()">
+        <input value="${esc(l.supplier||'')}" placeholder="Leverand\u00f8r..." oninput="LIB[${i}].supplier=this.value;scheduleSave()">
+        <input type="number" value="${l.orderQty}" style="width:60px;text-align:center" oninput="LIB[${i}].orderQty=parseFloat(this.value)||0;scheduleSave()" onblur="render()">`;
+
+      const burgerCalc = calcBurgersFromStock(l);
+      if (burgerCalc) {
+        const color = burgerCalc.count <= 5 ? 'var(--danger)' : burgerCalc.count <= 15 ? 'var(--warn)' : 'var(--success)';
+        html += `<span style="font-size:14px;font-weight:700;color:${color};text-align:center" title="${esc(burgerCalc.burgers.join(', '))}">${burgerCalc.count}</span>`;
+      } else {
+        html += `<span style="font-size:11px;color:var(--muted);text-align:center">\u2014</span>`;
+      }
+
+      html += `<span class="${stClass}">${stLabel}</span>
+      </div>`;
+    }
   }
 
   // Summary
