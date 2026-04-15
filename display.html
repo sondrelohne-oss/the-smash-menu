@@ -38,6 +38,7 @@
     body.dag .d-live-dot { background: #1a7a4a; }
 
     html, body { height: 100%; overflow: hidden; }
+    @media (max-width: 600px) { html, body { overflow: auto; height: auto; } }
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
@@ -303,13 +304,16 @@
       .display {
         padding: 2vh 5vw 4vh;
         gap: 2vh;
+        height: auto;
+        min-height: 100vh;
       }
       .d-header {
         flex-direction: column;
         gap: clamp(10px, 2vh, 20px);
       }
       .d-header img {
-        height: clamp(100px, 15vh, 200px);
+        margin: 0;
+        height: clamp(80px, 12vh, 150px);
       }
       .d-title {
         font-size: clamp(32px, 8vw, 70px);

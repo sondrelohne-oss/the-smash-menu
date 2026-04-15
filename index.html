@@ -60,7 +60,10 @@
       gap: 2px;
       flex: 1;
       justify-content: center;
+      position: relative;
     }
+    .header-nav.dropdown-mode { display: none; }
+    .header-nav.dropdown-mode.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--black); z-index: 200; padding: 8px; gap: 2px; box-shadow: 0 4px 12px rgba(0,0,0,.3); border-top: 1px solid rgba(255,255,255,.08); }
     .nav-btn {
       padding: 6px 18px;
       font-size: 13px;
@@ -75,7 +78,10 @@
     }
     .nav-btn:hover { color: rgba(255,255,255,0.7); }
     .nav-btn.on { color: var(--cream); border-bottom-color: var(--gold); }
+    .header-nav.dropdown-mode .nav-btn { padding: 10px 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,.06); border-left: 2px solid transparent; }
+    .header-nav.dropdown-mode .nav-btn.on { border-bottom-color: rgba(255,255,255,.06); border-left-color: var(--gold); background: rgba(255,255,255,.04); }
     .nav-btn .nav-badge { font-size: 9px; padding: 1px 5px; border-radius: 10px; background: var(--danger); color: white; margin-left: 4px; vertical-align: middle; }
+    .nav-hamburger { display: none; background: none; border: none; color: var(--cream); font-size: 22px; cursor: pointer; padding: 4px 8px; }
     .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .save-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,.08); color: #aaa; transition: all .2s; }
     .save-badge.saved { background: rgba(26,122,74,.3); color: #6ddca0; }
@@ -287,7 +293,10 @@
       /* Header */
       .header-top { padding: 6px 12px; gap: 8px; }
       .logo img { height: 80px; margin: -25px 0 -30px; }
-      .header-nav { gap: 0; flex-wrap: wrap; justify-content: flex-start; }
+      .header-nav { gap: 0; }
+      .header-nav.dropdown-mode { display: none; }
+      .header-nav.dropdown-mode.open { display: flex; }
+      .nav-hamburger { display: block; }
       .nav-btn { padding: 5px 10px; font-size: 11px; }
       .header-right { gap: 4px; }
       .header-right a { font-size: 10px !important; padding: 2px 6px !important; }
@@ -337,6 +346,7 @@
     <div class="logo" onclick="setSection('dashboard')" style="cursor:pointer">
       <img src="logo.png" alt="The Smash">
     </div>
+    <button class="nav-hamburger" id="nav-hamburger" onclick="toggleNav()">&#9776;</button>
     <nav class="header-nav" id="main-nav"></nav>
     <div class="header-right">
       <a href="display.html" target="_blank" style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(232,197,71,.15);color:var(--gold);text-decoration:none;white-space:nowrap">Menyvisning &#8599;</a>
@@ -789,17 +799,32 @@ function setSection(s) {
 function renderNav() {
   const s = getSection();
   const lowCount = getLowStockCount();
+  const isMobile = window.innerWidth <= 600;
+  const navEl = document.getElementById('main-nav');
   const nav = [
-    `<button class="nav-btn${s==='dashboard'?' on':''}" onclick="setSection('dashboard')">Dashboard</button>`,
-    `<button class="nav-btn${s==='meny'?' on':''}" onclick="setSection('meny')">Menyvalg</button>`,
-    `<button class="nav-btn${s==='service'?' on':''}" onclick="setSection('service')">Service</button>`,
-    `<button class="nav-btn${s==='oppskrifter'?' on':''}" onclick="setSection('oppskrifter')">Oppskrifter</button>`,
-    `<button class="nav-btn${s==='lager'?' on':''}" onclick="setSection('lager')">Lager${lowCount>0?'<span class="nav-badge">'+lowCount+'</span>':''}</button>`,
-    `<button class="nav-btn${s==='drift'?' on':''}" onclick="setSection('drift')">Drift</button>`,
-    `<button class="nav-btn${s==='bibliotek'?' on':''}" onclick="setSection('bibliotek')">Bibliotek</button>`,
+    `<button class="nav-btn${s==='dashboard'?' on':''}" onclick="setSection('dashboard');closeNav()">Dashboard</button>`,
+    `<button class="nav-btn${s==='meny'?' on':''}" onclick="setSection('meny');closeNav()">Menyvalg</button>`,
+    `<button class="nav-btn${s==='service'?' on':''}" onclick="setSection('service');closeNav()">Service</button>`,
+    `<button class="nav-btn${s==='oppskrifter'?' on':''}" onclick="setSection('oppskrifter');closeNav()">Oppskrifter</button>`,
+    `<button class="nav-btn${s==='lager'?' on':''}" onclick="setSection('lager');closeNav()">Lager${lowCount>0?'<span class="nav-badge">'+lowCount+'</span>':''}</button>`,
+    `<button class="nav-btn${s==='drift'?' on':''}" onclick="setSection('drift');closeNav()">Drift</button>`,
+    `<button class="nav-btn${s==='bibliotek'?' on':''}" onclick="setSection('bibliotek');closeNav()">Bibliotek</button>`,
   ];
-  document.getElementById('main-nav').innerHTML = nav.join('');
+  navEl.innerHTML = nav.join('');
+  if (isMobile) {
+    navEl.classList.add('dropdown-mode');
+  } else {
+    navEl.classList.remove('dropdown-mode', 'open');
+  }
 }
+
+function toggleNav() {
+  document.getElementById('main-nav').classList.toggle('open');
+}
+function closeNav() {
+  document.getElementById('main-nav').classList.remove('open');
+}
+window.addEventListener('resize', () => renderNav());
 
 function renderSubTabs() {
   const s = getSection();
