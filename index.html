@@ -39,21 +39,44 @@
     /* HEADER */
     header {
       background: var(--black);
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
       box-shadow: 0 1px 0 rgba(255,255,255,.08);
+      overflow: visible;
     }
-    .logo { display: flex; align-items: center; gap: 6px; }
-    .logo img { height: 110px; width: auto; margin: -10px 0 -40px; position: relative; z-index: 101; }
-    .logo-the { font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--gold); text-transform: uppercase; }
-    .logo-smash { font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: var(--cream); }
-    .logo-divider { width: 30px; height: 2px; background: var(--gold); margin-left: 8px; flex-shrink: 0; }
-    .header-sub { font-size: 12px; color: #888; }
+    .header-top {
+      display: flex;
+      align-items: center;
+      padding: 6px 24px;
+      gap: 16px;
+    }
+    .logo { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .logo img { height: 140px; width: auto; margin: -10px 0 -55px; position: relative; z-index: 101; }
+    .logo-divider { display: none; }
+    .header-sub { display: none; }
+    .header-nav {
+      display: flex;
+      gap: 2px;
+      flex: 1;
+      justify-content: center;
+    }
+    .nav-btn {
+      padding: 6px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover { color: rgba(255,255,255,0.7); }
+    .nav-btn.on { color: var(--cream); border-bottom-color: var(--gold); }
+    .nav-btn .nav-badge { font-size: 9px; padding: 1px 5px; border-radius: 10px; background: var(--danger); color: white; margin-left: 4px; vertical-align: middle; }
+    .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .save-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,.08); color: #aaa; transition: all .2s; }
     .save-badge.saved { background: rgba(26,122,74,.3); color: #6ddca0; }
 
@@ -151,15 +174,14 @@
     .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--black); color: var(--gold); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
     /* LIBRARY */
-    .lib-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr 56px; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .lib-row { display: grid; grid-template-columns: 1.8fr 0.7fr 0.6fr 1fr 1fr 0.8fr 56px; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
     .lib-row:last-child { border-bottom: none; }
     .lib-row input { background: var(--bg); }
     .lib-row input:focus { background: var(--card); border-color: var(--gold); }
     .lib-note { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 12px; padding: 10px 14px; background: var(--bg); border-radius: var(--radius); }
 
     /* SIDER */
-    .side-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
-    .side-row:last-child { border-bottom: none; }
+    .side-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; margin-bottom: 6px; background: var(--bg); border-radius: var(--radius); border: 1px solid var(--border); }
 
     /* EXPORT BUTTON */
     .export-btn {
@@ -181,11 +203,91 @@
 
     .tab-del { padding: 4px 8px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 11px; cursor: pointer; background: transparent; color: var(--danger); margin-left: 6px; }
 
+    /* STATUS BADGES */
+    .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-left: 5px; vertical-align: middle; }
+    .status-dot.testing { background: var(--gold); }
+    .status-dot.godkjent { background: var(--success); }
+    .status-dot.forkastet { background: var(--danger); }
+    .status-btn { padding: 4px 12px; font-size: 12px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; background: transparent; color: var(--muted); transition: all .15s; }
+    .status-btn.active-testing { background: var(--warn-bg); color: var(--warn); border-color: #d4a000; }
+    .status-btn.active-godkjent { background: var(--success-bg); color: var(--success); border-color: var(--success); }
+    .status-btn.active-forkastet { background: var(--danger-bg); color: var(--danger); border-color: var(--danger); }
+
+    /* DISPLAY TOGGLE */
+    .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .toggle-label { font-size: 13px; color: var(--muted); }
+    .toggle { position: relative; width: 40px; height: 22px; cursor: pointer; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 22px; transition: .2s; }
+    .toggle-slider:before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .2s; }
+    .toggle input:checked + .toggle-slider { background: var(--success); }
+    .toggle input:checked + .toggle-slider:before { transform: translateX(18px); }
+
+    /* NOTES */
+    .note-item { padding: 10px 12px; background: var(--bg); border-radius: var(--radius); margin-bottom: 6px; position: relative; }
+    .note-text { font-size: 13px; line-height: 1.5; white-space: pre-wrap; }
+    .note-meta { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .note-del { position: absolute; top: 8px; right: 8px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 14px; opacity: 0; transition: opacity .15s; }
+    .note-item:hover .note-del { opacity: 1; }
+    .note-input-row { display: flex; gap: 8px; margin-top: 8px; }
+    .note-input-row textarea { flex: 1; min-height: 36px; }
+    .note-add-btn { padding: 7px 16px; font-size: 13px; border: 1px solid var(--success); border-radius: var(--radius); background: var(--success-bg); color: var(--success); cursor: pointer; white-space: nowrap; flex-shrink: 0; align-self: flex-end; }
+
+    /* DUPLICATE BUTTON */
+    .dup-btn { padding: 4px 8px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 11px; cursor: pointer; background: transparent; color: var(--info); margin-right: 6px; }
+    .dup-btn:hover { background: var(--info-bg); border-color: var(--info); }
+
+    /* LAGER */
+    .lager-row { display: grid; grid-template-columns: 2fr 0.7fr 0.5fr 0.6fr 1fr 0.6fr 0.6fr 50px; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .lager-row input, .lager-row select { background: var(--bg); }
+    .lager-row input:focus { background: var(--card); border-color: var(--gold); }
+    .stock-status { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 10px; text-align: center; }
+    .stock-ok { background: var(--success-bg); color: var(--success); }
+    .stock-low { background: var(--warn-bg); color: var(--warn); }
+    .stock-empty { background: var(--danger-bg); color: var(--danger); }
+    .stock-adj { display: flex; align-items: center; gap: 2px; }
+    .stock-adj button { width: 24px; height: 24px; border: 1px solid var(--border); border-radius: var(--radius); background: transparent; cursor: pointer; font-size: 15px; font-weight: 700; color: var(--muted); display: flex; align-items: center; justify-content: center; }
+    .stock-adj button:hover { background: var(--bg); color: var(--text); }
+    .stock-adj input { width: 50px; text-align: center; }
+    .order-section { margin-top: 20px; padding: 20px; background: var(--bg); border-radius: var(--radius-lg); }
+    .order-group { margin-bottom: 16px; }
+    .order-group-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; padding-bottom: 4px; border-bottom: 2px solid var(--gold); }
+    .order-row { display: grid; grid-template-columns: 2fr 1fr 0.6fr 1fr; gap: 8px; padding: 4px 0; font-size: 13px; }
+    .order-total { font-weight: 700; text-align: right; padding-top: 6px; border-top: 1px solid var(--border); margin-top: 4px; font-size: 13px; }
+    .order-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .order-actions button { padding: 8px 16px; border-radius: var(--radius); font-size: 13px; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text); }
+    .order-actions button:hover { background: var(--bg); }
+    .order-actions .primary { background: var(--black); color: var(--cream); border-color: var(--black); }
+
+    @media print {
+      header, .tab-row, .export-btn, .order-actions, .toast { display: none !important; }
+      .container { padding: 0; max-width: 100%; }
+      .order-section { background: white; padding: 0; }
+    }
+
+    /* DASHBOARD */
+    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .dash-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; }
+    .dash-card-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 8px; }
+    .dash-big { font-size: 32px; font-weight: 800; line-height: 1; }
+    .dash-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .dash-list { list-style: none; padding: 0; }
+    .dash-list li { font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .dash-list li:last-child { border-bottom: none; }
+    .dash-action { display: block; width: 100%; padding: 10px; font-size: 13px; font-weight: 600; text-align: center; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); cursor: pointer; color: var(--text); margin-top: 8px; transition: background .15s; }
+    .dash-action:hover { background: var(--bg); }
+    @media (max-width: 600px) { .dash-grid { grid-template-columns: 1fr; } }
+
+    /* SYNC INDICATOR */
+    .sync-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; transition: all .2s; }
+    .sync-badge.online { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+    .sync-badge.offline { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
+
     @media (max-width: 600px) {
       .ing-header, .ing-row { grid-template-columns: 2fr 0.8fr 0.8fr 28px; }
       .ing-header .col-head:nth-child(4), .ing-row input:nth-child(4) { display: none; }
       .lib-row { grid-template-columns: 2fr 0.8fr 0.8fr 28px; }
-      .lib-row :nth-child(4) { display: none; }
+      .lib-row :nth-child(4), .lib-row :nth-child(5), .lib-row :nth-child(6) { display: none; }
       .price-row { grid-template-columns: 1fr; }
     }
   </style>
@@ -193,65 +295,122 @@
 <body>
 
 <header>
-  <div class="logo">
-    <img src="logo.png" alt="The Smash">
-    <div class="logo-divider"></div>
-    <span class="header-sub">Menyplanlegger</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <button onclick="resetAll()" style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(160,32,26,.2);color:#f08080;border:none;cursor:pointer;white-space:nowrap">Nullstill data</button>
-    <a href="display.html" target="_blank" style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(232,197,71,.15);color:var(--gold);text-decoration:none;white-space:nowrap">Menyvisning \u2197</a>
-    <span class="save-badge" id="save-badge">Laster...</span>
+  <div class="header-top">
+    <div class="logo" onclick="setSection('dashboard')" style="cursor:pointer">
+      <img src="logo.png" alt="The Smash">
+    </div>
+    <nav class="header-nav" id="main-nav"></nav>
+    <div class="header-right">
+      <a href="display.html" target="_blank" style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(232,197,71,.15);color:var(--gold);text-decoration:none;white-space:nowrap">Menyvisning &#8599;</a>
+    </div>
   </div>
 </header>
 
 <div class="container">
-  <div class="tab-row" id="main-tabs"></div>
+  <div class="tab-row" id="sub-tabs"></div>
   <div id="main-pane"></div>
-  <button class="export-btn" id="export-btn" onclick="exportDocx()">Last ned Word-dokument</button>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);align-items:center">
+    <button onclick="exportData()" style="padding:8px 16px;font-size:12px;border-radius:var(--radius);background:var(--bg);border:1px solid var(--border);cursor:pointer;color:var(--muted);white-space:nowrap">Eksporter JSON</button>
+    <button onclick="exportDocx()" style="padding:8px 16px;font-size:12px;border-radius:var(--radius);background:var(--bg);border:1px solid var(--border);cursor:pointer;color:var(--muted);white-space:nowrap">Eksporter Word</button>
+    <label style="padding:8px 16px;font-size:12px;border-radius:var(--radius);background:var(--bg);border:1px solid var(--border);cursor:pointer;color:var(--muted);white-space:nowrap"><input type="file" accept=".json" onchange="importData(event)" style="display:none">Importer data</label>
+    <span style="flex:1"></span>
+    <span class="save-badge" id="save-badge">Laster...</span>
+    <span class="sync-badge" id="sync-badge">...</span>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 <script>
 const ALLERGENS = ['Gluten','Egg','Melk','Sennep','Selleri','Soya','Sulfitt','Sesam','N\u00f8tter'];
 const SK = 'thesmash-menu-v1';
 const LK = 'thesmash-lib-v1';
 
+// ---- FIREBASE CONFIG ----
+// Bytt ut med ditt eget Firebase-prosjekt
+const firebaseConfig = {
+  apiKey: "AIzaSyDw4Gdk6u1RCCXnRH6yybc7BTRhE0iNrP8",
+  authDomain: "the-smash-drift.firebaseapp.com",
+  databaseURL: "https://the-smash-drift-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "the-smash-drift",
+  storageBucket: "the-smash-drift.firebasestorage.app",
+  messagingSenderId: "849543974406",
+  appId: "1:849543974406:web:af2cfeb19d769d63e57d87"
+};
+
+let db = null;
+let firebaseReady = false;
+let ignoreNextFirebase = false;
+
+if (firebaseConfig.apiKey !== 'REPLACE_ME') {
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    firebaseReady = true;
+  } catch(e) {
+    console.warn('Firebase init failed, using localStorage only:', e);
+  }
+}
+
+function setSyncBadge(online) {
+  const el = document.getElementById('sync-badge');
+  if (!el) return;
+  if (!firebaseReady) { el.textContent = 'Lokal'; el.className = 'sync-badge offline'; return; }
+  el.textContent = online ? 'Synkronisert' : 'Frakoblet';
+  el.className = 'sync-badge ' + (online ? 'online' : 'offline');
+}
+
 const DEFAULT = {
   burgers: [
-    { id:'classic', name:'The Classic', pris_dobbel:'149', pris_enkel:'109', pattyMode:'both', isNew:false,
+    { id:'classic', name:'The Classic', pris_dobbel:'149', pris_enkel:'109', pattyMode:'both', isNew:false, status:'godkjent', showOnDisplay:true, bestselger:true, notes:[],
       ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:'Chuck/brisket, fersk'},{n:'Brioche bun',w:'85g',c:'6',note:'Lett grilles'},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:'Prosessert'},{n:'Gul l\u00f8k, grillet',w:'40g',c:'1',note:'Karamellisert'},{n:'Cornichons / pickles',w:'20g',c:'1',note:''},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Dobbel er standard. Kunden velger aktivt liten.' },
-    { id:'spicy', name:'The Spicy', pris_dobbel:'159', pris_enkel:'119', pattyMode:'both', isNew:false,
+    { id:'spicy', name:'The Spicy', pris_dobbel:'159', pris_enkel:'119', pattyMode:'both', isNew:false, status:'godkjent', showOnDisplay:true, notes:[],
       ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:''},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:''},{n:'Gul l\u00f8k, grillet',w:'40g',c:'1',note:''},{n:'Syltet jalape\u00f1o',w:'25g',c:'1.5',note:''},{n:'Franks RedHot sauce',w:'8g',c:'0.5',note:'Drypp p\u00e5 patty'},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Franks RedHot p\u00e5 patty rett etter smashing.' },
-    { id:'bbq', name:'BBQ Bacon', pris_dobbel:'169', pris_enkel:'129', pattyMode:'both', isNew:false,
+    { id:'bbq', name:'BBQ Bacon', pris_dobbel:'169', pris_enkel:'129', pattyMode:'both', isNew:false, status:'godkjent', showOnDisplay:true, notes:[],
       ings:[{n:'Kj\u00f8ttdeig 80/20 (dobbel)',w:'2 \u00d7 80g',c:'18',note:''},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'2 \u00d7 18g',c:'6',note:''},{n:'R\u00f8kt bacon',w:'3 \u00d7 15g',c:'6',note:'Spr\u00f8stek'},{n:'Fritert l\u00f8kring',w:'2 stk',c:'2',note:''},{n:'Hickory BBQ-saus',w:'15g',c:'1',note:'Bulls Eye'},{n:'Majones',w:'10g',c:'0.5',note:'Hellmanns'}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'' },
-    { id:'chicken', name:'Chicken Smash', pris_dobbel:'139', pris_enkel:'109', pattyMode:'both', isNew:false,
+    { id:'chicken', name:'Chicken Smash', pris_dobbel:'139', pris_enkel:'109', pattyMode:'both', isNew:false, status:'godkjent', showOnDisplay:true, notes:[],
       ings:[{n:'Kyllingfilet, tynne skiver',w:'150g',c:'18',note:'Bankes flat'},{n:'Brioche bun',w:'85g',c:'6',note:''},{n:'American cheddar',w:'1 \u00d7 18g',c:'3',note:''},{n:'Coleslaw (hjemmelaget)',w:'40g',c:'2',note:''},{n:'Cornichons / pickles',w:'20g',c:'1',note:''},{n:'The Smash Sauce',w:'20g',c:'1.5',note:''}],
       al:['Gluten','Egg','Melk','Sennep','Sulfitt'], tips:'Kylling til 75\u00b0C. Aldri bland med biff p\u00e5 platen.' },
-    { id:'kids', name:'Kids', pris_dobbel:'79', pris_enkel:'', pattyMode:'dobbel', isNew:false,
+    { id:'kids', name:'Kids', pris_dobbel:'79', pris_enkel:'', pattyMode:'dobbel', isNew:false, status:'godkjent', showOnDisplay:true, notes:[],
       ings:[{n:'Kj\u00f8ttdeig 80/20 (enkel)',w:'80g',c:'9',note:''},{n:'Brioche bun (liten)',w:'70g',c:'5',note:''},{n:'American cheddar',w:'1 \u00d7 18g',c:'3',note:''},{n:'Ketchup',w:'15g',c:'0.3',note:'Heinz'}],
       al:['Gluten','Melk','Sulfitt'], tips:'' },
   ],
   sider: [
-    {name:'Plain fries stor',pris:'65',ings:[{n:'Frossen frites (9mm)',w:'250g',c:'5',note:'Avanta eller McCain Premium'},{n:'Solsikkeolje (frityr)',w:'~5g',c:'0.5',note:'190\u00b0C, 3\u20134 minutter'},{n:'Flaksalt',w:'1g',c:'0.1',note:'Dryss rett fra frityren'}]},
-    {name:'Plain fries liten',pris:'45',ings:[{n:'Frossen frites (9mm)',w:'150g',c:'3',note:'Avanta eller McCain Premium'},{n:'Solsikkeolje (frityr)',w:'~5g',c:'0.5',note:'190\u00b0C, 3\u20134 minutter'},{n:'Flaksalt',w:'1g',c:'0.1',note:'Dryss rett fra frityren'}]},
-    {name:'Loaded fries',pris:'89',ings:[{n:'Frossen frites (9mm)',w:'250g',c:'5',note:''},{n:'Cheddar-saus (varm)',w:'50g',c:'3',note:'Velveeta eller hjemmelaget'},{n:'Bacon crumbles',w:'25g',c:'3',note:'Spr\u00f8stekt og hakket'},{n:'Cornichons, finhakket',w:'15g',c:'0.5',note:''},{n:'The Smash Sauce, drypp',w:'10g',c:'0.75',note:''}]},
-    {name:'Brus 0,33L',pris:'30',ings:[]},
-    {name:'Vann 0,5L',pris:'20',ings:[]},
-    {name:'The Smash-kombo',pris:'210',ings:[]},
+    {name:'Plain fries stor',pris:'65',showOnDisplay:true,desc:'',ings:[{n:'Frossen frites (9mm)',w:'250g',c:'5',note:'Avanta eller McCain Premium'},{n:'Solsikkeolje (frityr)',w:'~5g',c:'0.5',note:'190\u00b0C, 3\u20134 minutter'},{n:'Flaksalt',w:'1g',c:'0.1',note:'Dryss rett fra frityren'}]},
+    {name:'Plain fries liten',pris:'45',showOnDisplay:true,desc:'',ings:[{n:'Frossen frites (9mm)',w:'150g',c:'3',note:'Avanta eller McCain Premium'},{n:'Solsikkeolje (frityr)',w:'~5g',c:'0.5',note:'190\u00b0C, 3\u20134 minutter'},{n:'Flaksalt',w:'1g',c:'0.1',note:'Dryss rett fra frityren'}]},
+    {name:'Loaded fries',pris:'89',showOnDisplay:true,desc:'',ings:[{n:'Frossen frites (9mm)',w:'250g',c:'5',note:''},{n:'Cheddar-saus (varm)',w:'50g',c:'3',note:'Velveeta eller hjemmelaget'},{n:'Bacon crumbles',w:'25g',c:'3',note:'Spr\u00f8stekt og hakket'},{n:'Cornichons, finhakket',w:'15g',c:'0.5',note:''},{n:'The Smash Sauce, drypp',w:'10g',c:'0.75',note:''}]},
+    {name:'Brus 0,33L',pris:'30',showOnDisplay:true,desc:'',ings:[],variants:[{name:'Coca-Cola',available:true},{name:'Coca-Cola Zero',available:true},{name:'Fanta',available:true},{name:'Sprite',available:true},{name:'Solo',available:true}]},
+    {name:'Milkshake',pris:'69',showOnDisplay:true,desc:'',ings:[],variants:[{name:'Vanilje',available:true},{name:'Sjokolade',available:true},{name:'Jordb\u00e6r',available:true},{name:'Oreo',available:true},{name:'Peanut Butter',available:true}]},
+    {name:'Smoothie',pris:'79',showOnDisplay:true,desc:'Ferskpresset daglig',ings:[],variants:[{name:'Mango & Pasjon',available:true},{name:'B\u00e6rmix',available:true},{name:'Gr\u00f8nn Boost',available:true},{name:'Tropisk',available:true},{name:'Banan & Pean\u00f8ttsm\u00f8r',available:true}]},
+    {name:'Vann 0,5L',pris:'20',showOnDisplay:true,desc:'',ings:[]},
+    {name:'The Smash-kombo',pris:'210',showOnDisplay:true,ings:[{n:'The Classic (dobbel)',w:'1 stk',c:'33.5',note:''},{n:'Plain fries stor',w:'1 stk',c:'5.6',note:''},{n:'Brus 0,33L',w:'1 stk',c:'5',note:''}]},
   ],
-  sauser: [
+  sauser: [],
+  ukensTilbud: { enabled: false, title: 'Ukens tilbud', burger: '', side: '', drikke: '', pris: '', desc: '' },
+  komboSetup: { burger: 'The Classic', side: 'Plain fries stor', drikke: 'Brus 0,33L' },
+  oppskrifter: [
     { name:'The Smash Sauce', desc:'Signatursaus \u2014 brukes p\u00e5 alle burgere',
       ings:[{n:'Hellmanns majones',a:'200g',note:'Base'},{n:'Dijon-sennep',a:'20g',note:''},{n:'Ketchup (Heinz)',a:'20g',note:''},{n:'Sylteagurk-lake',a:'15ml',note:'Fra cornichons-glasset'},{n:'Worcestershire sauce',a:'8ml',note:'Umami-dybde'},{n:'Hvitl\u00f8kpulver',a:'3g',note:''},{n:'L\u00f8kpulver',a:'3g',note:''},{n:'R\u00f8kt paprika',a:'4g',note:''},{n:'Sukker',a:'5g',note:'Balanserer syre'},{n:'Hvit pepper',a:'1g',note:''}],
       steps:['Bland alle ingredienser med slikkepott \u2014 ikke visp.','Smak til med salt og ekstra sylteagurk-lake.','Kj\u00f8l ned minst 2 timer f\u00f8r bruk.','Kast etter 24 timer i vognen.'] },
     { name:'The Smash Hot Sauce', desc:'Varm variant \u2014 The Spicy og som ekstra tilbeh\u00f8r',
       ings:[{n:'Hellmanns majones',a:'200g',note:'Base'},{n:'Franks RedHot',a:'40ml',note:''},{n:'Syltet jalape\u00f1o-lake',a:'20ml',note:''},{n:'Hvitl\u00f8kpulver',a:'4g',note:''},{n:'R\u00f8kt paprika',a:'4g',note:''},{n:'Lime juice (fersk)',a:'10ml',note:'Balanserer varmen'},{n:'Honning',a:'8g',note:'Balanserer styrke'},{n:'Hvit pepper',a:'1g',note:''}],
       steps:['Bland majones og Franks RedHot til jevn farge.','Tilsett jalape\u00f1o-lake og lime.','R\u00f8r inn t\u00f8rre krydder og honning.','Smak til.','Kj\u00f8l ned 2 timer. Kast etter 24t.'] },
+    { name:'Smash Patty', desc:'Forming og smashing av kj\u00f8ttpatty',
+      ings:[{n:'Kj\u00f8ttdeig 80/20',a:'80g',note:'Per patty. Kald fra kj\u00f8leskap.'}],
+      steps:['Vei opp 80g kj\u00f8ttdeig per patty.','Form til l\u00f8s ball \u2014 IKKE kna/press.','Legg p\u00e5 ekstremt varm plancha (250\u00b0C+).','Smash umiddelbart med bred spatel \u2014 \u00e9n hard press.','Salt og pepper rett etter smashing.','Stek 60\u201390 sekunder, IKKE flytt.','Legg ost p\u00e5, vend, 30 sek til. Ferdig.'] },
+    { name:'Grille Brioche Bun', desc:'Lett grilling av bun for riktig tekstur',
+      ings:[{n:'Brioche bun',a:'1 stk',note:'85g standard, 70g kids'},{n:'Sm\u00f8r',a:'5g',note:'Mykt, romtemperert'}],
+      steps:['Del bun i to.','Sm\u00f8r tynt lag sm\u00f8r p\u00e5 snittflatene.','Legg med snittflaten ned p\u00e5 plancha (middels varme).','Grill 20\u201330 sekunder til gyllen. IKKE brenn.','L\u00f8ft og legg til side. Klar for montering.'] },
+    { name:'Karamellisert L\u00f8k', desc:'Sakte grillet l\u00f8k til burgere',
+      ings:[{n:'Gul l\u00f8k',a:'500g',note:'Skjært i tynne ringer'},{n:'Solsikkeolje',a:'15ml',note:''},{n:'Salt',a:'2g',note:''}],
+      steps:['Skj\u00e6r l\u00f8k i tynne ringer.','Varm olje p\u00e5 middels varme.','Legg i l\u00f8k, salt lett.','R\u00f8r hvert 3\u20134 minutt i 20\u201325 min.','Ferdig n\u00e5r gyllen og myk \u2014 ikke brent.','Oppbevar i GN-boks, holder 2 dager kj\u00f8lt.'] },
   ]
 };
 
@@ -277,18 +436,26 @@ const DEFAULT_LIB = [
 
 let S = JSON.parse(JSON.stringify(DEFAULT));
 let LIB = [...DEFAULT_LIB.map(x => ({...x}))];
-let tab = 'b0';
+let tab = 'dashboard';
 let sausIdx = 0;
+let oppIdx = 0;
 let picker = null;
 let saveTimer = null;
 let siderExpanded = {};
 let libExpanded = {};
 
-// —— STORAGE ————————————————————————————————————————————
+// ---- STORAGE (Firebase + localStorage fallback) ----
 
 function save() {
   try { localStorage.setItem(SK, JSON.stringify(S)); localStorage.setItem(LK, JSON.stringify(LIB)); }
   catch(e) {}
+
+  if (firebaseReady && db) {
+    ignoreNextFirebase = true;
+    db.ref('menu').set(S).catch(e => console.error('Firebase save menu:', e));
+    db.ref('library').set(LIB).catch(e => console.error('Firebase save lib:', e));
+  }
+
   dirty = false;
   setSaveBadge('Lagret \u2713', true);
 }
@@ -302,14 +469,12 @@ function scheduleSave() {
   saveTimer = setTimeout(save, 400);
 }
 
-// Flush ulagrede endringer ved lukking/navigering/tabbytte
 window.addEventListener('beforeunload', () => { if (dirty) save(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden && dirty) save(); });
-
-// Periodisk backup hvert 5. sekund
 setInterval(() => { if (dirty) save(); }, 5000);
 
 function load() {
+  // Load from localStorage first (instant)
   try {
     const m = localStorage.getItem(SK);
     if (m) {
@@ -324,31 +489,165 @@ function load() {
       if (Array.isArray(parsed)) LIB = parsed;
     }
   } catch(e) { console.error('Feil ved lasting av bibliotek:', e); }
-  // Sørg for at alle LIB-elementer har riktig struktur
-  LIB = LIB.map(l => ({n: l.n||'', w: l.w||'', c: l.c||'0', note: l.note||'', recipe: l.recipe||''}));
+
+  // Migrate: ensure new fields exist on all items
+  migrateData();
+
+  LIB = LIB.map(l => ({
+    n: l.n||'', w: l.w||'', c: l.c||'0', note: l.note||'', recipe: l.recipe||'',
+    stock: l.stock !== undefined ? l.stock : 0,
+    unit: l.unit || 'stk',
+    minStock: l.minStock !== undefined ? l.minStock : 0,
+    supplier: l.supplier || '',
+    orderQty: l.orderQty !== undefined ? l.orderQty : 0,
+    subIngs: l.subIngs || [],
+    batchSize: l.batchSize !== undefined ? l.batchSize : 0,
+    batchUnit: l.batchUnit || ''
+  }));
+
+  // Persist migrated data back to localStorage so display.html gets updated fields
+  try { localStorage.setItem(SK, JSON.stringify(S)); localStorage.setItem(LK, JSON.stringify(LIB)); } catch(e) {}
+
   setSaveBadge('Innlastet \u2713', true);
   render();
+
+  // Then listen for Firebase updates (realtime sync)
+  if (firebaseReady && db) {
+    db.ref('menu').on('value', snap => {
+      if (ignoreNextFirebase) { ignoreNextFirebase = false; return; }
+      const val = snap.val();
+      if (val && val.burgers) {
+        S = val;
+        migrateData();
+        localStorage.setItem(SK, JSON.stringify(S));
+        render();
+        setSaveBadge('Synkronisert \u2713', true);
+      }
+    });
+    db.ref('library').on('value', snap => {
+      const val = snap.val();
+      if (val && Array.isArray(val)) {
+        LIB = val.map(l => ({n: l.n||'', w: l.w||'', c: l.c||'0', note: l.note||'', recipe: l.recipe||''}));
+        localStorage.setItem(LK, JSON.stringify(LIB));
+        if (tab === 'lib') render();
+      }
+    });
+
+    db.ref('.info/connected').on('value', snap => {
+      setSyncBadge(snap.val() === true);
+    });
+  } else {
+    setSyncBadge(false);
+  }
 }
 
-function resetAll() {
-  if (!confirm('Nullstill ALT til standardverdier? Alle endringer g\u00e5r tapt.')) return;
-  localStorage.removeItem(SK);
-  localStorage.removeItem(LK);
-  S = JSON.parse(JSON.stringify(DEFAULT));
-  LIB = DEFAULT_LIB.map(x => ({...x}));
-  tab = 'b0';
-  sausIdx = 0;
-  save();
-  render();
-  toast('Alt nullstilt');
+function migrateData() {
+  S.burgers.forEach(b => {
+    if (!b.status) b.status = b.isNew ? 'testing' : 'godkjent';
+    if (b.showOnDisplay === undefined) b.showOnDisplay = true;
+    if (!b.notes) b.notes = [];
+    if (b.bestselger === undefined) b.bestselger = false;
+    if (b.utsolgt === undefined) b.utsolgt = false;
+    if (b.solgt === undefined) b.solgt = 0;
+  });
+  if (S.sider) S.sider.forEach(s => {
+    if (s.showOnDisplay === undefined) s.showOnDisplay = true;
+    if (s.desc === undefined) s.desc = '';
+    if (!s.variants) s.variants = [];
+    if (s.utsolgt === undefined) s.utsolgt = false;
+    if (s.solgt === undefined) s.solgt = 0;
+  });
+  // Sjekklister
+  if (!S.sjekklister) S.sjekklister = {
+    aapning: [
+      {text:'Sjekk frityrolje \u2014 bytt om n\u00f8dvendig', done:false},
+      {text:'Varm opp plancha til 250\u00b0C+', done:false},
+      {text:'Sjekk sausbeholdning \u2014 lag batch om n\u00f8dvendig', done:false},
+      {text:'Fyll brus-kj\u00f8ler', done:false},
+      {text:'Sjekk at alle ingredienser er p\u00e5 plass', done:false},
+      {text:'Sett opp menyskjerm', done:false},
+    ],
+    stenging: [
+      {text:'Rengj\u00f8r plancha', done:false},
+      {text:'T\u00f8m og filtrer frityrolje', done:false},
+      {text:'Kast saus eldre enn 24t', done:false},
+      {text:'Oppdater varebeholdning', done:false},
+      {text:'Rengj\u00f8r alle overflater', done:false},
+      {text:'T\u00f8m s\u00f8ppel', done:false},
+    ],
+    markedsforing: [
+      {text:'Ta bilde/video av burger under tilberedning \u2014 vis smashing, ost som smelter, dampende patty', done:false},
+      {text:'Post Instagram Story med lokasjon-tag og \u00e5pningstider i dag', done:false},
+      {text:'Del \u00e9n kundeomtale, anmeldelse eller tagged bilde i Stories', done:false},
+      {text:'Svar p\u00e5 alle kommentarer og DMs innen 1 time', done:false},
+      {text:'Oppdater Facebook med kort post \u2014 dagens meny, v\u00e6r, stemning', done:false},
+      {text:'Planlegg \u00e9n uke-post: kulissene bak, ny oppskrift, eller kundehistorie', done:false},
+    ]
+  };
+  // Holdbarhet
+  if (!S.holdbarhet) S.holdbarhet = [];
+  // Daglig logg
+  if (!S.dagligLogg) S.dagligLogg = [];
+  // Kalender
+  if (!S.kalender) S.kalender = [];
+  if (!S.oppskrifter) S.oppskrifter = DEFAULT.oppskrifter ? JSON.parse(JSON.stringify(DEFAULT.oppskrifter)) : [];
+  if (!S.ukensTilbud) S.ukensTilbud = { enabled: false, title: 'Ukens tilbud', burger: '', side: '', drikke: '', pris: '', desc: '' };
+  if (!S.komboSetup) S.komboSetup = { enabled: true, burger: '', side: '', drikke: '' };
+  if (S.komboSetup.enabled === undefined) S.komboSetup.enabled = true;
+  // Migrate: move sauser into oppskrifter
+  if (S.sauser && S.sauser.length > 0) {
+    for (const s of S.sauser) {
+      const exists = S.oppskrifter.find(o => o.name.toLowerCase() === s.name.toLowerCase());
+      if (!exists) S.oppskrifter.push(s);
+    }
+    S.sauser = [];
+  }
 }
+
+function exportData() {
+  const data = { menu: S, library: LIB };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'the-smash-data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Data eksportert');
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (data.menu && data.menu.burgers) {
+        S = data.menu;
+        migrateData();
+        if (Array.isArray(data.library)) LIB = data.library;
+        save();
+        tab = 'b0';
+        render();
+        toast('Data importert');
+      } else {
+        toast('Ugyldig fil \u2014 mangler menydata');
+      }
+    } catch(err) {
+      toast('Kunne ikke lese filen');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
 
 function setSaveBadge(msg, ok=false) {
   const el = document.getElementById('save-badge');
   if (el) { el.textContent = msg; el.className = 'save-badge' + (ok ? ' saved' : ''); }
 }
 
-// —— TOAST ——————————————————————————————————————————————
+// ---- TOAST ----
 
 function toast(msg) {
   const el = document.getElementById('toast');
@@ -356,9 +655,24 @@ function toast(msg) {
   setTimeout(() => el.classList.remove('show'), 2200);
 }
 
-// —— HELPERS ————————————————————————————————————————————
+// ---- HELPERS ----
 
 function cost(ings) { return ings.reduce((a, i) => a + parseFloat(i.c || '0'), 0); }
+
+function updateMargin(i) {
+  const b = S.burgers[i];
+  const c = cost(b.ings);
+  const pm0 = b.pattyMode || 'both';
+  const pris = parseFloat(pm0 === 'enkel' ? b.pris_enkel : b.pris_dobbel) || 0;
+  const margin = pris > 0 ? ((pris - c) / pris * 100) : 0;
+  const marginColor = margin >= 75 ? 'var(--success)' : margin >= 60 ? 'var(--warn)' : 'var(--danger)';
+  const bar = document.querySelector('.margin-bar');
+  if (bar) {
+    const vals = bar.querySelectorAll('.mb-val');
+    if (vals[1]) vals[1].textContent = pris + ' kr';
+    if (vals[2]) { vals[2].textContent = fmt(margin) + '%'; vals[2].style.color = marginColor; }
+  }
+}
 function fmt(n) { return Math.round(n * 10) / 10; }
 function esc(s) { if (s == null) return ''; const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
 
@@ -366,7 +680,7 @@ function saveToLib(ing) {
   if (!ing.n || !ing.n.trim()) { toast('Ingrediens mangler navn'); return; }
   const ex = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
   if (ex) { Object.assign(ex, ing); toast('Oppdatert i bibliotek'); }
-  else { LIB.push({...ing}); toast('Lagret: ' + ing.n); }
+  else { LIB.push({...ing, stock:0, unit:'stk', minStock:0, supplier:'', orderQty:0, recipe:''}); toast('Lagret: ' + ing.n); }
   scheduleSave();
   if (tab === 'lib') render();
 }
@@ -402,44 +716,103 @@ function closePicker() {
   }
 }
 
-// —— RENDER —————————————————————————————————————————————
+// ---- RENDER ----
 
-function renderTabs() {
-  const tabs = [
-    ...S.burgers.map((b, i) => `<button class="tab${tab==='b'+i?' on':''}" onclick="tab='b${i}';render()">${esc(b.name)}${b.isNew?'<span class="new-badge">NY</span>':''}</button>`),
-    `<button class="tab${tab==='sider'?' on':''}" onclick="tab='sider';render()">Tilbeh\u00f8r & drikke</button>`,
-    `<button class="tab${tab==='sauser'?' saus-on':''}" onclick="tab='sauser';render()">Sauser</button>`,
-    `<button class="tab${tab==='lib'?' lib-on':''}" onclick="tab='lib';render()">Bibliotek</button>`,
-    `<button class="tab-add" onclick="addBurger()">+ Ny burger</button>`,
+let section = 'meny'; // 'meny' | 'oppskrifter' | 'bibliotek' | 'lager'
+
+function getSection() {
+  if (tab === 'dashboard') return 'dashboard';
+  if (tab === 'kalender') return 'kalender';
+  if (tab === 'oppskrifter') return 'oppskrifter';
+  if (tab === 'lib') return 'bibliotek';
+  if (tab === 'lager') return 'lager';
+  if (tab === 'service') return 'service';
+  if (tab === 'drift') return 'drift';
+  if (tab.startsWith('b') || tab === 'sider') return 'meny';
+  return section;
+}
+
+function setSection(s) {
+  section = s;
+  if (s === 'dashboard') tab = 'dashboard';
+  else if (s === 'kalender') tab = 'kalender';
+  else if (s === 'bibliotek') tab = 'lib';
+  else if (s === 'meny' && !tab.startsWith('b') && tab !== 'sider') tab = 'b0';
+  else if (s === 'oppskrifter') tab = 'oppskrifter';
+  else if (s === 'lager') tab = 'lager';
+  else if (s === 'service') tab = 'service';
+  else if (s === 'drift') tab = 'drift';
+  render();
+}
+
+function renderNav() {
+  const s = getSection();
+  const lowCount = getLowStockCount();
+  const nav = [
+    `<button class="nav-btn${s==='dashboard'?' on':''}" onclick="setSection('dashboard')">Dashboard</button>`,
+    `<button class="nav-btn${s==='meny'?' on':''}" onclick="setSection('meny')">Menyvalg</button>`,
+    `<button class="nav-btn${s==='service'?' on':''}" onclick="setSection('service')">Service</button>`,
+    `<button class="nav-btn${s==='oppskrifter'?' on':''}" onclick="setSection('oppskrifter')">Oppskrifter</button>`,
+    `<button class="nav-btn${s==='lager'?' on':''}" onclick="setSection('lager')">Lager${lowCount>0?'<span class="nav-badge">'+lowCount+'</span>':''}</button>`,
+    `<button class="nav-btn${s==='drift'?' on':''}" onclick="setSection('drift')">Drift</button>`,
+    `<button class="nav-btn${s==='bibliotek'?' on':''}" onclick="setSection('bibliotek')">Bibliotek</button>`,
   ];
-  document.getElementById('main-tabs').innerHTML = tabs.join('');
+  document.getElementById('main-nav').innerHTML = nav.join('');
+}
+
+function renderSubTabs() {
+  const s = getSection();
+  const el = document.getElementById('sub-tabs');
+  if (s === 'meny') {
+    const tabs = [
+      ...S.burgers.map((b, i) => {
+        const st = b.status || 'godkjent';
+        const dotClass = 'status-dot ' + st;
+        return `<button class="tab${tab==='b'+i?' on':''}" onclick="tab='b${i}';render()">${esc(b.name)}<span class="${dotClass}"></span>${b.isNew?'<span class="new-badge">NY</span>':''}</button>`;
+      }),
+      `<button class="tab${tab==='sider'?' on':''}" onclick="tab='sider';render()">Tilbeh\u00f8r & drikke</button>`,
+      `<button class="tab-add" onclick="addBurger()">+ Ny burger</button>`,
+    ];
+    el.innerHTML = tabs.join('');
+  } else {
+    el.innerHTML = '';
+  }
 }
 
 function render() {
   try {
-    renderTabs();
+    renderNav();
+    renderSubTabs();
     const pane = document.getElementById('main-pane');
-    if (tab.startsWith('b')) {
+    if (tab === 'dashboard') {
+      pane.innerHTML = renderDashboard();
+    } else if (tab.startsWith('b')) {
       const i = parseInt(tab.slice(1));
       if (i < S.burgers.length) pane.innerHTML = renderBurger(i);
       else { tab = 'b0'; render(); return; }
     } else if (tab === 'sider') {
       pane.innerHTML = renderSider();
-    } else if (tab === 'sauser') {
-      pane.innerHTML = renderSauser();
+    } else if (tab === 'oppskrifter') {
+      pane.innerHTML = renderOppskrifter();
+    } else if (tab === 'service') {
+      pane.innerHTML = renderService();
+    } else if (tab === 'drift') {
+      pane.innerHTML = renderDrift();
     } else if (tab === 'lib') {
       pane.innerHTML = renderLibrary();
+    } else if (tab === 'lager') {
+      pane.innerHTML = renderLager();
     }
   } catch(e) {
     console.error('Render-feil:', e);
     document.getElementById('main-pane').innerHTML = `<div class="card" style="color:var(--danger)">
       <p>Noe gikk galt: ${e.message}</p>
-      <button class="add-row" onclick="resetAll()" style="margin-top:12px;color:var(--danger);border-color:var(--danger)">Nullstill alt til standardverdier</button>
+      <button class="add-row" onclick="location.reload()" style="margin-top:12px">Last inn siden p\u00e5 nytt</button>
     </div>`;
   }
 }
 
-// —— BURGER —————————————————————————————————————————————
+// ---- BURGER ----
 
 function renderBurger(i) {
   const b = S.burgers[i];
@@ -448,14 +821,35 @@ function renderBurger(i) {
   const pris = parseFloat(pm0 === 'enkel' ? b.pris_enkel : b.pris_dobbel) || 0;
   const margin = pris > 0 ? ((pris - c) / pris * 100) : 0;
   const marginColor = margin >= 75 ? 'var(--success)' : margin >= 60 ? 'var(--warn)' : 'var(--danger)';
+  const st = b.status || 'godkjent';
 
   let html = `<div class="card">`;
+
+  // Status + Display toggle row
+  html += `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">`;
+  html += `<div style="display:flex;align-items:center;gap:4px">
+    <span class="field-label" style="min-width:auto">Status:</span>
+    <button class="status-btn${st==='testing'?' active-testing':''}" onclick="S.burgers[${i}].status='testing';scheduleSave();render()">Testing</button>
+    <button class="status-btn${st==='godkjent'?' active-godkjent':''}" onclick="S.burgers[${i}].status='godkjent';scheduleSave();render()">Godkjent</button>
+    <button class="status-btn${st==='forkastet'?' active-forkastet':''}" onclick="S.burgers[${i}].status='forkastet';scheduleSave();render()">Forkastet</button>
+  </div>`;
+  html += `<div style="display:flex;gap:16px;align-items:center">
+    <div class="toggle-wrap">
+      <span class="toggle-label">Vis p\u00e5 display</span>
+      <label class="toggle"><input type="checkbox" ${b.showOnDisplay?'checked':''} onchange="S.burgers[${i}].showOnDisplay=this.checked;scheduleSave()"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="toggle-wrap">
+      <span class="toggle-label">\u2b50 Bestselger</span>
+      <label class="toggle"><input type="checkbox" ${b.bestselger?'checked':''} onchange="S.burgers[${i}].bestselger=this.checked;scheduleSave()"><span class="toggle-slider"></span></label>
+    </div>
+  </div>`;
+  html += `</div>`;
 
   // Navn & priser
   html += `<div class="sec">Produkt</div>`;
   html += `<div class="field-row">
     <span class="field-label">Navn</span>
-    <input value="${esc(b.name)}" oninput="S.burgers[${i}].name=this.value;scheduleSave();renderTabs()">
+    <input value="${esc(b.name)}" oninput="S.burgers[${i}].name=this.value;scheduleSave();renderSubTabs()">
   </div>`;
 
   // Patty mode
@@ -473,13 +867,13 @@ function renderBurger(i) {
   if (pm !== 'enkel') {
     html += `<div class="price-block">
       <span class="price-label">${pm==='both'?'Dobbel (standard)':'Pris'}</span>
-      <input type="number" value="${esc(b.pris_dobbel)}" oninput="S.burgers[${i}].pris_dobbel=this.value;scheduleSave();render()">
+      <input type="number" value="${esc(b.pris_dobbel)}" oninput="S.burgers[${i}].pris_dobbel=this.value;scheduleSave();updateMargin(${i})" onblur="render()">
     </div>`;
   }
   if (pm !== 'dobbel') {
     html += `<div class="price-block">
       <span class="price-label">${pm==='both'?'Liten':'Pris'}</span>
-      <input type="number" value="${esc(b.pris_enkel)}" placeholder="\u2014" oninput="S.burgers[${i}].pris_enkel=this.value;scheduleSave();render()">
+      <input type="number" value="${esc(b.pris_enkel)}" placeholder="\u2014" oninput="S.burgers[${i}].pris_enkel=this.value;scheduleSave();updateMargin(${i})" onblur="render()">
     </div>`;
   }
   html += `</div>`;
@@ -506,7 +900,7 @@ function renderBurger(i) {
     html += `<div class="ing-row">
       <input value="${esc(ing.n)}" oninput="S.burgers[${i}].ings[${j}].n=this.value;scheduleSave()">
       <input value="${esc(ing.w)}" oninput="S.burgers[${i}].ings[${j}].w=this.value;scheduleSave()">
-      <input type="number" step="0.1" value="${esc(ing.c)}" oninput="S.burgers[${i}].ings[${j}].c=this.value;scheduleSave();render()">
+      <input type="number" step="0.1" value="${esc(ing.c)}" oninput="S.burgers[${i}].ings[${j}].c=this.value;scheduleSave();updateMargin(${i})" onblur="render()">
       <input value="${esc(ing.note)}" placeholder="" oninput="S.burgers[${i}].ings[${j}].note=this.value;scheduleSave()">
       <div class="btn-pair">
         <button class="icon-btn save" onclick="saveToLib(S.burgers[${i}].ings[${j}])" title="Lagre til bibliotek">\u2191</button>
@@ -544,12 +938,39 @@ function renderBurger(i) {
     `<span class="al-tag${b.al && b.al.includes(a)?' on':''}" onclick="toggleAllergen(${i},'${a}')">${a}</span>`
   ).join('');
 
-  // Slett burger
-  if (b.isNew) {
-    html += `<div style="margin-top:20px;text-align:right">
-      <button class="tab-del" onclick="deleteBurger(${i})">Slett denne burgeren</button>
-    </div>`;
+  // Smaksnotater
+  html += `<div class="sec">Smaksnotater</div>`;
+  const notes = b.notes || [];
+  if (notes.length === 0) {
+    html += `<div style="font-size:13px;color:var(--muted);margin-bottom:8px">Ingen notater enn\u00e5. Legg til observasjoner fra testing.</div>`;
   }
+  // Newest first
+  const sortedNotes = [...notes].reverse();
+  sortedNotes.forEach((note, ni) => {
+    const realIdx = notes.length - 1 - ni;
+    html += `<div class="note-item">
+      <div class="note-text">${esc(note.text)}</div>
+      <div class="note-meta">${esc(note.date)}${note.author ? ' \u2014 ' + esc(note.author) : ''}</div>
+      <button class="note-del" onclick="S.burgers[${i}].notes.splice(${realIdx},1);scheduleSave();render()" title="Slett">\u00d7</button>
+    </div>`;
+  });
+  html += `<div class="note-input-row">
+    <textarea id="note-input-${i}" placeholder="Skriv en observasjon..." rows="2"></textarea>
+    <button class="note-add-btn" onclick="addNote(${i})">Legg til</button>
+  </div>`;
+
+  // Action buttons: Dupliser + Slett
+  html += `<div style="margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <div style="display:flex;gap:4px;align-items:center">
+      <span style="font-size:11px;color:var(--muted)">Rekkef\u00f8lge:</span>
+      <button class="icon-btn" onclick="moveBurger(${i},-1)" title="Flytt opp" ${i===0?'disabled style="opacity:.3"':''}>&#9650;</button>
+      <button class="icon-btn" onclick="moveBurger(${i},1)" title="Flytt ned" ${i===S.burgers.length-1?'disabled style="opacity:.3"':''}>&#9660;</button>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button class="dup-btn" onclick="duplicateBurger(${i})">Dupliser burger</button>
+      <button class="tab-del" onclick="deleteBurger(${i})">Slett denne burgeren</button>
+    </div>
+  </div>`;
 
   html += `</div>`;
   return html;
@@ -569,12 +990,38 @@ function addBurger() {
   const id = 'custom_' + Date.now();
   S.burgers.push({
     id, name:'Ny burger', pris_dobbel:'', pris_enkel:'', pattyMode:'both', isNew:true,
+    status:'testing', showOnDisplay:false, notes:[],
     ings:[], al:[], tips:''
   });
   tab = 'b' + (S.burgers.length - 1);
   scheduleSave();
   render();
   toast('Ny burger opprettet');
+}
+
+function moveBurger(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= S.burgers.length) return;
+  [S.burgers[i], S.burgers[j]] = [S.burgers[j], S.burgers[i]];
+  tab = 'b' + j;
+  scheduleSave();
+  render();
+}
+
+function moveStep(arr, i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= arr.length) return;
+  [arr[i], arr[j]] = [arr[j], arr[i]];
+  scheduleSave();
+  render();
+}
+
+function moveSide(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= S.sider.length) return;
+  [S.sider[i], S.sider[j]] = [S.sider[j], S.sider[i]];
+  scheduleSave();
+  render();
 }
 
 function deleteBurger(i) {
@@ -586,7 +1033,39 @@ function deleteBurger(i) {
   toast('Burger slettet');
 }
 
-// —— SIDER / TILBEH\u00d8R ———————————————————————————————————
+function duplicateBurger(i) {
+  const orig = S.burgers[i];
+  const copy = JSON.parse(JSON.stringify(orig));
+  copy.id = 'custom_' + Date.now();
+  copy.name = orig.name + ' (kopi)';
+  copy.status = 'testing';
+  copy.showOnDisplay = false;
+  copy.isNew = true;
+  copy.notes = [];
+  S.burgers.push(copy);
+  tab = 'b' + (S.burgers.length - 1);
+  scheduleSave();
+  render();
+  toast('Burger duplisert');
+}
+
+function addNote(bi) {
+  const input = document.getElementById('note-input-' + bi);
+  if (!input || !input.value.trim()) return;
+  if (!S.burgers[bi].notes) S.burgers[bi].notes = [];
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('no-NO', {day:'numeric',month:'short',year:'numeric'}) + ' ' + now.toLocaleTimeString('no-NO', {hour:'2-digit',minute:'2-digit'});
+  S.burgers[bi].notes.push({
+    text: input.value.trim(),
+    date: dateStr,
+    author: ''
+  });
+  scheduleSave();
+  render();
+  toast('Notat lagt til');
+}
+
+// ---- SIDER / TILBEH\u00d8R ----
 
 function renderSider() {
   let html = `<div class="card">`;
@@ -594,15 +1073,23 @@ function renderSider() {
 
   S.sider.forEach((s, i) => {
     if (!s.ings) s.ings = [];
+    if (s.showOnDisplay === undefined) s.showOnDisplay = true;
     const hasIngs = s.ings.length > 0;
     const expanded = siderExpanded && siderExpanded[i];
 
     html += `<div class="side-row" style="flex-wrap:wrap">
       <input value="${esc(s.name)}" style="flex:2" oninput="S.sider[${i}].name=this.value;scheduleSave()">
-      <input type="number" value="${esc(s.pris)}" style="flex:0.5;text-align:right" oninput="S.sider[${i}].pris=this.value;scheduleSave();render()">
+      <input type="number" value="${esc(s.pris)}" style="flex:0.5;text-align:right" oninput="S.sider[${i}].pris=this.value;scheduleSave()" onblur="render()">
       <span style="font-size:12px;color:var(--muted);flex-shrink:0">kr</span>
+      <label class="toggle" title="Vis p\u00e5 display"><input type="checkbox" ${s.showOnDisplay?'checked':''} onchange="S.sider[${i}].showOnDisplay=this.checked;scheduleSave()"><span class="toggle-slider"></span></label>
+      <button class="icon-btn" onclick="moveSide(${i},-1)" title="Flytt opp" ${i===0?'disabled style="opacity:.3"':''}>&#9650;</button>
+      <button class="icon-btn" onclick="moveSide(${i},1)" title="Flytt ned" ${i===S.sider.length-1?'disabled style="opacity:.3"':''}>&#9660;</button>
       <button class="icon-btn" onclick="toggleSiderExpand(${i})" title="${hasIngs ? 'Vis/skjul ingredienser' : 'Legg til ingredienser'}" style="${expanded?'background:var(--info-bg);color:var(--info);border-color:var(--info)':''}">\u25BC</button>
       <button class="icon-btn del" onclick="S.sider.splice(${i},1);scheduleSave();render()" title="Fjern">\u00d7</button>
+    </div>
+    <div style="padding:4px 12px 8px;margin-bottom:6px;background:var(--bg);border-radius:0 0 var(--radius) var(--radius);border:1px solid var(--border);border-top:none;margin-top:-7px">
+      <input value="${esc(s.desc||'')}" placeholder="Beskrivelse for display..." style="font-size:12px;color:var(--muted);border:1px dashed var(--border)" oninput="S.sider[${i}].desc=this.value;scheduleSave()">
+      ${renderVariants(i, s)}
     </div>`;
 
     if (expanded) {
@@ -624,7 +1111,7 @@ function renderSider() {
         html += `<div class="ing-row">
           <input value="${esc(ing.n)}" oninput="S.sider[${i}].ings[${j}].n=this.value;scheduleSave()">
           <input value="${esc(ing.w)}" oninput="S.sider[${i}].ings[${j}].w=this.value;scheduleSave()">
-          <input type="number" step="0.1" value="${esc(ing.c)}" oninput="S.sider[${i}].ings[${j}].c=this.value;scheduleSave();render()">
+          <input type="number" step="0.1" value="${esc(ing.c)}" oninput="S.sider[${i}].ings[${j}].c=this.value;scheduleSave()" onblur="render()">
           <input value="${esc(ing.note)}" oninput="S.sider[${i}].ings[${j}].note=this.value;scheduleSave()">
           <div class="btn-pair">
             <button class="icon-btn save" onclick="saveToLib(S.sider[${i}].ings[${j}])" title="Lagre til bibliotek">\u2191</button>
@@ -645,7 +1132,183 @@ function renderSider() {
     }
   });
 
-  html += `<button class="add-row" onclick="S.sider.push({name:'',pris:'',ings:[]});scheduleSave();render()">+ Legg til produkt</button>`;
+  html += `<button class="add-row" onclick="S.sider.push({name:'',pris:'',showOnDisplay:true,variants:[],ings:[]});scheduleSave();render()">+ Legg til produkt</button>`;
+  html += `</div>`;
+
+  // Kombo-oppsett
+  html += renderKomboSetup();
+
+  // Ukens tilbud
+  html += renderUkensTilbud();
+
+  return html;
+}
+
+function renderKomboSetup() {
+  const ks = S.komboSetup || {};
+  const burgerOpts = [];
+  S.burgers.filter(b => b.showOnDisplay !== false).forEach(b => {
+    const pm = b.pattyMode || 'both';
+    if (pm === 'both') {
+      burgerOpts.push(b.name + ' dobbel');
+      burgerOpts.push(b.name + ' enkel');
+    } else if (pm === 'dobbel') {
+      burgerOpts.push(b.name + ' dobbel');
+    } else {
+      burgerOpts.push(b.name + ' enkel');
+    }
+  });
+  const sideOptions = S.sider.filter(s => !s.name.toLowerCase().includes('kombo')).map(s => s.name);
+
+  let html = `<div class="card">`;
+  html += `<div style="display:flex;align-items:center;justify-content:space-between">`;
+  html += `<div class="sec" style="margin:0;border:none;padding:0">Kombo-oppsett</div>`;
+  html += `<div class="toggle-wrap">
+    <span class="toggle-label">Vis p\u00e5 display</span>
+    <label class="toggle"><input type="checkbox" ${S.komboSetup.enabled!==false?'checked':''} onchange="S.komboSetup.enabled=this.checked;updateKomboDisplay();scheduleSave()"><span class="toggle-slider"></span></label>
+  </div>`;
+  html += `</div>`;
+  html += `<div class="lib-note">Velg hva komboen inneholder. Beskrivelsen oppdateres automatisk p\u00e5 displayet.</div>`;
+
+  html += `<div class="field-row" style="margin-top:12px">
+    <span class="field-label">Burger</span>
+    <select onchange="S.komboSetup.burger=this.value;updateKomboDesc();scheduleSave();render()">
+      <option value="">Velg burger...</option>
+      ${burgerOpts.map(n => `<option value="${esc(n)}"${ks.burger===n?' selected':''}>${esc(n)}</option>`).join('')}
+    </select>
+  </div>`;
+
+  html += `<div class="field-row">
+    <span class="field-label">Side</span>
+    <select onchange="S.komboSetup.side=this.value;updateKomboDesc();scheduleSave();render()">
+      <option value="">Velg side...</option>
+      ${sideOptions.map(n => `<option value="${esc(n)}"${ks.side===n?' selected':''}>${esc(n)}</option>`).join('')}
+    </select>
+  </div>`;
+
+  html += `<div class="field-row">
+    <span class="field-label">Drikke</span>
+    <select onchange="S.komboSetup.drikke=this.value;updateKomboDesc();scheduleSave();render()">
+      <option value="">Velg drikke...</option>
+      ${sideOptions.map(n => `<option value="${esc(n)}"${ks.drikke===n?' selected':''}>${esc(n)}</option>`).join('')}
+    </select>
+  </div>`;
+
+  const parts = [ks.burger, ks.side, ks.drikke].filter(Boolean);
+  if (parts.length > 0) {
+    html += `<div style="margin-top:8px;padding:10px;background:var(--bg);border-radius:var(--radius);font-size:13px;color:var(--muted)">P\u00e5 display: <strong>${esc(parts.join(' + '))}</strong></div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function updateKomboDesc() {
+  const ks = S.komboSetup || {};
+  const parts = [ks.burger, ks.side, ks.drikke].filter(Boolean);
+  const kombo = S.sider.find(s => s.name.toLowerCase().includes('kombo'));
+  if (kombo) {
+    kombo.desc = parts.join(' + ');
+  }
+}
+
+function updateKomboDisplay() {
+  const kombo = S.sider.find(s => s.name.toLowerCase().includes('kombo'));
+  if (kombo) {
+    kombo.showOnDisplay = S.komboSetup.enabled !== false;
+  }
+}
+
+function renderUkensTilbud() {
+  const ut = S.ukensTilbud || {};
+  const utBurgerOpts = [];
+  S.burgers.forEach(b => {
+    const pm = b.pattyMode || 'both';
+    if (pm === 'both') {
+      utBurgerOpts.push(b.name + ' dobbel');
+      utBurgerOpts.push(b.name + ' enkel');
+    } else if (pm === 'dobbel') {
+      utBurgerOpts.push(b.name + ' dobbel');
+    } else {
+      utBurgerOpts.push(b.name + ' enkel');
+    }
+  });
+  const sideOptions = S.sider.filter(s => !s.name.toLowerCase().includes('kombo')).map(s => s.name);
+
+  let html = `<div class="card">`;
+  html += `<div style="display:flex;align-items:center;justify-content:space-between">`;
+  html += `<div class="sec" style="margin:0;border:none;padding:0">Ukens tilbud</div>`;
+  html += `<div class="toggle-wrap">
+    <span class="toggle-label">Aktiv p\u00e5 display</span>
+    <label class="toggle"><input type="checkbox" ${ut.enabled?'checked':''} onchange="S.ukensTilbud.enabled=this.checked;scheduleSave();render()"><span class="toggle-slider"></span></label>
+  </div>`;
+  html += `</div>`;
+
+  html += `<div class="field-row" style="margin-top:12px">
+    <span class="field-label">Tittel</span>
+    <input value="${esc(ut.title||'')}" oninput="S.ukensTilbud.title=this.value;scheduleSave()">
+  </div>`;
+
+  html += `<div class="field-row">
+    <span class="field-label">Burger</span>
+    <select onchange="S.ukensTilbud.burger=this.value;scheduleSave();render()">
+      <option value="">Velg burger...</option>
+      ${utBurgerOpts.map(n => `<option value="${esc(n)}"${ut.burger===n?' selected':''}>${esc(n)}</option>`).join('')}
+    </select>
+  </div>`;
+
+  html += `<div class="field-row">
+    <span class="field-label">Side</span>
+    <select onchange="S.ukensTilbud.side=this.value;scheduleSave();render()">
+      <option value="">Ingen</option>
+      ${sideOptions.map(n => `<option value="${esc(n)}"${ut.side===n?' selected':''}>${esc(n)}</option>`).join('')}
+    </select>
+  </div>`;
+
+  html += `<div class="field-row">
+    <span class="field-label">Drikke</span>
+    <select onchange="S.ukensTilbud.drikke=this.value;scheduleSave();render()">
+      <option value="">Ingen</option>
+      ${sideOptions.map(n => `<option value="${esc(n)}"${ut.drikke===n?' selected':''}>${esc(n)}</option>`).join('')}
+    </select>
+  </div>`;
+
+  html += `<div class="field-row">
+    <span class="field-label">Pris</span>
+    <input type="number" value="${esc(ut.pris||'')}" placeholder="Tilbudspris..." oninput="S.ukensTilbud.pris=this.value;scheduleSave()">
+  </div>`;
+
+  html += `<div class="field-row">
+    <span class="field-label">Ekstra info</span>
+    <input value="${esc(ut.desc||'')}" placeholder="Valgfritt..." oninput="S.ukensTilbud.desc=this.value;scheduleSave()">
+  </div>`;
+
+  if (ut.enabled) {
+    const parts = [ut.burger, ut.side, ut.drikke].filter(Boolean);
+    html += `<div style="margin-top:8px;padding:10px;background:var(--success-bg);border-radius:var(--radius);font-size:13px;color:var(--success)">Vises p\u00e5 display: <strong>${esc(ut.title||'Ukens tilbud')} \u2014 ${esc(parts.join(' + '))} ${ut.pris ? esc(ut.pris) + ' kr' : ''}</strong></div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function renderVariants(i, s) {
+  const vars = s.variants || [];
+  if (vars.length === 0 && !s.name.toLowerCase().includes('brus') && !s.name.toLowerCase().includes('drikke')) {
+    return `<button class="add-row" style="font-size:11px;padding:4px;margin-top:4px" onclick="if(!S.sider[${i}].variants)S.sider[${i}].variants=[];S.sider[${i}].variants.push({name:'',available:true});scheduleSave();render()">+ Legg til variant</button>`;
+  }
+
+  let html = `<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;align-items:center">`;
+  vars.forEach((v, j) => {
+    const style = v.available
+      ? 'background:var(--success-bg);color:var(--success);border-color:var(--success)'
+      : 'background:var(--danger-bg);color:var(--danger);border-color:var(--danger);text-decoration:line-through;opacity:0.6';
+    html += `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 8px;border-radius:20px;border:1px solid var(--border);cursor:pointer;${style}" onclick="S.sider[${i}].variants[${j}].available=!S.sider[${i}].variants[${j}].available;scheduleSave();render()">
+      ${esc(v.name)}
+      <button style="background:none;border:none;cursor:pointer;font-size:10px;color:inherit;padding:0;margin-left:2px" onclick="event.stopPropagation();S.sider[${i}].variants.splice(${j},1);scheduleSave();render()">\u00d7</button>
+    </span>`;
+  });
+  html += `<button style="font-size:11px;padding:3px 8px;border-radius:20px;border:1px dashed var(--border);background:transparent;color:var(--muted);cursor:pointer" onclick="S.sider[${i}].variants.push({name:prompt('Navn p\u00e5 variant:')||'',available:true});if(!S.sider[${i}].variants[S.sider[${i}].variants.length-1].name)S.sider[${i}].variants.pop();scheduleSave();render()">+</button>`;
   html += `</div>`;
   return html;
 }
@@ -655,7 +1318,7 @@ function toggleSiderExpand(i) {
   render();
 }
 
-// —— SAUSER —————————————————————————————————————————————
+// ---- SAUSER ----
 
 function renderSauser() {
   if (sausIdx >= S.sauser.length) sausIdx = 0;
@@ -674,7 +1337,7 @@ function renderSauser() {
   // Saus detaljer
   html += `<div class="field-row">
     <span class="field-label">Navn</span>
-    <input value="${esc(s.name)}" oninput="S.sauser[${sausIdx}].name=this.value;scheduleSave();render()">
+    <input value="${esc(s.name)}" oninput="S.sauser[${sausIdx}].name=this.value;scheduleSave()" onblur="render()">
   </div>`;
   html += `<div class="field-row">
     <span class="field-label">Beskrivelse</span>
@@ -692,10 +1355,16 @@ function renderSauser() {
   </div>`;
 
   s.ings.forEach((ing, j) => {
+    const libMatch = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
+    let stockInfo = '';
+    if (libMatch) {
+      const st = libMatch.stock <= 0 ? 'stock-empty' : (libMatch.minStock > 0 && libMatch.stock <= libMatch.minStock) ? 'stock-low' : 'stock-ok';
+      stockInfo = `<span class="stock-status ${st}" style="font-size:9px;padding:1px 6px">${libMatch.stock} ${libMatch.unit}</span>`;
+    }
     html += `<div class="ing-row">
-      <input value="${esc(ing.n)}" oninput="S.sauser[${sausIdx}].ings[${j}].n=this.value;scheduleSave()">
+      <input value="${esc(ing.n)}" oninput="S.sauser[${sausIdx}].ings[${j}].n=this.value;scheduleSave()" onblur="render()">
       <input value="${esc(ing.a)}" oninput="S.sauser[${sausIdx}].ings[${j}].a=this.value;scheduleSave()">
-      <input disabled style="background:transparent;border-color:transparent">
+      <div style="display:flex;align-items:center;justify-content:center">${stockInfo}</div>
       <input value="${esc(ing.note)}" placeholder="" oninput="S.sauser[${sausIdx}].ings[${j}].note=this.value;scheduleSave()">
       <div class="btn-pair">
         <button class="icon-btn del" onclick="S.sauser[${sausIdx}].ings.splice(${j},1);scheduleSave();render()">\u00d7</button>
@@ -705,12 +1374,19 @@ function renderSauser() {
 
   html += `<button class="add-row" onclick="S.sauser[${sausIdx}].ings.push({n:'',a:'',note:''});scheduleSave();render()">+ Legg til ingrediens</button>`;
 
+  // Lag batch
+  if (s.ings.length > 0) {
+    html += `<button class="add-row" style="margin-top:4px;background:var(--success-bg);border-color:var(--success);color:var(--success);font-weight:600" onclick="makeSausBatch(${sausIdx})">Lag batch \u2014 trekk fra lager</button>`;
+  }
+
   // Fremgangsm\u00e5te
   html += `<div class="sec">Fremgangsm\u00e5te</div>`;
   s.steps.forEach((step, j) => {
     html += `<div class="step-row">
       <div class="step-num">${j+1}</div>
       <input value="${esc(step)}" oninput="S.sauser[${sausIdx}].steps[${j}]=this.value;scheduleSave()">
+      <button class="icon-btn" onclick="moveStep(S.sauser[${sausIdx}].steps,${j},-1)" title="Flytt opp" ${j===0?'disabled style="opacity:.3"':''}>&#9650;</button>
+      <button class="icon-btn" onclick="moveStep(S.sauser[${sausIdx}].steps,${j},1)" title="Flytt ned" ${j===s.steps.length-1?'disabled style="opacity:.3"':''}>&#9660;</button>
       <button class="icon-btn del" onclick="S.sauser[${sausIdx}].steps.splice(${j},1);scheduleSave();render()">\u00d7</button>
     </div>`;
   });
@@ -744,14 +1420,272 @@ function deleteSaus(i) {
   toast('Saus slettet');
 }
 
-// —— BIBLIOTEK ——————————————————————————————————————————
+// ---- OPPSKRIFTER ----
+
+function renderOppskrifter() {
+  if (!S.oppskrifter || S.oppskrifter.length === 0) {
+    S.oppskrifter = [];
+  }
+  if (oppIdx >= S.oppskrifter.length) oppIdx = Math.max(0, S.oppskrifter.length - 1);
+
+  let html = `<div class="card">`;
+
+  // Tabs
+  html += `<div class="saus-tab-row">`;
+  S.oppskrifter.forEach((o, i) => {
+    html += `<button class="saus-tab${oppIdx===i?' on':''}" onclick="oppIdx=${i};render()">${esc(o.name)}</button>`;
+  });
+  html += `<button class="tab-add" onclick="addOppskrift()">+ Ny oppskrift</button>`;
+  html += `</div>`;
+
+  if (S.oppskrifter.length === 0) {
+    html += `<div style="padding:20px 0;text-align:center;color:var(--muted)">Ingen oppskrifter enn\u00e5. Klikk "+ Ny oppskrift" for \u00e5 komme i gang.</div>`;
+    html += `</div>`;
+    return html;
+  }
+
+  const o = S.oppskrifter[oppIdx];
+
+  // Detaljer
+  html += `<div class="field-row">
+    <span class="field-label">Navn</span>
+    <input value="${esc(o.name)}" oninput="S.oppskrifter[${oppIdx}].name=this.value;scheduleSave()" onblur="render()">
+  </div>`;
+  html += `<div class="field-row">
+    <span class="field-label">Beskrivelse</span>
+    <input value="${esc(o.desc||'')}" oninput="S.oppskrifter[${oppIdx}].desc=this.value;scheduleSave()">
+  </div>`;
+
+  // Ingredienser
+  html += `<div class="sec">Ingredienser</div>`;
+  html += `<div class="ing-header">
+    <span class="col-head">Ingrediens</span>
+    <span class="col-head">Mengde</span>
+    <span class="col-head">Lager</span>
+    <span class="col-head">Merknad</span>
+    <span></span>
+  </div>`;
+
+  (o.ings || []).forEach((ing, j) => {
+    const libMatch = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
+    let stockInfo = '';
+    if (libMatch) {
+      const st = libMatch.stock <= 0 ? 'stock-empty' : (libMatch.minStock > 0 && libMatch.stock <= libMatch.minStock) ? 'stock-low' : 'stock-ok';
+      stockInfo = `<span class="stock-status ${st}" style="font-size:9px;padding:1px 6px">${libMatch.stock} ${libMatch.unit}</span>`;
+    }
+    html += `<div class="ing-row">
+      <input value="${esc(ing.n)}" oninput="S.oppskrifter[${oppIdx}].ings[${j}].n=this.value;scheduleSave()" onblur="render()">
+      <input value="${esc(ing.a)}" oninput="S.oppskrifter[${oppIdx}].ings[${j}].a=this.value;scheduleSave()">
+      <div style="display:flex;align-items:center;justify-content:center">${stockInfo}</div>
+      <input value="${esc(ing.note)}" placeholder="" oninput="S.oppskrifter[${oppIdx}].ings[${j}].note=this.value;scheduleSave()">
+      <div class="btn-pair">
+        <button class="icon-btn del" onclick="S.oppskrifter[${oppIdx}].ings.splice(${j},1);scheduleSave();render()">\u00d7</button>
+      </div>
+    </div>`;
+  });
+
+  html += `<button class="add-row" onclick="if(!S.oppskrifter[${oppIdx}].ings)S.oppskrifter[${oppIdx}].ings=[];S.oppskrifter[${oppIdx}].ings.push({n:'',a:'',note:''});scheduleSave();render()">+ Legg til ingrediens</button>`;
+
+  // Lag batch
+  if (o.ings && o.ings.length > 0) {
+    html += `<button class="add-row" style="margin-top:4px;background:var(--success-bg);border-color:var(--success);color:var(--success);font-weight:600" onclick="makeOppskriftBatch(${oppIdx})">Lag batch \u2014 trekk fra lager</button>`;
+  }
+
+  // Fremgangsm\u00e5te
+  html += `<div class="sec">Fremgangsm\u00e5te</div>`;
+  (o.steps || []).forEach((step, j) => {
+    html += `<div class="step-row">
+      <div class="step-num">${j+1}</div>
+      <input value="${esc(step)}" oninput="S.oppskrifter[${oppIdx}].steps[${j}]=this.value;scheduleSave()">
+      <button class="icon-btn" onclick="moveStep(S.oppskrifter[${oppIdx}].steps,${j},-1)" title="Flytt opp" ${j===0?'disabled style="opacity:.3"':''}>&#9650;</button>
+      <button class="icon-btn" onclick="moveStep(S.oppskrifter[${oppIdx}].steps,${j},1)" title="Flytt ned" ${j===(o.steps||[]).length-1?'disabled style="opacity:.3"':''}>&#9660;</button>
+      <button class="icon-btn del" onclick="S.oppskrifter[${oppIdx}].steps.splice(${j},1);scheduleSave();render()">\u00d7</button>
+    </div>`;
+  });
+  html += `<button class="add-row" onclick="if(!S.oppskrifter[${oppIdx}].steps)S.oppskrifter[${oppIdx}].steps=[];S.oppskrifter[${oppIdx}].steps.push('');scheduleSave();render()">+ Legg til steg</button>`;
+
+  // Smaksnotater
+  html += `<div class="sec">Notater</div>`;
+  const notes = o.notes || [];
+  if (notes.length === 0) {
+    html += `<div style="font-size:13px;color:var(--muted);margin-bottom:8px">Ingen notater enn\u00e5.</div>`;
+  }
+  const sortedNotes = [...notes].reverse();
+  sortedNotes.forEach((note, ni) => {
+    const realIdx = notes.length - 1 - ni;
+    html += `<div class="note-item">
+      <div class="note-text">${esc(note.text)}</div>
+      <div class="note-meta">${esc(note.date)}${note.author ? ' \u2014 ' + esc(note.author) : ''}</div>
+      <button class="note-del" onclick="S.oppskrifter[${oppIdx}].notes.splice(${realIdx},1);scheduleSave();render()" title="Slett">\u00d7</button>
+    </div>`;
+  });
+  html += `<div class="note-input-row">
+    <textarea id="opp-note-input-${oppIdx}" placeholder="Skriv en observasjon..." rows="2"></textarea>
+    <button class="note-add-btn" onclick="addOppNote(${oppIdx})">Legg til</button>
+  </div>`;
+
+  // Eksporter + slett
+  html += `<div style="margin-top:20px;display:flex;justify-content:space-between;align-items:center">
+    <button class="dup-btn" onclick="exportOppskrift(${oppIdx})">Last ned oppskrift (Word)</button>
+    ${S.oppskrifter.length > 1 ? `<button class="tab-del" onclick="deleteOppskrift(${oppIdx})">Slett denne oppskriften</button>` : ''}
+  </div>`;
+
+  html += `</div>`;
+  return html;
+}
+
+function addOppNote(idx) {
+  const input = document.getElementById('opp-note-input-' + idx);
+  if (!input || !input.value.trim()) return;
+  if (!S.oppskrifter[idx].notes) S.oppskrifter[idx].notes = [];
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('no-NO', {day:'numeric',month:'short',year:'numeric'}) + ' ' + now.toLocaleTimeString('no-NO', {hour:'2-digit',minute:'2-digit'});
+  S.oppskrifter[idx].notes.push({ text: input.value.trim(), date: dateStr, author: '' });
+  scheduleSave();
+  render();
+  toast('Notat lagt til');
+}
+
+function addOppskrift() {
+  if (!S.oppskrifter) S.oppskrifter = [];
+  S.oppskrifter.push({ name:'Ny oppskrift', desc:'', ings:[], steps:[] });
+  oppIdx = S.oppskrifter.length - 1;
+  scheduleSave();
+  render();
+  toast('Ny oppskrift opprettet');
+}
+
+function deleteOppskrift(i) {
+  if (!confirm('Slett "' + S.oppskrifter[i].name + '"?')) return;
+  S.oppskrifter.splice(i, 1);
+  oppIdx = 0;
+  scheduleSave();
+  render();
+  toast('Oppskrift slettet');
+}
+
+function makeOppskriftBatch(idx) {
+  const o = S.oppskrifter[idx];
+  if (!o || !o.ings || o.ings.length === 0) return;
+
+  const missing = [];
+  for (const ing of o.ings) {
+    const libMatch = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
+    if (libMatch) {
+      const need = parseAmount(ing.a);
+      if (need > 0 && libMatch.stock < need) {
+        missing.push(`${ing.n}: trenger ${ing.a}, har ${libMatch.stock} ${libMatch.unit}`);
+      }
+    }
+  }
+
+  if (missing.length > 0) {
+    if (!confirm('Mangler nok av:\n\n' + missing.join('\n') + '\n\nLag batch likevel?')) return;
+  }
+
+  for (const ing of o.ings) {
+    const libMatch = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
+    if (libMatch) {
+      const need = parseAmount(ing.a);
+      if (need > 0) {
+        libMatch.stock = Math.max(0, libMatch.stock - need);
+      }
+    }
+  }
+
+  scheduleSave();
+  render();
+  toast(`Batch laget: ${o.name}`);
+}
+
+async function exportOppskrift(idx) {
+  const o = S.oppskrifter[idx];
+  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, BorderStyle } = docx;
+  const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+  const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder };
+
+  const sections = [];
+
+  sections.push(new Paragraph({
+    children: [new TextRun({ text: o.name, bold: true, size: 36, font: 'Arial' })],
+    spacing: { after: 100 },
+  }));
+
+  if (o.desc) {
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: o.desc, size: 20, color: '888888', font: 'Arial' })],
+      spacing: { after: 200 },
+    }));
+  }
+
+  const ings = o.ings || [];
+  if (ings.length > 0) {
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Ingredienser', bold: true, size: 26, font: 'Arial' })],
+      spacing: { before: 200, after: 100 },
+    }));
+
+    const headerRow = new TableRow({
+      children: ['Ingrediens', 'Mengde', 'Merknad'].map(h =>
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, size: 18, font: 'Arial' })] })],
+          borders: noBorders,
+        })
+      ),
+    });
+
+    const ingRows = ings.map(ing => new TableRow({
+      children: [ing.n || '', ing.a || '', ing.note || ''].map(t =>
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: t, size: 18, font: 'Arial' })] })],
+          borders: noBorders,
+        })
+      ),
+    }));
+
+    sections.push(new Table({
+      rows: [headerRow, ...ingRows],
+      width: { size: 100, type: WidthType.PERCENTAGE },
+    }));
+  }
+
+  const steps = o.steps || [];
+  if (steps.length > 0) {
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Fremgangsm\u00e5te', bold: true, size: 26, font: 'Arial' })],
+      spacing: { before: 300, after: 100 },
+    }));
+    steps.forEach((step, j) => {
+      sections.push(new Paragraph({
+        children: [new TextRun({ text: `${j+1}. ${step}`, size: 20, font: 'Arial' })],
+        spacing: { after: 60 },
+      }));
+    });
+  }
+
+  sections.push(new Paragraph({
+    children: [new TextRun({ text: 'THE SMASH \u2014 ' + new Date().toLocaleDateString('no-NO'), size: 16, color: 'AAAAAA', font: 'Arial' })],
+    spacing: { before: 400 },
+  }));
+
+  const doc = new Document({ sections: [{ children: sections }] });
+  const blob = await Packer.toBlob(doc);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = o.name.replace(/[^a-zA-Z0-9\u00e6\u00f8\u00e5\u00c6\u00d8\u00c5 ]/g, '') + '_oppskrift.docx';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Oppskrift eksportert');
+}
+
+// ---- BIBLIOTEK ----
 
 function renderLibrary() {
   let html = `<div class="card">`;
   html += `<div class="sec">Ingrediensbibliotek</div>`;
   html += `<div class="lib-note">Alle felter kan redigeres direkte \u2014 klikk i et felt og skriv. Endringer lagres automatisk.<br>Du kan ogs\u00e5 lagre ingredienser hit fra en burger med \u2191-knappen.</div>`;
 
-  // Legg til ny - tydelig knapp \u00f8verst
   html += `<button class="add-row" style="margin:14px 0 10px;background:var(--info-bg);border-color:var(--info);color:var(--info);font-weight:600" onclick="LIB.unshift({n:'Ny ingrediens',w:'',c:'0',note:'',recipe:''});scheduleSave();render()">+ Legg til ny ingrediens</button>`;
 
   html += `<div style="margin-top:6px">`;
@@ -760,6 +1694,8 @@ function renderLibrary() {
     <span class="col-head">Mengde</span>
     <span class="col-head">Kost (kr)</span>
     <span class="col-head">Merknad</span>
+    <span class="col-head">Leverand\u00f8r</span>
+    <span class="col-head">Type</span>
     <span></span>
   </div>`;
 
@@ -768,37 +1704,927 @@ function renderLibrary() {
   }
 
   LIB.forEach((l, i) => {
-    const hasRecipe = l.recipe && l.recipe.trim();
+    const hasRecipe = (l.recipe && l.recipe.trim()) || (l.subIngs && l.subIngs.length > 0);
     const expanded = libExpanded[i];
     html += `<div class="lib-row">
       <input value="${esc(l.n)}" placeholder="Navn..." oninput="LIB[${i}].n=this.value;scheduleSave()">
       <input value="${esc(l.w)}" placeholder="f.eks. 80g" oninput="LIB[${i}].w=this.value;scheduleSave()">
       <input type="number" step="0.1" value="${esc(l.c)}" placeholder="0" oninput="LIB[${i}].c=this.value;scheduleSave()">
       <input value="${esc(l.note||'')}" placeholder="Valgfritt" oninput="LIB[${i}].note=this.value;scheduleSave()">
+      <input value="${esc(l.supplier||'')}" placeholder="Leverand\u00f8r..." oninput="LIB[${i}].supplier=this.value;scheduleSave()">
+      <select style="font-size:12px" onchange="LIB[${i}].category=this.value;scheduleSave()">
+        <option value=""${!l.category?' selected':''}>-</option>
+        <option value="kj\u00f8tt"${l.category==='kj\u00f8tt'?' selected':''}>Kj\u00f8tt</option>
+        <option value="br\u00f8d"${l.category==='br\u00f8d'?' selected':''}>Br\u00f8d</option>
+        <option value="meieri"${l.category==='meieri'?' selected':''}>Meieri</option>
+        <option value="gr\u00f8nt"${l.category==='gr\u00f8nt'?' selected':''}>Gr\u00f8nt</option>
+        <option value="saus"${l.category==='saus'?' selected':''}>Saus</option>
+        <option value="krydder"${l.category==='krydder'?' selected':''}>Krydder</option>
+        <option value="drikke"${l.category==='drikke'?' selected':''}>Drikke</option>
+        <option value="annet"${l.category==='annet'?' selected':''}>Annet</option>
+      </select>
       <div class="btn-pair">
-        <button class="icon-btn" onclick="libExpanded[${i}]=!libExpanded[${i}];render()" title="Fremgangsm\u00e5te" style="${hasRecipe?'color:var(--warn);border-color:var(--warn)':''}${expanded?';background:var(--warn-bg)':''}">\u270e</button>
+        <button class="icon-btn" onclick="libExpanded[${i}]=!libExpanded[${i}];render()" title="Oppskrift / underingredienser" style="${hasRecipe?'color:var(--warn);border-color:var(--warn)':''}${expanded?';background:var(--warn-bg)':''}">\u270e</button>
         <button class="icon-btn del" onclick="LIB.splice(${i},1);scheduleSave();render()" title="Fjern">\u00d7</button>
       </div>
     </div>`;
     if (expanded) {
-      html += `<div style="grid-column:1/-1;padding:0 0 10px 0">
-        <textarea rows="3" placeholder="Skriv fremgangsm\u00e5te her... F.eks. hvordan ingrediensen tilberedes, temperaturer, viktige steg." style="width:100%;font-size:12px;line-height:1.5" oninput="LIB[${i}].recipe=this.value;scheduleSave()">${esc(l.recipe||'')}</textarea>
-      </div>`;
+      const subs = l.subIngs || [];
+      html += `<div style="grid-column:1/-1;padding:8px 0 12px;border-bottom:1px solid var(--border)">`;
+
+      // Fremgangsm\u00e5te
+      html += `<textarea rows="2" placeholder="Fremgangsm\u00e5te (valgfritt)..." style="width:100%;font-size:12px;line-height:1.5;margin-bottom:8px" oninput="LIB[${i}].recipe=this.value;scheduleSave()">${esc(l.recipe||'')}</textarea>`;
+
+      // Underingredienser
+      if (subs.length > 0 || true) {
+        html += `<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:8px 0 6px">Underingredienser (per batch)</div>`;
+
+        // Batch size
+        html += `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;color:var(--muted)">Batch gir:</span>
+          <input type="number" value="${l.batchSize||''}" placeholder="antall" style="width:70px;font-size:12px" oninput="LIB[${i}].batchSize=parseFloat(this.value)||0;scheduleSave()">
+          <input value="${esc(l.batchUnit||l.unit||'')}" placeholder="enhet" style="width:60px;font-size:12px" oninput="LIB[${i}].batchUnit=this.value;scheduleSave()">
+        </div>`;
+
+        // Sub-ingredient rows
+        if (subs.length > 0) {
+          html += `<div style="display:grid;grid-template-columns:2fr 1fr 0.6fr 28px;gap:4px;margin-bottom:4px">
+            <span class="col-head">Ingrediens</span>
+            <span class="col-head">Mengde</span>
+            <span class="col-head">Enhet</span>
+            <span></span>
+          </div>`;
+          subs.forEach((sub, j) => {
+            html += `<div style="display:grid;grid-template-columns:2fr 1fr 0.6fr 28px;gap:4px;align-items:center;margin-bottom:3px">
+              <input value="${esc(sub.n)}" placeholder="Ingrediens..." style="font-size:12px" oninput="LIB[${i}].subIngs[${j}].n=this.value;scheduleSave()">
+              <input type="number" step="0.1" value="${sub.qty}" placeholder="0" style="font-size:12px" oninput="LIB[${i}].subIngs[${j}].qty=parseFloat(this.value)||0;scheduleSave()">
+              <input value="${esc(sub.unit)}" placeholder="g" style="font-size:12px" oninput="LIB[${i}].subIngs[${j}].unit=this.value;scheduleSave()">
+              <button class="icon-btn del" style="width:24px;height:24px" onclick="LIB[${i}].subIngs.splice(${j},1);scheduleSave();render()">\u00d7</button>
+            </div>`;
+          });
+        }
+
+        html += `<button class="add-row" style="font-size:12px;padding:5px" onclick="if(!LIB[${i}].subIngs)LIB[${i}].subIngs=[];LIB[${i}].subIngs.push({n:'',qty:0,unit:'g'});scheduleSave();render()">+ Legg til underingrediens</button>`;
+
+        // Action buttons
+        html += `<div style="display:flex;gap:6px;margin-top:6px">`;
+        if (subs.length > 0 && l.batchSize > 0) {
+          html += `<button class="add-row" style="font-size:12px;padding:5px;flex:1;background:var(--success-bg);border-color:var(--success);color:var(--success);font-weight:600;margin:0" onclick="makeBatch(${i})">Lag batch \u2192 +${l.batchSize} ${esc(l.batchUnit||l.unit)}</button>`;
+        }
+        if (subs.length > 0 || (l.recipe && l.recipe.trim())) {
+          html += `<button class="add-row" style="font-size:12px;padding:5px;flex:1;background:var(--info-bg);border-color:var(--info);color:var(--info);margin:0" onclick="exportRecipe(${i})">Last ned oppskrift (Word)</button>`;
+        }
+        html += `</div>`;
+      }
+
+      html += `</div>`;
     }
   });
   html += `</div>`;
 
-  // Nullstill bibliotek-knapp
   html += `<div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center">
     <span style="font-size:12px;color:var(--muted)">${LIB.length} ingredienser</span>
-    <button class="tab-del" onclick="if(confirm('Nullstill biblioteket til standardverdier?')){LIB=DEFAULT_LIB.map(x=>({...x}));scheduleSave();render();toast('Bibliotek nullstilt')}">Nullstill til standard</button>
   </div>`;
 
   html += `</div>`;
   return html;
 }
 
-// —— EXPORT DOCX ———————————————————————————————————————
+// ---- DASHBOARD ----
+
+function renderDashboard() {
+  const now = new Date();
+  const totalSolgt = S.burgers.reduce((a,b) => a + (b.solgt||0), 0) + S.sider.reduce((a,s) => a + (s.solgt||0), 0);
+  const lowStock = getLowStockCount();
+  const aapning = S.sjekklister?.aapning || [];
+  const stenging = S.sjekklister?.stenging || [];
+  const marked = S.sjekklister?.markedsforing || [];
+  const aapDone = aapning.filter(i => i.done).length;
+  const stenDone = stenging.filter(i => i.done).length;
+  const markDone = marked.filter(i => i.done).length;
+  const holdbarhet = S.holdbarhet || [];
+  const expiringSoon = holdbarhet.filter(h => h.expiry && h.expiry > Date.now() && (h.expiry - Date.now()) < 4 * 3600000);
+  const expired = holdbarhet.filter(h => h.expiry && h.expiry <= Date.now());
+  const utsolgte = S.burgers.filter(b => b.utsolgt).length + S.sider.filter(s => s.utsolgt).length;
+
+  let html = '';
+
+  // Velkomst
+  html += `<div style="margin-bottom:16px">
+    <div style="font-size:22px;font-weight:800">God ${now.getHours()<12?'morgen':'ettermiddag'}</div>
+    <div style="font-size:13px;color:var(--muted)">${now.toLocaleDateString('no-NO', {weekday:'long', day:'numeric', month:'long', year:'numeric'})}</div>
+  </div>`;
+
+  // Varsler
+  const warnings = [];
+  if (expired.length > 0) warnings.push({text: expired.length + ' produkt' + (expired.length>1?'er':'') + ' har utg\u00e5tt holdbarhet', color: 'danger', go: 'drift'});
+  if (expiringSoon.length > 0) warnings.push({text: expiringSoon.length + ' produkt' + (expiringSoon.length>1?'er':'') + ' utl\u00f8per snart (< 4t)', color: 'warn', go: 'drift'});
+  if (lowStock > 0) warnings.push({text: lowStock + ' ingrediens' + (lowStock>1?'er':'') + ' under minimumsniv\u00e5', color: 'warn', go: 'lager'});
+  if (utsolgte > 0) warnings.push({text: utsolgte + ' menyvalg er markert utsolgt', color: 'danger', go: 'service'});
+
+  if (warnings.length > 0) {
+    html += `<div style="margin-bottom:12px">`;
+    warnings.forEach(w => {
+      html += `<div onclick="setSection('${w.go}')" style="padding:10px 14px;margin-bottom:4px;border-radius:var(--radius);background:var(--${w.color}-bg);color:var(--${w.color});font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--${w.color})">\u26a0 ${w.text}</div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Tall-kort
+  html += `<div class="dash-grid">`;
+
+  // Salg i dag
+  html += `<div class="dash-card" onclick="setSection('service')" style="cursor:pointer">
+    <div class="dash-card-title">Solgt i dag</div>
+    <div class="dash-big">${totalSolgt}</div>
+    <div class="dash-sub">`;
+  const topSeller = [...S.burgers].sort((a,b) => (b.solgt||0) - (a.solgt||0))[0];
+  if (topSeller && topSeller.solgt > 0) html += `Mest solgt: ${esc(topSeller.name)} (${topSeller.solgt})`;
+  html += `</div></div>`;
+
+  // Lager
+  html += `<div class="dash-card" onclick="setSection('lager')" style="cursor:pointer">
+    <div class="dash-card-title">Lager</div>
+    <div class="dash-big" style="color:${lowStock>0?'var(--warn)':'var(--success)'}">${lowStock}</div>
+    <div class="dash-sub">${lowStock > 0 ? 'varer under minimumsniv\u00e5' : 'Alt p\u00e5 lager OK'}</div>
+  </div>`;
+
+  // \u00c5pning
+  html += `<div class="dash-card" onclick="setSection('drift')" style="cursor:pointer">
+    <div class="dash-card-title">\u00c5pning</div>
+    <div class="dash-big" style="color:${aapDone===aapning.length&&aapning.length>0?'var(--success)':'var(--text)'}">${aapDone}/${aapning.length}</div>
+    <div class="dash-sub">${aapDone===aapning.length&&aapning.length>0?'Ferdig!':'punkter fullf\u00f8rt'}</div>
+  </div>`;
+
+  // Holdbarhet
+  html += `<div class="dash-card" onclick="setSection('drift')" style="cursor:pointer">
+    <div class="dash-card-title">Holdbarhet</div>
+    <div class="dash-big" style="color:${expired.length>0?'var(--danger)':expiringSoon.length>0?'var(--warn)':'var(--success)'}">${expired.length + expiringSoon.length}</div>
+    <div class="dash-sub">${expired.length > 0 ? expired.length + ' utg\u00e5tt' : expiringSoon.length > 0 ? 'utl\u00f8per snart' : 'Alt OK'}</div>
+  </div>`;
+
+  html += `</div>`;
+
+  // Sjekklister status
+  html += `<div class="dash-grid">`;
+
+  // Markedsf\u00f8ring
+  html += `<div class="dash-card" onclick="setSection('drift')" style="cursor:pointer">
+    <div class="dash-card-title">Markedsf\u00f8ring</div>
+    <div class="dash-big" style="color:${markDone===marked.length&&marked.length>0?'var(--success)':'var(--text)'}">${markDone}/${marked.length}</div>
+    <div class="dash-sub">${markDone===marked.length&&marked.length>0?'Alt gjort i dag':'gjenstår'}</div>
+  </div>`;
+
+  // Stenging
+  html += `<div class="dash-card" onclick="setSection('drift')" style="cursor:pointer">
+    <div class="dash-card-title">Stenging</div>
+    <div class="dash-big" style="color:${stenDone===stenging.length&&stenging.length>0?'var(--success)':'var(--text)'}">${stenDone}/${stenging.length}</div>
+    <div class="dash-sub">${stenDone===stenging.length&&stenging.length>0?'Ferdig!':'punkter fullf\u00f8rt'}</div>
+  </div>`;
+
+  html += `</div>`;
+
+  // Topp-selgere fra siste logg
+  const logg = S.dagligLogg || [];
+  if (logg.length > 0) {
+    const siste = logg[logg.length - 1];
+    const topItems = (siste.salg || []).filter(s => s.antall > 0).sort((a,b) => b.antall - a.antall).slice(0, 5);
+    if (topItems.length > 0) {
+      html += `<div class="dash-card">
+        <div class="dash-card-title">Forrige dag \u2014 ${esc(siste.dato)}</div>
+        <ul class="dash-list">`;
+      topItems.forEach(item => {
+        html += `<li><span>${esc(item.name)}</span><span style="font-weight:700">${item.antall}</span></li>`;
+      });
+      html += `</ul>
+        <div class="dash-sub" style="margin-top:6px">Totalt: ${siste.totalSolgt} solgt</div>
+      </div>`;
+    }
+  }
+
+  // Kalender
+  html += renderKalender();
+
+  // Hurtigknapper
+  html += `<div class="dash-grid" style="margin-top:4px">
+    <button class="dash-action" style="background:var(--success-bg);color:var(--success);border-color:var(--success)" onclick="setSection('service')">Start service \u2192</button>
+    <button class="dash-action" onclick="avsluttDag()">Avslutt dag</button>
+  </div>`;
+
+  return html;
+}
+
+// ---- SERVICE ----
+
+function renderService() {
+  let html = '';
+
+  // Quick status bar
+  const totalSolgt = S.burgers.reduce((a,b) => a + (b.solgt||0), 0) + S.sider.reduce((a,s) => a + (s.solgt||0), 0);
+  html += `<div class="card" style="background:var(--black);color:var(--cream)">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><span style="font-size:24px;font-weight:800">${totalSolgt}</span> <span style="font-size:13px;color:var(--dim)">solgt i dag</span></div>
+      <button class="add-row" style="width:auto;padding:6px 14px;color:var(--danger);border-color:var(--danger)" onclick="if(confirm('Nullstill dagens salg?')){S.burgers.forEach(b=>b.solgt=0);S.sider.forEach(s=>s.solgt=0);scheduleSave();render();toast('Salg nullstilt')}">Nullstill salg</button>
+    </div>
+  </div>`;
+
+  // Burgere
+  html += `<div class="card">`;
+  html += `<div class="sec">Burgere</div>`;
+  S.burgers.forEach((b, i) => {
+    if (b.status === 'forkastet') return;
+    const isOut = b.utsolgt;
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);${isOut?'opacity:0.4':''}">
+      <span style="flex:2;font-weight:600;font-size:14px">${esc(b.name)}</span>
+      <button onclick="S.burgers[${i}].utsolgt=!S.burgers[${i}].utsolgt;scheduleSave();render()" style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid ${isOut?'var(--danger)':'var(--success)'};background:${isOut?'var(--danger-bg)':'var(--success-bg)'};color:${isOut?'var(--danger)':'var(--success)'}">${isOut?'UTSOLGT':'Tilgjengelig'}</button>
+      <div style="display:flex;align-items:center;gap:4px">
+        <span style="font-size:18px;font-weight:700;min-width:30px;text-align:center">${b.solgt||0}</span>
+        <button class="icon-btn" onclick="S.burgers[${i}].solgt=(S.burgers[${i}].solgt||0)+1;scheduleSave();render()" style="background:var(--success-bg);color:var(--success);border-color:var(--success);font-size:16px;font-weight:700">+</button>
+        <button class="icon-btn" onclick="S.burgers[${i}].solgt=Math.max(0,(S.burgers[${i}].solgt||0)-1);scheduleSave();render()" style="font-size:16px">\u2212</button>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  // Tilbeh\u00f8r & drikke
+  html += `<div class="card">`;
+  html += `<div class="sec">Tilbeh\u00f8r & drikke</div>`;
+  S.sider.forEach((s, i) => {
+    const isOut = s.utsolgt;
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);${isOut?'opacity:0.4':''}">
+      <span style="flex:2;font-weight:600;font-size:14px">${esc(s.name)}</span>
+      <button onclick="S.sider[${i}].utsolgt=!S.sider[${i}].utsolgt;scheduleSave();render()" style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid ${isOut?'var(--danger)':'var(--success)'};background:${isOut?'var(--danger-bg)':'var(--success-bg)'};color:${isOut?'var(--danger)':'var(--success)'}">${isOut?'UTSOLGT':'Tilgjengelig'}</button>
+      <div style="display:flex;align-items:center;gap:4px">
+        <span style="font-size:18px;font-weight:700;min-width:30px;text-align:center">${s.solgt||0}</span>
+        <button class="icon-btn" onclick="S.sider[${i}].solgt=(S.sider[${i}].solgt||0)+1;scheduleSave();render()" style="background:var(--success-bg);color:var(--success);border-color:var(--success);font-size:16px;font-weight:700">+</button>
+        <button class="icon-btn" onclick="S.sider[${i}].solgt=Math.max(0,(S.sider[${i}].solgt||0)-1);scheduleSave();render()" style="font-size:16px">\u2212</button>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  return html;
+}
+
+// ---- DRIFT ----
+
+function renderDrift() {
+  let html = '';
+
+  // Sjekklister
+  html += renderSjekkliste('aapning', '\u00c5pning av vogn');
+  html += renderSjekkliste('markedsforing', 'Markedsf\u00f8ring / Sosiale medier');
+  html += renderSjekkliste('stenging', 'Stenging av vogn');
+
+  // Holdbarhet
+  html += renderHoldbarhet();
+
+  // Daglig logg
+  html += renderDagligLogg();
+
+  return html;
+}
+
+function renderSjekkliste(key, title) {
+  const list = S.sjekklister[key] || [];
+  const done = list.filter(i => i.done).length;
+  const total = list.length;
+  const allDone = done === total && total > 0;
+
+  let html = `<div class="card">`;
+  html += `<div style="display:flex;align-items:center;justify-content:space-between">`;
+  html += `<div class="sec" style="margin:0;border:none;padding:0">${title}</div>`;
+  html += `<span style="font-size:12px;color:${allDone?'var(--success)':'var(--muted)'};font-weight:600">${done}/${total}</span>`;
+  html += `</div>`;
+
+  list.forEach((item, i) => {
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;${item.done?'opacity:0.5':''}" onclick="S.sjekklister['${key}'][${i}].done=!S.sjekklister['${key}'][${i}].done;scheduleSave();render()">
+      <span style="width:22px;height:22px;border-radius:6px;border:2px solid ${item.done?'var(--success)':'var(--border)'};background:${item.done?'var(--success)':'transparent'};display:flex;align-items:center;justify-content:center;color:white;font-size:13px;flex-shrink:0">${item.done?'\u2713':''}</span>
+      <span style="font-size:13px;${item.done?'text-decoration:line-through':''}">${esc(item.text)}</span>
+      <button class="icon-btn del" style="margin-left:auto" onclick="event.stopPropagation();S.sjekklister['${key}'].splice(${i},1);scheduleSave();render()">\u00d7</button>
+    </div>`;
+  });
+
+  html += `<div style="display:flex;gap:6px;margin-top:8px">
+    <button class="add-row" style="flex:1" onclick="S.sjekklister['${key}'].push({text:prompt('Nytt punkt:')||'',done:false});if(!S.sjekklister['${key}'][S.sjekklister['${key}'].length-1].text)S.sjekklister['${key}'].pop();scheduleSave();render()">+ Legg til punkt</button>
+    ${done>0?`<button class="add-row" style="flex:0;padding:7px 14px;white-space:nowrap" onclick="S.sjekklister['${key}'].forEach(i=>i.done=false);scheduleSave();render()">Nullstill</button>`:''}
+  </div>`;
+
+  html += `</div>`;
+  return html;
+}
+
+function renderHoldbarhet() {
+  const items = S.holdbarhet || [];
+  const now = Date.now();
+
+  let html = `<div class="card">`;
+  html += `<div class="sec">Holdbarhet</div>`;
+  html += `<div class="lib-note">Registrer n\u00e5r prepp er laget. Varsler n\u00e5r holdbarheten g\u00e5r ut.</div>`;
+
+  if (items.length === 0) {
+    html += `<div style="padding:12px 0;font-size:13px;color:var(--muted)">Ingen registreringer enn\u00e5.</div>`;
+  }
+
+  // Sort by expiry
+  const sorted = items.map((item, i) => ({...item, _i: i})).sort((a,b) => (a.expiry||0) - (b.expiry||0));
+
+  sorted.forEach(item => {
+    const i = item._i;
+    const expiry = item.expiry || 0;
+    const hoursLeft = expiry > 0 ? Math.round((expiry - now) / 3600000 * 10) / 10 : 0;
+    const expired = expiry > 0 && expiry < now;
+    const warning = hoursLeft > 0 && hoursLeft <= 4;
+    const stClass = expired ? 'stock-empty' : warning ? 'stock-low' : 'stock-ok';
+    const stLabel = expired ? 'Utg\u00e5tt' : hoursLeft <= 0 ? '' : hoursLeft < 1 ? Math.round(hoursLeft*60) + ' min' : Math.round(hoursLeft) + 't igjen';
+
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);${expired?'opacity:0.5':''}">
+      <span style="flex:2;font-weight:600;font-size:13px">${esc(item.name)}</span>
+      <span style="font-size:11px;color:var(--muted)">${esc(item.laget || '')}</span>
+      <span class="stock-status ${stClass}" style="font-size:10px;padding:2px 8px">${stLabel}</span>
+      <button class="icon-btn del" onclick="S.holdbarhet.splice(${i},1);scheduleSave();render()">\u00d7</button>
+    </div>`;
+  });
+
+  html += `<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">`;
+  // Quick-add buttons for common items
+  const presets = ['The Smash Sauce', 'The Smash Hot Sauce', 'Karamellisert l\u00f8k', 'Coleslaw'];
+  presets.forEach(name => {
+    html += `<button class="add-row" style="width:auto;padding:5px 12px;font-size:12px" onclick="addHoldbarhet('${name}')">${esc(name)}</button>`;
+  });
+  html += `<button class="add-row" style="width:auto;padding:5px 12px;font-size:12px" onclick="addHoldbarhet(prompt('Navn p\u00e5 produkt:')||'')">+ Annet</button>`;
+  html += `</div>`;
+
+  html += `</div>`;
+  return html;
+}
+
+function addHoldbarhet(name) {
+  if (!name) return;
+  if (!S.holdbarhet) S.holdbarhet = [];
+  const now = new Date();
+  const hours = name.toLowerCase().includes('saus') || name.toLowerCase().includes('sauce') ? 24 : 48;
+  S.holdbarhet.push({
+    name: name,
+    laget: now.toLocaleDateString('no-NO', {day:'numeric',month:'short'}) + ' ' + now.toLocaleTimeString('no-NO', {hour:'2-digit',minute:'2-digit'}),
+    created: Date.now(),
+    expiry: Date.now() + (hours * 3600000),
+    hours: hours
+  });
+  scheduleSave();
+  render();
+  toast(name + ' registrert \u2014 ' + hours + 't holdbarhet');
+}
+
+function renderDagligLogg() {
+  let html = `<div class="card">`;
+  html += `<div class="sec">Daglig logg</div>`;
+
+  // Avslutt dag-knapp
+  html += `<button class="add-row" style="background:var(--warn-bg);border-color:var(--warn);color:var(--warn);font-weight:600;margin-bottom:12px" onclick="avsluttDag()">Avslutt dag \u2014 lagre snapshot</button>`;
+
+  const logg = S.dagligLogg || [];
+  if (logg.length === 0) {
+    html += `<div style="padding:12px 0;font-size:13px;color:var(--muted)">Ingen dager logget enn\u00e5.</div>`;
+  }
+
+  // Show last 7 days, newest first
+  const recent = [...logg].reverse().slice(0, 7);
+  recent.forEach((dag, di) => {
+    const ri = logg.length - 1 - di;
+    html += `<div style="margin-bottom:12px;padding:12px;background:var(--bg);border-radius:var(--radius)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-weight:700;font-size:13px">${esc(dag.dato)}</span>
+        <span style="font-size:12px;color:var(--muted)">${dag.totalSolgt} solgt</span>
+      </div>`;
+
+    if (dag.salg && dag.salg.length > 0) {
+      dag.salg.forEach(s => {
+        if (s.antall > 0) {
+          html += `<div style="display:flex;justify-content:space-between;font-size:12px;padding:2px 0;color:var(--muted)">
+            <span>${esc(s.name)}</span><span>${s.antall}</span>
+          </div>`;
+        }
+      });
+    }
+    html += `</div>`;
+  });
+
+  html += `</div>`;
+  return html;
+}
+
+function avsluttDag() {
+  if (!confirm('Avslutt dagen? Lagrer salgsdata og nullstiller tellere.')) return;
+  if (!S.dagligLogg) S.dagligLogg = [];
+
+  const now = new Date();
+  const salg = [
+    ...S.burgers.map(b => ({name: b.name, antall: b.solgt || 0})),
+    ...S.sider.map(s => ({name: s.name, antall: s.solgt || 0}))
+  ];
+  const totalSolgt = salg.reduce((a, s) => a + s.antall, 0);
+
+  // Snapshot lagerbeholdning
+  const lagerSnapshot = LIB.map(l => ({n: l.n, stock: l.stock, unit: l.unit}));
+
+  S.dagligLogg.push({
+    dato: now.toLocaleDateString('no-NO', {weekday:'short', day:'numeric', month:'short', year:'numeric'}),
+    timestamp: Date.now(),
+    salg: salg,
+    totalSolgt: totalSolgt,
+    lager: lagerSnapshot
+  });
+
+  // Nullstill salg
+  S.burgers.forEach(b => { b.solgt = 0; b.utsolgt = false; });
+  S.sider.forEach(s => { s.solgt = 0; s.utsolgt = false; });
+
+  // Nullstill sjekklister
+  if (S.sjekklister) {
+    Object.values(S.sjekklister).forEach(list => list.forEach(i => i.done = false));
+  }
+
+  // Fjern utg\u00e5tt holdbarhet
+  if (S.holdbarhet) {
+    S.holdbarhet = S.holdbarhet.filter(h => h.expiry > Date.now());
+  }
+
+  scheduleSave();
+  render();
+  toast('Dag avsluttet \u2014 ' + totalSolgt + ' solgt');
+}
+
+// ---- KALENDER (dashboard) ----
+
+function renderKalender() {
+  if (!S.kalender) S.kalender = [];
+  const now = new Date();
+  const events = [...S.kalender].sort((a,b) => (a.dato||0) - (b.dato||0));
+  const upcoming = events.filter(e => !e.done && (e.dato||0) >= now.setHours(0,0,0,0));
+  const past = events.filter(e => e.done || (e.dato && e.dato < now.setHours(0,0,0,0)));
+
+  let html = `<div class="dash-card">`;
+  html += `<div class="dash-card-title">Planlegging</div>`;
+
+  // Kommende
+  if (upcoming.length === 0) {
+    html += `<div style="font-size:13px;color:var(--muted);padding:8px 0">Ingen planlagte hendelser.</div>`;
+  }
+  upcoming.forEach(e => {
+    const i = S.kalender.indexOf(e);
+    const d = e.dato ? new Date(e.dato) : null;
+    const dateStr = d ? d.toLocaleDateString('no-NO', {weekday:'short', day:'numeric', month:'short'}) : '';
+    const daysUntil = d ? Math.ceil((e.dato - Date.now()) / 86400000) : null;
+    const tagColor = e.type === 'bestilling' ? 'var(--warn)' : e.type === 'vogn' ? 'var(--success)' : 'var(--info)';
+    const tagLabel = e.type === 'bestilling' ? 'Varebestilling' : e.type === 'vogn' ? '\u00c5pent' : 'Annet';
+
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:${tagColor};color:white;font-weight:600;white-space:nowrap">${tagLabel}</span>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">${esc(e.tittel)}</div>
+        <div style="font-size:11px;color:var(--muted)">${dateStr}${e.tid?' \u00b7 '+esc(e.tid):''}${e.notat?' \u2014 '+esc(e.notat):''}</div>
+      </div>
+      <button class="icon-btn" onclick="S.kalender[${i}].done=true;scheduleSave();render()" title="Ferdig" style="color:var(--success)">\u2713</button>
+      <button class="icon-btn del" onclick="S.kalender.splice(${i},1);scheduleSave();render()">\u00d7</button>
+    </div>`;
+  });
+
+  // Ny hendelse
+  html += `<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+    <button class="add-row" style="flex:1;font-size:12px;padding:5px" onclick="addKalenderEvent('vogn')">+ \u00c5pningsdag</button>
+    <button class="add-row" style="flex:1;font-size:12px;padding:5px" onclick="addKalenderEvent('bestilling')">+ Varebestilling</button>
+    <button class="add-row" style="flex:1;font-size:12px;padding:5px" onclick="addKalenderEvent('annet')">+ Annet</button>
+  </div>`;
+
+  html += `</div>`;
+  return html;
+}
+
+function addKalenderEvent(type) {
+  const tittel = prompt(type === 'vogn' ? 'Lokasjon / beskrivelse:' : type === 'bestilling' ? 'Hva bestilles:' : 'Tittel:');
+  if (!tittel) return;
+  const datoStr = prompt('Dato (YYYY-MM-DD):');
+  if (!datoStr) return;
+  const tid = prompt('Tidspunkt (valgfritt):', '') || '';
+  const notat = prompt('Notat (valgfritt):', '') || '';
+
+  if (!S.kalender) S.kalender = [];
+  S.kalender.push({
+    type: type,
+    tittel: tittel,
+    dato: new Date(datoStr).getTime(),
+    tid: tid,
+    notat: notat,
+    done: false
+  });
+  scheduleSave();
+  render();
+  toast('Hendelse lagt til');
+}
+
+// ---- LAGER ----
+
+let showOrder = false;
+const UNITS = ['stk','kg','g','L','dl','pakke','pose','boks','glass'];
+
+function getLowStockCount() {
+  return LIB.filter(l => l.minStock > 0 && l.stock <= l.minStock).length;
+}
+
+function getStockStatus(l) {
+  if (l.stock <= 0) return 'empty';
+  if (l.minStock > 0 && l.stock <= l.minStock) return 'low';
+  return 'ok';
+}
+
+function calcBurgersFromStock(l) {
+  let minBurgers = Infinity;
+  let usedBy = [];
+  for (const b of S.burgers) {
+    if (b.status === 'forkastet') continue;
+    const match = (b.ings || []).find(ing => ing.n.toLowerCase() === l.n.toLowerCase());
+    if (match) {
+      const perBurger = parseAmount(match.w);
+      if (perBurger > 0) {
+        let stockVal = l.stock;
+        const w = String(match.w).toLowerCase();
+        // Convert stock unit to match ingredient unit
+        if (l.unit === 'kg' && (w.includes('g') && !w.includes('kg'))) stockVal *= 1000;
+        else if (l.unit === 'L' && w.includes('ml')) stockVal *= 1000;
+        else if (l.unit === 'stk') {
+          // If stock is "stk" but ingredient weight has grams, use stock as-is
+          // (e.g. 48 stk buns, 1 per burger = 48 burgers)
+          if (w.includes('g') || w.includes('ml')) { stockVal = l.stock; /* can't convert, skip */ minBurgers = minBurgers; usedBy.push(b.name); continue; }
+        }
+        const count = Math.floor(stockVal / perBurger);
+        minBurgers = Math.min(minBurgers, count);
+        usedBy.push(b.name);
+      } else {
+        // No parseable amount but ingredient is used — count by stock as "1 per burger"
+        const count = Math.floor(l.stock);
+        minBurgers = Math.min(minBurgers, count);
+        usedBy.push(b.name);
+      }
+    }
+  }
+  if (usedBy.length === 0) return null;
+  if (minBurgers === Infinity) minBurgers = Math.floor(l.stock);
+  return { count: minBurgers, burgers: usedBy };
+}
+
+function renderLager() {
+  // Sort: empty first, then low, then ok
+  const order = {empty:0, low:1, ok:2};
+  const sorted = LIB.map((l,i) => ({...l, _i:i})).sort((a,b) => order[getStockStatus(a)] - order[getStockStatus(b)]);
+
+  let html = `<div class="card">`;
+  html += `<div class="sec">Varebeholdning</div>`;
+  html += `<div class="lib-note">Oppdater beholdning med +/\u2212 knappene etter service. Sett minimumsniv\u00e5 for \u00e5 f\u00e5 varsel n\u00e5r du m\u00e5 bestille.</div>`;
+
+  // Header
+  html += `<div class="lager-row" style="border-bottom:2px solid var(--border);padding-bottom:4px;margin-top:12px">
+    <span class="col-head">Ingrediens</span>
+    <span class="col-head">Beholdning</span>
+    <span class="col-head">Enhet</span>
+    <span class="col-head">Min.niv\u00e5</span>
+    <span class="col-head">Leverand\u00f8r</span>
+    <span class="col-head">Best.mengde</span>
+    <span class="col-head">Burgere</span>
+    <span class="col-head">Status</span>
+  </div>`;
+
+  for (const item of sorted) {
+    const i = item._i;
+    const l = LIB[i];
+    const st = getStockStatus(l);
+    const stLabel = st === 'empty' ? 'Tomt' : st === 'low' ? 'Lavt' : 'OK';
+    const stClass = 'stock-status stock-' + st;
+
+    html += `<div class="lager-row">
+      <span style="font-size:13px;font-weight:600">${esc(l.n)}</span>
+      <div class="stock-adj">
+        <button onclick="adjStock(${i},-1)">\u2212</button>
+        <input type="number" value="${l.stock}" style="width:50px;text-align:center" oninput="LIB[${i}].stock=parseFloat(this.value)||0;scheduleSave()" onblur="render()">
+        <button onclick="adjStock(${i},1)">+</button>
+      </div>
+      <select style="width:auto" onchange="LIB[${i}].unit=this.value;scheduleSave()">
+        ${UNITS.map(u => `<option value="${u}"${l.unit===u?' selected':''}>${u}</option>`).join('')}
+      </select>
+      <input type="number" value="${l.minStock}" style="width:60px;text-align:center" oninput="LIB[${i}].minStock=parseFloat(this.value)||0;scheduleSave()" onblur="render()">
+      <input value="${esc(l.supplier||'')}" placeholder="Leverand\u00f8r..." oninput="LIB[${i}].supplier=this.value;scheduleSave()">
+      <input type="number" value="${l.orderQty}" style="width:60px;text-align:center" oninput="LIB[${i}].orderQty=parseFloat(this.value)||0;scheduleSave()" onblur="render()">`;
+
+    const burgerCalc = calcBurgersFromStock(l);
+    if (burgerCalc) {
+      const color = burgerCalc.count <= 5 ? 'var(--danger)' : burgerCalc.count <= 15 ? 'var(--warn)' : 'var(--success)';
+      html += `<span style="font-size:14px;font-weight:700;color:${color};text-align:center" title="${esc(burgerCalc.burgers.join(', '))}">${burgerCalc.count}</span>`;
+    } else {
+      html += `<span style="font-size:11px;color:var(--muted);text-align:center">\u2014</span>`;
+    }
+
+    html += `<span class="${stClass}">${stLabel}</span>
+    </div>`;
+  }
+
+  // Summary
+  const lowCount = getLowStockCount();
+  const emptyCount = LIB.filter(l => l.stock <= 0 && l.minStock > 0).length;
+  html += `<div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <span style="font-size:12px;color:var(--muted)">${LIB.length} ingredienser \u00b7 ${lowCount} lave \u00b7 ${emptyCount} tomme</span>
+    <button class="add-row" style="width:auto;padding:7px 16px;${lowCount>0?'background:var(--warn-bg);border-color:var(--warn);color:var(--warn);font-weight:600':''}" onclick="showOrder=!showOrder;render()">
+      ${showOrder ? 'Skjul bestilling' : 'Generer bestilling'} (${lowCount})
+    </button>
+  </div>`;
+
+  if (showOrder) {
+    html += renderBestilling();
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function adjStock(i, delta) {
+  LIB[i].stock = Math.max(0, (LIB[i].stock || 0) + delta);
+  scheduleSave();
+  render();
+}
+
+function renderBestilling() {
+  const needOrder = LIB.filter(l => l.minStock > 0 && l.stock <= l.minStock);
+  if (needOrder.length === 0) {
+    return `<div class="order-section"><p style="color:var(--muted);font-size:13px">Alt p\u00e5 lager er over minimumsniv\u00e5. Ingen bestilling n\u00f8dvendig.</p></div>`;
+  }
+
+  // Group by supplier
+  const groups = {};
+  for (const l of needOrder) {
+    const sup = l.supplier || 'Ukjent leverand\u00f8r';
+    if (!groups[sup]) groups[sup] = [];
+    const qty = l.orderQty > 0 ? l.orderQty : Math.max(1, (l.minStock * 2) - l.stock);
+    const estCost = qty * parseFloat(l.c || 0);
+    groups[sup].push({...l, _qty: qty, _cost: estCost});
+  }
+
+  let html = `<div class="order-section">`;
+  html += `<div class="sec" style="margin-top:0">Bestillingsliste</div>`;
+
+  let grandTotal = 0;
+
+  for (const [supplier, items] of Object.entries(groups)) {
+    let groupTotal = 0;
+    html += `<div class="order-group">`;
+    html += `<div class="order-group-title">${esc(supplier)}</div>`;
+    html += `<div class="order-row" style="font-weight:600;color:var(--muted)">
+      <span>Vare</span><span>Mengde</span><span>Enhet</span><span style="text-align:right">Est. kost</span>
+    </div>`;
+
+    for (const item of items) {
+      groupTotal += item._cost;
+      html += `<div class="order-row">
+        <span>${esc(item.n)}</span>
+        <span>${item._qty}</span>
+        <span>${esc(item.unit)}</span>
+        <span style="text-align:right">${Math.round(item._cost)} kr</span>
+      </div>`;
+    }
+    grandTotal += groupTotal;
+    html += `<div class="order-total">${Math.round(groupTotal)} kr</div>`;
+    html += `</div>`;
+  }
+
+  html += `<div style="font-size:15px;font-weight:700;text-align:right;margin-top:12px;padding-top:8px;border-top:2px solid var(--text)">Totalt: ${Math.round(grandTotal)} kr</div>`;
+
+  html += `<div class="order-actions">
+    <button class="primary" onclick="copyOrder()">Kopier til utklippstavle</button>
+    <button onclick="window.print()">Skriv ut</button>
+    <button onclick="markOrdered()">Marker som bestilt</button>
+  </div>`;
+
+  html += `</div>`;
+  return html;
+}
+
+function copyOrder() {
+  const needOrder = LIB.filter(l => l.minStock > 0 && l.stock <= l.minStock);
+  const groups = {};
+  for (const l of needOrder) {
+    const sup = l.supplier || 'Ukjent';
+    if (!groups[sup]) groups[sup] = [];
+    const qty = l.orderQty > 0 ? l.orderQty : Math.max(1, (l.minStock * 2) - l.stock);
+    groups[sup].push({n: l.n, qty, unit: l.unit});
+  }
+
+  let text = 'BESTILLING \u2014 THE SMASH\n' + new Date().toLocaleDateString('no-NO') + '\n\n';
+  for (const [sup, items] of Object.entries(groups)) {
+    text += sup.toUpperCase() + '\n';
+    for (const item of items) {
+      text += `  ${item.n}: ${item.qty} ${item.unit}\n`;
+    }
+    text += '\n';
+  }
+
+  navigator.clipboard.writeText(text).then(() => toast('Bestilling kopiert'));
+}
+
+function markOrdered() {
+  if (!confirm('Oppdater beholdning til forventet niv\u00e5 etter bestilling?')) return;
+  for (const l of LIB) {
+    if (l.minStock > 0 && l.stock <= l.minStock) {
+      const qty = l.orderQty > 0 ? l.orderQty : Math.max(1, (l.minStock * 2) - l.stock);
+      l.stock += qty;
+    }
+  }
+  scheduleSave();
+  render();
+  toast('Beholdning oppdatert');
+}
+
+function parseAmount(str) {
+  if (!str) return 0;
+  const s = String(str);
+  // Handle "2 × 80g" or "2 x 80g" → 160
+  const multiMatch = s.match(/([\d.]+)\s*[\u00d7x\*]\s*([\d.]+)/i);
+  if (multiMatch) return parseFloat(multiMatch[1]) * parseFloat(multiMatch[2]);
+  // Handle "80g", "200ml", "15" etc
+  const match = s.match(/[\d.]+/);
+  return match ? parseFloat(match[0]) : 0;
+}
+
+function makeSausBatch(sausIdx) {
+  const s = S.sauser[sausIdx];
+  if (!s || !s.ings || s.ings.length === 0) return;
+
+  const missing = [];
+  for (const ing of s.ings) {
+    const libMatch = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
+    if (libMatch) {
+      const need = parseAmount(ing.a);
+      if (need > 0 && libMatch.stock < need) {
+        missing.push(`${ing.n}: trenger ${ing.a}, har ${libMatch.stock} ${libMatch.unit}`);
+      }
+    }
+  }
+
+  if (missing.length > 0) {
+    if (!confirm('Mangler nok av:\n\n' + missing.join('\n') + '\n\nLag batch likevel?')) return;
+  }
+
+  for (const ing of s.ings) {
+    const libMatch = LIB.find(l => l.n.toLowerCase() === ing.n.toLowerCase());
+    if (libMatch) {
+      const need = parseAmount(ing.a);
+      if (need > 0) {
+        libMatch.stock = Math.max(0, libMatch.stock - need);
+      }
+    }
+  }
+
+  // Add to sauce stock in LIB if it exists there
+  const sausInLib = LIB.find(l => l.n.toLowerCase() === s.name.toLowerCase());
+  if (sausInLib) {
+    sausInLib.stock = (sausInLib.stock || 0) + 1;
+  }
+
+  scheduleSave();
+  render();
+  toast(`Batch laget: ${s.name}`);
+}
+
+function makeBatch(i) {
+  const item = LIB[i];
+  if (!item.subIngs || item.subIngs.length === 0 || !item.batchSize) return;
+
+  // Check if we have enough of each sub-ingredient
+  const missing = [];
+  for (const sub of item.subIngs) {
+    const libMatch = LIB.find(l => l.n.toLowerCase() === sub.n.toLowerCase() && l !== item);
+    if (libMatch) {
+      // Convert if same unit, otherwise just check raw numbers
+      if (libMatch.stock < sub.qty) {
+        missing.push(`${sub.n}: trenger ${sub.qty} ${sub.unit}, har ${libMatch.stock} ${libMatch.unit}`);
+      }
+    }
+  }
+
+  if (missing.length > 0) {
+    if (!confirm('Mangler nok av:\n\n' + missing.join('\n') + '\n\nLag batch likevel?')) return;
+  }
+
+  // Deduct sub-ingredients from stock
+  for (const sub of item.subIngs) {
+    const libMatch = LIB.find(l => l.n.toLowerCase() === sub.n.toLowerCase() && l !== item);
+    if (libMatch) {
+      libMatch.stock = Math.max(0, libMatch.stock - sub.qty);
+    }
+  }
+
+  // Add batch result to this item's stock
+  item.stock = (item.stock || 0) + item.batchSize;
+
+  scheduleSave();
+  render();
+  toast(`Batch laget: +${item.batchSize} ${item.batchUnit || item.unit} ${item.n}`);
+}
+
+// ---- EXPORT: Oppskrift per vare ----
+
+async function exportRecipe(i) {
+  const item = LIB[i];
+  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, BorderStyle, AlignmentType } = docx;
+  const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+  const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder };
+
+  const sections = [];
+
+  // Title
+  sections.push(new Paragraph({
+    children: [new TextRun({ text: item.n, bold: true, size: 36, font: 'Arial' })],
+    spacing: { after: 100 },
+  }));
+
+  if (item.note) {
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: item.note, size: 20, color: '888888', font: 'Arial' })],
+      spacing: { after: 200 },
+    }));
+  }
+
+  // Batch info
+  if (item.batchSize > 0) {
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: `Batch gir: ${item.batchSize} ${item.batchUnit || item.unit}`, bold: true, size: 22, font: 'Arial' })],
+      spacing: { after: 200 },
+    }));
+  }
+
+  // Sub-ingredients table
+  const subs = item.subIngs || [];
+  if (subs.length > 0) {
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Ingredienser', bold: true, size: 26, font: 'Arial' })],
+      spacing: { before: 200, after: 100 },
+    }));
+
+    const headerRow = new TableRow({
+      children: ['Ingrediens', 'Mengde', 'Enhet'].map(h =>
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, size: 18, font: 'Arial' })] })],
+          borders: noBorders,
+        })
+      ),
+    });
+
+    const ingRows = subs.map(sub => new TableRow({
+      children: [sub.n || '', String(sub.qty || ''), sub.unit || ''].map(t =>
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: t, size: 18, font: 'Arial' })] })],
+          borders: noBorders,
+        })
+      ),
+    }));
+
+    sections.push(new Table({
+      rows: [headerRow, ...ingRows],
+      width: { size: 100, type: WidthType.PERCENTAGE },
+    }));
+  }
+
+  // Recipe text
+  if (item.recipe && item.recipe.trim()) {
+    sections.push(new Paragraph({
+      children: [new TextRun({ text: 'Fremgangsm\u00e5te', bold: true, size: 26, font: 'Arial' })],
+      spacing: { before: 300, after: 100 },
+    }));
+
+    const lines = item.recipe.split('\n');
+    for (const line of lines) {
+      sections.push(new Paragraph({
+        children: [new TextRun({ text: line, size: 20, font: 'Arial' })],
+        spacing: { after: 60 },
+      }));
+    }
+  }
+
+  // Footer
+  sections.push(new Paragraph({
+    children: [new TextRun({ text: 'THE SMASH \u2014 ' + new Date().toLocaleDateString('no-NO'), size: 16, color: 'AAAAAA', font: 'Arial' })],
+    spacing: { before: 400 },
+  }));
+
+  const doc = new Document({ sections: [{ children: sections }] });
+  const blob = await Packer.toBlob(doc);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = item.n.replace(/[^a-zA-Z0-9\u00e6\u00f8\u00e5\u00c6\u00d8\u00c5 ]/g, '') + '_oppskrift.docx';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Oppskrift eksportert');
+}
+
+// ---- EXPORT DOCX ----
 
 async function exportDocx() {
   const btn = document.getElementById('export-btn');
@@ -841,16 +2667,16 @@ async function exportDocx() {
         spacing: { before: 200, after: 60 },
       }));
 
+      const statusLabel = b.status === 'testing' ? ' [TESTING]' : b.status === 'forkastet' ? ' [FORKASTET]' : '';
       const prisText = b.pris_enkel
-        ? `Pris: ${b.pris_dobbel} / ${b.pris_enkel} kr  \u00b7  R\u00e5varekost: ~${fmt(c)} kr  \u00b7  Bruttomargin: ${margin}%`
-        : `Pris: ${b.pris_dobbel} kr  \u00b7  R\u00e5varekost: ~${fmt(c)} kr  \u00b7  Bruttomargin: ${margin}%`;
+        ? `Pris: ${b.pris_dobbel} / ${b.pris_enkel} kr  \u00b7  R\u00e5varekost: ~${fmt(c)} kr  \u00b7  Bruttomargin: ${margin}%${statusLabel}`
+        : `Pris: ${b.pris_dobbel} kr  \u00b7  R\u00e5varekost: ~${fmt(c)} kr  \u00b7  Bruttomargin: ${margin}%${statusLabel}`;
 
       sections.push(new Paragraph({
         children: [new TextRun({ text: prisText, size: 20, color: '666666', font: 'Arial' })],
         spacing: { after: 100 },
       }));
 
-      // Ingredient table
       const headerRow = new TableRow({
         children: ['Ingrediens', 'Mengde', 'Kostnad', 'Merknad'].map(h =>
           new TableCell({
@@ -938,13 +2764,13 @@ async function exportDocx() {
       }
     }
 
-    // Sauser
+    // Oppskrifter
     sections.push(new Paragraph({
-      children: [new TextRun({ text: 'Sausoppskrifter', bold: true, size: 32, font: 'Arial' })],
+      children: [new TextRun({ text: 'Oppskrifter', bold: true, size: 32, font: 'Arial' })],
       spacing: { before: 400, after: 200 },
     }));
 
-    for (const sa of S.sauser) {
+    for (const sa of (S.oppskrifter || [])) {
       sections.push(new Paragraph({
         children: [new TextRun({ text: sa.name, bold: true, size: 26, font: 'Arial' })],
         spacing: { before: 200, after: 40 },
@@ -1047,7 +2873,7 @@ async function exportDocx() {
   btn.textContent = 'Last ned Word-dokument';
 }
 
-// —— INIT ———————————————————————————————————————————————
+// ---- INIT ----
 
 load();
 </script>

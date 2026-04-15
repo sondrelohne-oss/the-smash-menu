@@ -30,47 +30,60 @@
       height: 100vh;
       display: grid;
       grid-template-rows: auto 1fr;
-      padding: 3vh 4vw;
-      gap: 3vh;
+      padding: 2.5vh 4vw 3vh;
+      gap: 2.5vh;
     }
 
     /* HEADER */
     .d-header {
       display: flex;
       align-items: center;
-      gap: 20px;
+      justify-content: center;
+      gap: clamp(16px, 3vw, 40px);
+      padding: 2vh 0 1.5vh;
+      border-bottom: none;
     }
-    .d-logo {
+    .d-header img {
+      height: clamp(140px, 28vh, 350px);
+      width: auto;
+      filter: drop-shadow(0 0 30px rgba(232,197,71,0.15));
+      margin: -4vh 0 -6vh;
+      position: relative;
+      z-index: 2;
+    }
+    .d-header-text {
       display: flex;
       flex-direction: column;
+      align-items: center;
+    }
+    .d-title {
+      font-size: clamp(36px, 5.5vw, 80px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: var(--cream);
       line-height: 0.9;
     }
-    .d-the {
-      font-size: clamp(14px, 1.5vw, 22px);
-      font-weight: 800;
-      letter-spacing: 0.25em;
-      color: var(--gold);
-      text-transform: uppercase;
+    .d-title span {
+      background: linear-gradient(90deg, var(--gold) 0%, #fff5c0 30%, var(--gold) 60%, #d4a520 80%, var(--gold) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: goldShimmer 8s linear infinite;
     }
-    .d-smash {
-      font-size: clamp(32px, 4vw, 56px);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      color: var(--cream);
-    }
-    .d-gold-line {
-      width: 50px;
-      height: 3px;
-      background: var(--gold);
-      margin-left: 16px;
-      align-self: center;
-    }
+    .d-gold-line { display: none; }
     .d-tagline {
-      font-size: clamp(11px, 1.2vw, 16px);
-      color: var(--dim);
-      align-self: center;
-      margin-left: auto;
-      letter-spacing: 0.05em;
+      font-size: clamp(11px, 1.3vw, 18px);
+      font-size: clamp(10px, 1vw, 13px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      background: linear-gradient(90deg, var(--gold) 0%, #fff5c0 25%, var(--gold) 50%, #d4a520 75%, var(--gold) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: goldShimmer 6s linear infinite;
     }
 
     /* MENU GRID */
@@ -82,15 +95,40 @@
     }
 
     /* SECTION */
+    @keyframes goldShimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes lineGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+
     .d-section-title {
       font-size: clamp(10px, 1vw, 13px);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: var(--gold);
+      background: linear-gradient(90deg, var(--gold) 0%, #fff5c0 25%, var(--gold) 50%, #d4a520 75%, var(--gold) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: goldShimmer 6s linear infinite;
       padding-bottom: 1vh;
-      border-bottom: 1px solid rgba(232,197,71,0.2);
+      border-bottom: 1px solid rgba(232,197,71,0.5);
       margin-bottom: 1.5vh;
+      position: relative;
+    }
+    .d-section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      box-shadow: 0 0 10px 2px rgba(232,197,71,0.35);
+      animation: lineGlow 4s ease-in-out infinite;
     }
 
     /* MENU ITEM */
@@ -125,6 +163,27 @@
       padding-left: 2px;
     }
 
+    /* BESTSELGER */
+    @keyframes bestPulse {
+      0%, 100% { box-shadow: 0 0 4px rgba(232,197,71,0.3); }
+      50% { box-shadow: 0 0 12px rgba(232,197,71,0.6); }
+    }
+    .d-best {
+      display: inline-block;
+      font-size: clamp(8px, 0.7vw, 10px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--black);
+      background: linear-gradient(90deg, var(--gold) 0%, #fff5c0 40%, var(--gold) 100%);
+      background-size: 200% auto;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 10px;
+      vertical-align: middle;
+      animation: goldShimmer 5s linear infinite, bestPulse 3s ease-in-out infinite;
+    }
+
     /* COMBO HIGHLIGHT */
     .d-combo {
       background: var(--card);
@@ -134,6 +193,66 @@
       margin-top: 1vh;
     }
     .d-combo .d-item-name { color: var(--gold); }
+
+    /* UKENS TILBUD */
+    .d-tilbud {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(232,197,71,0.08) 0%, rgba(232,92,43,0.06) 100%);
+      border: 1px solid rgba(232,197,71,0.2);
+      border-radius: 12px;
+      padding: 2vh 2vw;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .d-tilbud::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      animation: goldShimmer 4s linear infinite;
+      background-size: 200% auto;
+    }
+    .d-tilbud-title {
+      font-size: clamp(10px, 1vw, 13px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 0.8vh;
+    }
+    .d-tilbud-content {
+      font-size: clamp(14px, 1.5vw, 22px);
+      font-weight: 700;
+      color: var(--cream);
+    }
+    .d-tilbud-price {
+      font-size: clamp(20px, 2.5vw, 36px);
+      font-weight: 900;
+      color: var(--gold);
+      margin-top: 0.5vh;
+    }
+    .d-tilbud-desc {
+      font-size: clamp(10px, 0.9vw, 13px);
+      color: var(--dim);
+      margin-top: 0.3vh;
+    }
+
+
+    /* ALLERGEN FOOTER */
+    .d-allergen {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 8px 4vw;
+      font-size: clamp(9px, 0.8vw, 12px);
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+      background: linear-gradient(transparent, var(--black) 40%);
+    }
 
     /* LIVE INDICATOR */
     .d-live {
@@ -157,102 +276,195 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.3; }
     }
+
+    /* VERTIKAL SKJERM (portrait) */
+    @media (orientation: portrait) {
+      .display {
+        padding: 2vh 5vw 4vh;
+        gap: 2vh;
+      }
+      .d-header {
+        flex-direction: column;
+        gap: clamp(10px, 2vh, 20px);
+      }
+      .d-header img {
+        height: clamp(100px, 15vh, 200px);
+      }
+      .d-title {
+        font-size: clamp(32px, 8vw, 70px);
+        text-align: center;
+      }
+      .d-grid {
+        grid-template-columns: 1fr;
+        gap: 3vh;
+      }
+      .d-item-name {
+        font-size: clamp(18px, 4vw, 28px);
+      }
+      .d-item-price {
+        font-size: clamp(18px, 4vw, 28px);
+      }
+      .d-item-sub {
+        font-size: clamp(11px, 2.5vw, 15px);
+      }
+      .d-section-title {
+        font-size: clamp(11px, 2.5vw, 15px);
+      }
+    }
   </style>
 </head>
 <body>
 
 <div class="display">
   <div class="d-header">
-    <img src="logo.png" alt="The Smash" style="height:clamp(60px, 8vh, 100px);width:auto">
-    <div class="d-gold-line"></div>
-    <span class="d-tagline">Mandal Brygge</span>
+    <img src="logo.png" alt="The Smash">
+    <div class="d-header-text">
+      <div class="d-title"><span>THE</span> SMASH.</div>
+      <span class="d-tagline">Mandal Brygge</span>
+    </div>
   </div>
   <div id="menu-content"></div>
 </div>
 
+<div class="d-allergen">Allergener: Alle burgere inneholder gluten og melk. Si ifra om allergier ved bestilling.</div>
 <div class="d-live"><div class="d-live-dot"></div>Live</div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
 const SK = 'thesmash-menu-v1';
+
+// ---- FIREBASE CONFIG (same as index.html) ----
+const firebaseConfig = {
+  apiKey: "AIzaSyDw4Gdk6u1RCCXnRH6yybc7BTRhE0iNrP8",
+  authDomain: "the-smash-drift.firebaseapp.com",
+  databaseURL: "https://the-smash-drift-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "the-smash-drift",
+  storageBucket: "the-smash-drift.firebasestorage.app",
+  messagingSenderId: "849543974406",
+  appId: "1:849543974406:web:af2cfeb19d769d63e57d87"
+};
+
+let db = null;
+let firebaseReady = false;
+
+if (firebaseConfig.apiKey !== 'REPLACE_ME') {
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    firebaseReady = true;
+  } catch(e) {
+    console.warn('Firebase init failed:', e);
+  }
+}
+
 let lastJson = '';
 
-function loadAndRender() {
-  let S;
-  try {
-    const raw = localStorage.getItem(SK);
-    if (!raw || raw === lastJson) return;
-    lastJson = raw;
-    S = JSON.parse(raw);
-  } catch(e) { return; }
+function renderMenu(S) {
+  if (!S || !S.burgers) return;
+
+  const json = JSON.stringify(S);
+  if (json === lastJson) return;
+  lastJson = json;
 
   const el = document.getElementById('menu-content');
   let html = '<div class="d-grid">';
 
-  // Left column: Burgere
+  // Left column: Burgere (only showOnDisplay === true)
+  const visibleBurgers = S.burgers.filter(b => b.showOnDisplay !== false && !b.utsolgt);
   html += '<div>';
-  html += '<div class="d-section-title">Burgere</div>';
+  if (visibleBurgers.length > 0) {
+    html += '<div class="d-section-title">Burgere</div>';
 
-  for (const b of S.burgers) {
-    const pm = b.pattyMode || 'both';
-    let priceStr = '';
+    for (const b of visibleBurgers) {
+      const pm = b.pattyMode || 'both';
+      let priceStr = '';
 
-    if (pm === 'both' && b.pris_dobbel && b.pris_enkel) {
-      priceStr = b.pris_dobbel + ' / ' + b.pris_enkel;
-    } else if (pm === 'enkel' && b.pris_enkel) {
-      priceStr = b.pris_enkel;
-    } else {
-      priceStr = b.pris_dobbel || b.pris_enkel || '';
-    }
+      const mainPrice = (pm === 'enkel') ? (b.pris_enkel || '') : (b.pris_dobbel || b.pris_enkel || '');
 
-    html += `<div class="d-item">
-      <span class="d-item-name">${esc(b.name)}</span>
-      <span class="d-item-dots"></span>
-      <span class="d-item-price">${esc(priceStr)}</span>
-    </div>`;
-
-    // Size label
-    if (pm === 'both' && b.pris_dobbel && b.pris_enkel) {
-      html += `<div class="d-item-sub">dobbel / enkel</div>`;
-    } else if (pm === 'dobbel') {
-      html += `<div class="d-item-sub">dobbel patty</div>`;
-    } else if (pm === 'enkel') {
-      html += `<div class="d-item-sub">enkel patty</div>`;
-    }
-  }
-  html += '</div>';
-
-  // Right column: Tilbeh\u00f8r + Kombo
-  html += '<div>';
-  html += '<div class="d-section-title">Tilbeh\u00f8r & drikke</div>';
-
-  const sides = S.sider || [];
-  const combo = sides.filter(s => s.name.toLowerCase().includes('kombo'));
-  const regular = sides.filter(s => !s.name.toLowerCase().includes('kombo'));
-
-  for (const s of regular) {
-    html += `<div class="d-item">
-      <span class="d-item-name">${esc(s.name)}</span>
-      <span class="d-item-dots"></span>
-      <span class="d-item-price">${esc(s.pris)}</span>
-    </div>`;
-  }
-
-  // Combo
-  if (combo.length > 0) {
-    html += '<div class="d-combo">';
-    html += '<div class="d-section-title" style="color:var(--gold);border-color:rgba(232,197,71,0.3)">Kombotilbud</div>';
-    for (const c of combo) {
+      const bestBadge = b.bestselger ? '<span class="d-best">Bestselger</span>' : '';
+      const flameBadge = '';
       html += `<div class="d-item">
-        <span class="d-item-name">${esc(c.name)}</span>
+        <span class="d-item-name">${esc(b.name)}${flameBadge}${bestBadge}</span>
         <span class="d-item-dots"></span>
-        <span class="d-item-price">${esc(c.pris)}</span>
+        <span class="d-item-price">${esc(mainPrice)}</span>
       </div>`;
+      if (pm === 'both' && b.pris_enkel) {
+        html += `<div class="d-item" style="margin-top:-0.5vh">
+          <span class="d-item-name" style="font-size:clamp(11px,1.2vw,16px);font-weight:400;color:var(--dim)">Enkel</span>
+          <span class="d-item-dots"></span>
+          <span class="d-item-price" style="font-size:clamp(11px,1.2vw,16px);font-weight:600;color:var(--dim)">${esc(b.pris_enkel)}</span>
+        </div>`;
+      }
+
+      // Ingredient list (skip patty and bun — show toppings)
+      const skip = ['kjøttdeig','kylling','brioche','bun'];
+      const toppings = (b.ings || [])
+        .filter(ing => !skip.some(s => ing.n.toLowerCase().includes(s)))
+        .map(ing => ing.n.replace(/\s*\(.*?\)/g, '').trim());
+      if (toppings.length > 0) {
+        html += `<div class="d-item-sub">${esc(toppings.join(', '))}</div>`;
+      }
     }
-    html += '</div>';
+  }
+  html += '</div>';
+
+  // Right column: Tilbeh\u00f8r + Kombo (only showOnDisplay === true)
+  const sides = (S.sider || []).filter(s => s.showOnDisplay !== false && !s.utsolgt);
+  html += '<div>';
+  if (sides.length > 0) {
+    html += '<div class="d-section-title">Tilbeh\u00f8r & drikke</div>';
+
+    const combo = sides.filter(s => s.name.toLowerCase().includes('kombo'));
+    const regular = sides.filter(s => !s.name.toLowerCase().includes('kombo'));
+
+    for (const s of regular) {
+      html += `<div class="d-item">
+        <span class="d-item-name">${esc(s.name)}</span>
+        <span class="d-item-dots"></span>
+        <span class="d-item-price">${esc(s.pris)}</span>
+      </div>`;
+      // Show available variants or desc
+      const availableVars = (s.variants || []).filter(v => v.available);
+      if (availableVars.length > 0) {
+        html += `<div class="d-item-sub">${availableVars.map(v => esc(v.name)).join(', ')}</div>`;
+      } else if (s.desc) {
+        html += `<div class="d-item-sub">${esc(s.desc)}</div>`;
+      }
+    }
+
+    if (combo.length > 0) {
+      html += '<div class="d-combo">';
+      html += '<div class="d-section-title" style="color:var(--gold);border-color:rgba(232,197,71,0.3)">Kombotilbud</div>';
+      for (const c of combo) {
+        html += `<div class="d-item">
+          <span class="d-item-name">${esc(c.name)}</span>
+          <span class="d-item-dots"></span>
+          <span class="d-item-price">${esc(c.pris)}</span>
+        </div>`;
+        if (c.desc) {
+          html += `<div class="d-item-sub">${esc(c.desc)}</div>`;
+        }
+      }
+      html += '</div>';
+    }
   }
 
   html += '</div>';
-  html += '</div>';
+  html += '</div>'; // lukk d-grid
+
+  // Ukens tilbud (utenfor grid)
+  console.log('ukensTilbud:', JSON.stringify(S.ukensTilbud));
+  const ut = S.ukensTilbud;
+  if (ut && ut.enabled) {
+    const parts = [ut.burger, ut.side, ut.drikke].filter(Boolean);
+    html += `<div class="d-tilbud">
+      <div class="d-tilbud-title">${esc(ut.title || 'Ukens tilbud')}</div>
+      <div class="d-tilbud-content">${esc(parts.join(' + '))}</div>
+      ${ut.pris ? `<div class="d-tilbud-price">${esc(ut.pris)} kr</div>` : ''}
+      ${ut.desc ? `<div class="d-tilbud-desc">${esc(ut.desc)}</div>` : ''}
+    </div>`;
+  }
 
   el.innerHTML = html;
 }
@@ -264,13 +476,33 @@ function esc(s) {
   return d.innerHTML;
 }
 
-// Poll localStorage every second for live updates
-loadAndRender();
-setInterval(loadAndRender, 1000);
+// ---- DATA SOURCES ----
 
-// Also listen for storage events (works across tabs)
+// 1. Firebase realtime (primary if available)
+if (firebaseReady && db) {
+  db.ref('menu').on('value', snap => {
+    const val = snap.val();
+    if (val) {
+      renderMenu(val);
+      // Cache locally too
+      try { localStorage.setItem(SK, JSON.stringify(val)); } catch(e) {}
+    }
+  });
+}
+
+// 2. localStorage fallback + polling (for same-browser tabs or when Firebase is not configured)
+function loadFromLocalStorage() {
+  try {
+    const raw = localStorage.getItem(SK);
+    if (raw) renderMenu(JSON.parse(raw));
+  } catch(e) {}
+}
+
+loadFromLocalStorage();
+setInterval(loadFromLocalStorage, 1000);
+
 window.addEventListener('storage', (e) => {
-  if (e.key === SK) { lastJson = ''; loadAndRender(); }
+  if (e.key === SK) { lastJson = ''; loadFromLocalStorage(); }
 });
 </script>
 </body>
