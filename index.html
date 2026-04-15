@@ -284,11 +284,49 @@
     .sync-badge.offline { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
 
     @media (max-width: 600px) {
+      /* Header */
+      .header-top { padding: 6px 12px; gap: 8px; }
+      .logo img { height: 80px; margin: -25px 0 -30px; }
+      .header-nav { gap: 0; flex-wrap: wrap; justify-content: flex-start; }
+      .nav-btn { padding: 5px 10px; font-size: 11px; }
+      .header-right { gap: 4px; }
+      .header-right a { font-size: 10px !important; padding: 2px 6px !important; }
+
+      /* Layout */
+      .container { padding: 12px 10px 60px; }
+      .card { padding: 14px; }
+      .tab { font-size: 12px; padding: 5px 10px; }
+      .tab-add { font-size: 12px; padding: 5px 10px; }
+
+      /* Ingredient grid */
       .ing-header, .ing-row { grid-template-columns: 2fr 0.8fr 0.8fr 28px; }
       .ing-header .col-head:nth-child(4), .ing-row input:nth-child(4) { display: none; }
+
+      /* Library */
       .lib-row { grid-template-columns: 2fr 0.8fr 0.8fr 28px; }
       .lib-row :nth-child(4), .lib-row :nth-child(5), .lib-row :nth-child(6) { display: none; }
+
+      /* Lager */
+      .lager-row { grid-template-columns: 1.5fr 0.7fr 0.5fr 0.5fr 50px; font-size: 12px; }
+      .lager-row :nth-child(5), .lager-row :nth-child(6) { display: none; }
+      .stock-adj input { width: 40px; }
+
+      /* Prices */
       .price-row { grid-template-columns: 1fr; }
+
+      /* Side rows */
+      .side-row { flex-wrap: wrap; gap: 6px; padding: 8px; }
+
+      /* Dashboard */
+      .dash-grid { grid-template-columns: 1fr; }
+      .dash-big { font-size: 26px; }
+
+      /* Touch targets */
+      .icon-btn { width: 32px; height: 32px; font-size: 15px; }
+      input, select, textarea { font-size: 16px !important; padding: 9px 10px; }
+      .add-row { padding: 10px; }
+      .status-btn { padding: 6px 14px; }
+      .toggle { width: 44px; height: 24px; }
     }
   </style>
 </head>
