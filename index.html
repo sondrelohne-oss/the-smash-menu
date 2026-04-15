@@ -335,10 +335,12 @@
       input, select, textarea { font-size: 16px !important; padding: 10px 12px; color: var(--text) !important; background: #fff !important; border: 2px solid var(--border) !important; border-radius: 8px !important; -webkit-appearance: none; }
       input:focus, textarea:focus { border-color: var(--gold) !important; outline: none; box-shadow: 0 0 0 3px rgba(232,197,71,0.2); }
       .field-label { font-size: 12px !important; min-width: 70px !important; }
-      .step-row { flex-wrap: wrap; }
-      .step-row input { min-height: 60px; word-wrap: break-word; }
-      .ing-row input, .lib-row input, .lager-row input { min-height: 40px; }
+      .step-row { flex-wrap: wrap; gap: 4px !important; }
+      .step-row textarea { width: 100%; min-height: 50px; font-size: 14px !important; }
+      .ing-row, .lib-row, .lager-row { font-size: 12px; }
       .note-input-row textarea { min-height: 80px; }
+      .card { font-size: 13px; }
+      .sec { font-size: 10px; }
       .add-row { padding: 10px; }
       .status-btn { padding: 6px 14px; }
       .toggle { width: 44px; height: 24px; }
@@ -1456,7 +1458,7 @@ function renderSauser() {
   s.steps.forEach((step, j) => {
     html += `<div class="step-row">
       <div class="step-num">${j+1}</div>
-      <input value="${esc(step)}" oninput="S.sauser[${sausIdx}].steps[${j}]=this.value;scheduleSave()">
+      <textarea rows="2" style="flex:1;font-size:13px;line-height:1.4" oninput="S.sauser[${sausIdx}].steps[${j}]=this.value;scheduleSave()">${esc(step)}</textarea>
       <button class="icon-btn" onclick="moveStep(S.sauser[${sausIdx}].steps,${j},-1)" title="Flytt opp" ${j===0?'disabled style="opacity:.3"':''}>&#9650;</button>
       <button class="icon-btn" onclick="moveStep(S.sauser[${sausIdx}].steps,${j},1)" title="Flytt ned" ${j===s.steps.length-1?'disabled style="opacity:.3"':''}>&#9660;</button>
       <button class="icon-btn del" onclick="S.sauser[${sausIdx}].steps.splice(${j},1);scheduleSave();render()">\u00d7</button>
@@ -1568,7 +1570,7 @@ function renderOppskrifter() {
   (o.steps || []).forEach((step, j) => {
     html += `<div class="step-row">
       <div class="step-num">${j+1}</div>
-      <input value="${esc(step)}" oninput="S.oppskrifter[${oppIdx}].steps[${j}]=this.value;scheduleSave()">
+      <textarea rows="2" style="flex:1;font-size:13px;line-height:1.4" oninput="S.oppskrifter[${oppIdx}].steps[${j}]=this.value;scheduleSave()">${esc(step)}</textarea>
       <button class="icon-btn" onclick="moveStep(S.oppskrifter[${oppIdx}].steps,${j},-1)" title="Flytt opp" ${j===0?'disabled style="opacity:.3"':''}>&#9650;</button>
       <button class="icon-btn" onclick="moveStep(S.oppskrifter[${oppIdx}].steps,${j},1)" title="Flytt ned" ${j===(o.steps||[]).length-1?'disabled style="opacity:.3"':''}>&#9660;</button>
       <button class="icon-btn del" onclick="S.oppskrifter[${oppIdx}].steps.splice(${j},1);scheduleSave();render()">\u00d7</button>
